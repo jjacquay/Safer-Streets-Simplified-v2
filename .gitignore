@@ -1,0 +1,20 @@
+.DS_Store
+.vercel
+node_modules/
+.env
+.env.local
+*.log
+
+# Raw crash data and intermediate exports — never commit
+data/private/
+data/raw/
+*.raw.geojson
+*.raw.csv
+
+
+# v4 scratch files
+data/psc_urls_to_fetch.txt
+
+# Python bytecode
+__pycache__/
+*.pyc

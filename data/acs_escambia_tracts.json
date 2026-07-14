@@ -1,0 +1,718 @@
+{
+  "source": "US Census Bureau ACS 5-year 2023 (via api.census.gov)",
+  "county": "Escambia County, FL (FIPS 12033)",
+  "tract_count": 79,
+  "tracts": [
+    {
+      "name": "Census Tract 1; Escambia County; Florida",
+      "geoid": "12033000100",
+      "poverty_rate": 0.1593,
+      "zero_vehicle_hh_share": 0.1351,
+      "people_of_color_share": 0.4222,
+      "population": 2101.0,
+      "median_household_income": 63000.0
+    },
+    {
+      "name": "Census Tract 3; Escambia County; Florida",
+      "geoid": "12033000300",
+      "poverty_rate": 0.1201,
+      "zero_vehicle_hh_share": 0.0866,
+      "people_of_color_share": 0.3466,
+      "population": 2513.0,
+      "median_household_income": 67083.0
+    },
+    {
+      "name": "Census Tract 4; Escambia County; Florida",
+      "geoid": "12033000400",
+      "poverty_rate": 0.4595,
+      "zero_vehicle_hh_share": 0.3855,
+      "people_of_color_share": 0.8405,
+      "population": 3599.0,
+      "median_household_income": 16403.0
+    },
+    {
+      "name": "Census Tract 5; Escambia County; Florida",
+      "geoid": "12033000500",
+      "poverty_rate": 0.1254,
+      "zero_vehicle_hh_share": 0.0221,
+      "people_of_color_share": 0.3384,
+      "population": 1395.0,
+      "median_household_income": 103958.0
+    },
+    {
+      "name": "Census Tract 6; Escambia County; Florida",
+      "geoid": "12033000600",
+      "poverty_rate": 0.124,
+      "zero_vehicle_hh_share": 0.1587,
+      "people_of_color_share": 0.6313,
+      "population": 1348.0,
+      "median_household_income": 48500.0
+    },
+    {
+      "name": "Census Tract 8.01; Escambia County; Florida",
+      "geoid": "12033000801",
+      "poverty_rate": 0.0591,
+      "zero_vehicle_hh_share": 0.0599,
+      "people_of_color_share": 0.3199,
+      "population": 1913.0,
+      "median_household_income": 75192.0
+    },
+    {
+      "name": "Census Tract 8.02; Escambia County; Florida",
+      "geoid": "12033000802",
+      "poverty_rate": 0.0591,
+      "zero_vehicle_hh_share": 0.0636,
+      "people_of_color_share": 0.2612,
+      "population": 3162.0,
+      "median_household_income": 86600.0
+    },
+    {
+      "name": "Census Tract 9; Escambia County; Florida",
+      "geoid": "12033000900",
+      "poverty_rate": 0.0448,
+      "zero_vehicle_hh_share": 0.0337,
+      "people_of_color_share": 0.1115,
+      "population": 2440.0,
+      "median_household_income": 114306.0
+    },
+    {
+      "name": "Census Tract 10.01; Escambia County; Florida",
+      "geoid": "12033001001",
+      "poverty_rate": 0.0166,
+      "zero_vehicle_hh_share": 0.0151,
+      "people_of_color_share": 0.0602,
+      "population": 5666.0,
+      "median_household_income": 99698.0
+    },
+    {
+      "name": "Census Tract 10.02; Escambia County; Florida",
+      "geoid": "12033001002",
+      "poverty_rate": 0.1403,
+      "zero_vehicle_hh_share": 0.0809,
+      "people_of_color_share": 0.2386,
+      "population": 2645.0,
+      "median_household_income": 54946.0
+    },
+    {
+      "name": "Census Tract 11.01; Escambia County; Florida",
+      "geoid": "12033001101",
+      "poverty_rate": 0.0523,
+      "zero_vehicle_hh_share": 0.0233,
+      "people_of_color_share": 0.1935,
+      "population": 6322.0,
+      "median_household_income": 103500.0
+    },
+    {
+      "name": "Census Tract 11.03; Escambia County; Florida",
+      "geoid": "12033001103",
+      "poverty_rate": 0.0287,
+      "zero_vehicle_hh_share": 0.0,
+      "people_of_color_share": 0.1464,
+      "population": 3032.0,
+      "median_household_income": 101984.0
+    },
+    {
+      "name": "Census Tract 11.04; Escambia County; Florida",
+      "geoid": "12033001104",
+      "poverty_rate": 0.0531,
+      "zero_vehicle_hh_share": 0.0329,
+      "people_of_color_share": 0.3464,
+      "population": 5771.0,
+      "median_household_income": 75641.0
+    },
+    {
+      "name": "Census Tract 12.01; Escambia County; Florida",
+      "geoid": "12033001201",
+      "poverty_rate": 0.0584,
+      "zero_vehicle_hh_share": 0.0399,
+      "people_of_color_share": 0.3803,
+      "population": 5191.0,
+      "median_household_income": 76213.0
+    },
+    {
+      "name": "Census Tract 12.02; Escambia County; Florida",
+      "geoid": "12033001202",
+      "poverty_rate": 0.1349,
+      "zero_vehicle_hh_share": 0.1066,
+      "people_of_color_share": 0.4771,
+      "population": 3888.0,
+      "median_household_income": 45801.0
+    },
+    {
+      "name": "Census Tract 13; Escambia County; Florida",
+      "geoid": "12033001300",
+      "poverty_rate": 0.283,
+      "zero_vehicle_hh_share": 0.2463,
+      "people_of_color_share": 0.6308,
+      "population": 4060.0,
+      "median_household_income": 50893.0
+    },
+    {
+      "name": "Census Tract 14.01; Escambia County; Florida",
+      "geoid": "12033001401",
+      "poverty_rate": 0.1572,
+      "zero_vehicle_hh_share": 0.0846,
+      "people_of_color_share": 0.2157,
+      "population": 6157.0,
+      "median_household_income": 32721.0
+    },
+    {
+      "name": "Census Tract 14.02; Escambia County; Florida",
+      "geoid": "12033001402",
+      "poverty_rate": 0.1711,
+      "zero_vehicle_hh_share": 0.1505,
+      "people_of_color_share": 0.5469,
+      "population": 6698.0,
+      "median_household_income": 55946.0
+    },
+    {
+      "name": "Census Tract 15; Escambia County; Florida",
+      "geoid": "12033001500",
+      "poverty_rate": 0.5126,
+      "zero_vehicle_hh_share": 0.2097,
+      "people_of_color_share": 0.7558,
+      "population": 1073.0,
+      "median_household_income": 29500.0
+    },
+    {
+      "name": "Census Tract 16; Escambia County; Florida",
+      "geoid": "12033001600",
+      "poverty_rate": 0.2202,
+      "zero_vehicle_hh_share": 0.2919,
+      "people_of_color_share": 0.7191,
+      "population": 2371.0,
+      "median_household_income": 35905.0
+    },
+    {
+      "name": "Census Tract 17; Escambia County; Florida",
+      "geoid": "12033001700",
+      "poverty_rate": 0.4339,
+      "zero_vehicle_hh_share": 0.3317,
+      "people_of_color_share": 0.5596,
+      "population": 2775.0,
+      "median_household_income": 26908.0
+    },
+    {
+      "name": "Census Tract 18; Escambia County; Florida",
+      "geoid": "12033001800",
+      "poverty_rate": 0.3786,
+      "zero_vehicle_hh_share": 0.0797,
+      "people_of_color_share": 0.715,
+      "population": 1663.0,
+      "median_household_income": 36250.0
+    },
+    {
+      "name": "Census Tract 19; Escambia County; Florida",
+      "geoid": "12033001900",
+      "poverty_rate": 0.3692,
+      "zero_vehicle_hh_share": 0.2023,
+      "people_of_color_share": 0.607,
+      "population": 1934.0,
+      "median_household_income": 34853.0
+    },
+    {
+      "name": "Census Tract 20; Escambia County; Florida",
+      "geoid": "12033002000",
+      "poverty_rate": 0.3096,
+      "zero_vehicle_hh_share": 0.217,
+      "people_of_color_share": 0.8353,
+      "population": 1846.0,
+      "median_household_income": 35148.0
+    },
+    {
+      "name": "Census Tract 21; Escambia County; Florida",
+      "geoid": "12033002100",
+      "poverty_rate": 0.2464,
+      "zero_vehicle_hh_share": 0.1365,
+      "people_of_color_share": 0.5788,
+      "population": 5150.0,
+      "median_household_income": 36004.0
+    },
+    {
+      "name": "Census Tract 22; Escambia County; Florida",
+      "geoid": "12033002200",
+      "poverty_rate": 0.236,
+      "zero_vehicle_hh_share": 0.1017,
+      "people_of_color_share": 0.3375,
+      "population": 3538.0,
+      "median_household_income": 48015.0
+    },
+    {
+      "name": "Census Tract 23; Escambia County; Florida",
+      "geoid": "12033002300",
+      "poverty_rate": 0.2214,
+      "zero_vehicle_hh_share": 0.0594,
+      "people_of_color_share": 0.2268,
+      "population": 4955.0,
+      "median_household_income": 62207.0
+    },
+    {
+      "name": "Census Tract 24; Escambia County; Florida",
+      "geoid": "12033002400",
+      "poverty_rate": 0.1578,
+      "zero_vehicle_hh_share": 0.0,
+      "people_of_color_share": 0.5426,
+      "population": 4993.0,
+      "median_household_income": 65000.0
+    },
+    {
+      "name": "Census Tract 25; Escambia County; Florida",
+      "geoid": "12033002500",
+      "poverty_rate": 0.0228,
+      "zero_vehicle_hh_share": 0.0204,
+      "people_of_color_share": 0.0702,
+      "population": 2735.0,
+      "median_household_income": 129125.0
+    },
+    {
+      "name": "Census Tract 26.01; Escambia County; Florida",
+      "geoid": "12033002601",
+      "poverty_rate": 0.0448,
+      "zero_vehicle_hh_share": 0.0,
+      "people_of_color_share": 0.4457,
+      "population": 3610.0,
+      "median_household_income": 80125.0
+    },
+    {
+      "name": "Census Tract 26.02; Escambia County; Florida",
+      "geoid": "12033002602",
+      "poverty_rate": 0.0144,
+      "zero_vehicle_hh_share": 0.0067,
+      "people_of_color_share": 0.0969,
+      "population": 1671.0,
+      "median_household_income": 167962.0
+    },
+    {
+      "name": "Census Tract 26.04; Escambia County; Florida",
+      "geoid": "12033002604",
+      "poverty_rate": 0.1278,
+      "zero_vehicle_hh_share": 0.0221,
+      "people_of_color_share": 0.1805,
+      "population": 4138.0,
+      "median_household_income": 77271.0
+    },
+    {
+      "name": "Census Tract 26.05; Escambia County; Florida",
+      "geoid": "12033002605",
+      "poverty_rate": 0.1002,
+      "zero_vehicle_hh_share": 0.0374,
+      "people_of_color_share": 0.366,
+      "population": 4642.0,
+      "median_household_income": 61118.0
+    },
+    {
+      "name": "Census Tract 26.06; Escambia County; Florida",
+      "geoid": "12033002606",
+      "poverty_rate": 0.0124,
+      "zero_vehicle_hh_share": 0.0101,
+      "people_of_color_share": 0.127,
+      "population": 2946.0,
+      "median_household_income": 75602.0
+    },
+    {
+      "name": "Census Tract 26.07; Escambia County; Florida",
+      "geoid": "12033002607",
+      "poverty_rate": 0.0335,
+      "zero_vehicle_hh_share": 0.0394,
+      "people_of_color_share": 0.177,
+      "population": 5886.0,
+      "median_household_income": 117348.0
+    },
+    {
+      "name": "Census Tract 27.01; Escambia County; Florida",
+      "geoid": "12033002701",
+      "poverty_rate": 0.1448,
+      "zero_vehicle_hh_share": 0.0101,
+      "people_of_color_share": 0.4144,
+      "population": 3205.0,
+      "median_household_income": 64559.0
+    },
+    {
+      "name": "Census Tract 27.03; Escambia County; Florida",
+      "geoid": "12033002703",
+      "poverty_rate": 0.4097,
+      "zero_vehicle_hh_share": 0.1766,
+      "people_of_color_share": 0.5545,
+      "population": 2938.0,
+      "median_household_income": 39479.0
+    },
+    {
+      "name": "Census Tract 27.04; Escambia County; Florida",
+      "geoid": "12033002704",
+      "poverty_rate": 0.2373,
+      "zero_vehicle_hh_share": 0.0489,
+      "people_of_color_share": 0.2429,
+      "population": 6061.0,
+      "median_household_income": 58659.0
+    },
+    {
+      "name": "Census Tract 28.01; Escambia County; Florida",
+      "geoid": "12033002801",
+      "poverty_rate": 0.1043,
+      "zero_vehicle_hh_share": 0.0457,
+      "people_of_color_share": 0.2837,
+      "population": 2852.0,
+      "median_household_income": 68291.0
+    },
+    {
+      "name": "Census Tract 28.02; Escambia County; Florida",
+      "geoid": "12033002802",
+      "poverty_rate": 0.1878,
+      "zero_vehicle_hh_share": 0.0152,
+      "people_of_color_share": 0.4532,
+      "population": 5406.0,
+      "median_household_income": 73741.0
+    },
+    {
+      "name": "Census Tract 28.03; Escambia County; Florida",
+      "geoid": "12033002803",
+      "poverty_rate": 0.1988,
+      "zero_vehicle_hh_share": 0.0908,
+      "people_of_color_share": 0.616,
+      "population": 2568.0,
+      "median_household_income": 39475.0
+    },
+    {
+      "name": "Census Tract 28.04; Escambia County; Florida",
+      "geoid": "12033002804",
+      "poverty_rate": 0.0265,
+      "zero_vehicle_hh_share": 0.0401,
+      "people_of_color_share": 0.4816,
+      "population": 3430.0,
+      "median_household_income": 61250.0
+    },
+    {
+      "name": "Census Tract 29; Escambia County; Florida",
+      "geoid": "12033002900",
+      "poverty_rate": 0.235,
+      "zero_vehicle_hh_share": 0.051,
+      "people_of_color_share": 0.3711,
+      "population": 4325.0,
+      "median_household_income": 42000.0
+    },
+    {
+      "name": "Census Tract 30.01; Escambia County; Florida",
+      "geoid": "12033003001",
+      "poverty_rate": 0.2549,
+      "zero_vehicle_hh_share": 0.1264,
+      "people_of_color_share": 0.5577,
+      "population": 3656.0,
+      "median_household_income": 46250.0
+    },
+    {
+      "name": "Census Tract 30.02; Escambia County; Florida",
+      "geoid": "12033003002",
+      "poverty_rate": 0.1358,
+      "zero_vehicle_hh_share": 0.0552,
+      "people_of_color_share": 0.4643,
+      "population": 3623.0,
+      "median_household_income": 45000.0
+    },
+    {
+      "name": "Census Tract 31; Escambia County; Florida",
+      "geoid": "12033003100",
+      "poverty_rate": 0.2447,
+      "zero_vehicle_hh_share": 0.0426,
+      "people_of_color_share": 0.7757,
+      "population": 5100.0,
+      "median_household_income": 42733.0
+    },
+    {
+      "name": "Census Tract 32.01; Escambia County; Florida",
+      "geoid": "12033003201",
+      "poverty_rate": 0.1814,
+      "zero_vehicle_hh_share": 0.1225,
+      "people_of_color_share": 0.7643,
+      "population": 5181.0,
+      "median_household_income": 49727.0
+    },
+    {
+      "name": "Census Tract 32.03; Escambia County; Florida",
+      "geoid": "12033003203",
+      "poverty_rate": 0.1291,
+      "zero_vehicle_hh_share": 0.0441,
+      "people_of_color_share": 0.6067,
+      "population": 4890.0,
+      "median_household_income": 52936.0
+    },
+    {
+      "name": "Census Tract 32.04; Escambia County; Florida",
+      "geoid": "12033003204",
+      "poverty_rate": 0.0497,
+      "zero_vehicle_hh_share": 0.0248,
+      "people_of_color_share": 0.294,
+      "population": 3122.0,
+      "median_household_income": 75720.0
+    },
+    {
+      "name": "Census Tract 33.01; Escambia County; Florida",
+      "geoid": "12033003301",
+      "poverty_rate": 0.1683,
+      "zero_vehicle_hh_share": 0.0246,
+      "people_of_color_share": 0.3629,
+      "population": 4599.0,
+      "median_household_income": 72054.0
+    },
+    {
+      "name": "Census Tract 33.05; Escambia County; Florida",
+      "geoid": "12033003305",
+      "poverty_rate": 0.1245,
+      "zero_vehicle_hh_share": 0.013,
+      "people_of_color_share": 0.4084,
+      "population": 2701.0,
+      "median_household_income": 71635.0
+    },
+    {
+      "name": "Census Tract 33.07; Escambia County; Florida",
+      "geoid": "12033003307",
+      "poverty_rate": 0.2013,
+      "zero_vehicle_hh_share": 0.0854,
+      "people_of_color_share": 0.4734,
+      "population": 1990.0,
+      "median_household_income": 55968.0
+    },
+    {
+      "name": "Census Tract 33.08; Escambia County; Florida",
+      "geoid": "12033003308",
+      "poverty_rate": 0.14,
+      "zero_vehicle_hh_share": 0.0723,
+      "people_of_color_share": 0.3363,
+      "population": 4918.0,
+      "median_household_income": 66496.0
+    },
+    {
+      "name": "Census Tract 33.10; Escambia County; Florida",
+      "geoid": "12033003310",
+      "poverty_rate": 0.0913,
+      "zero_vehicle_hh_share": 0.0235,
+      "people_of_color_share": 0.512,
+      "population": 4678.0,
+      "median_household_income": 65323.0
+    },
+    {
+      "name": "Census Tract 33.11; Escambia County; Florida",
+      "geoid": "12033003311",
+      "poverty_rate": 0.058,
+      "zero_vehicle_hh_share": 0.0932,
+      "people_of_color_share": 0.5027,
+      "population": 3207.0,
+      "median_household_income": 48153.0
+    },
+    {
+      "name": "Census Tract 33.12; Escambia County; Florida",
+      "geoid": "12033003312",
+      "poverty_rate": 0.196,
+      "zero_vehicle_hh_share": 0.0179,
+      "people_of_color_share": 0.3503,
+      "population": 3257.0,
+      "median_household_income": 59900.0
+    },
+    {
+      "name": "Census Tract 33.13; Escambia County; Florida",
+      "geoid": "12033003313",
+      "poverty_rate": 0.2611,
+      "zero_vehicle_hh_share": 0.0058,
+      "people_of_color_share": 0.4223,
+      "population": 3386.0,
+      "median_household_income": 53897.0
+    },
+    {
+      "name": "Census Tract 34; Escambia County; Florida",
+      "geoid": "12033003400",
+      "poverty_rate": 0.2256,
+      "zero_vehicle_hh_share": 0.0692,
+      "people_of_color_share": 0.451,
+      "population": 6359.0,
+      "median_household_income": 53982.0
+    },
+    {
+      "name": "Census Tract 35.05; Escambia County; Florida",
+      "geoid": "12033003505",
+      "poverty_rate": 0.165,
+      "zero_vehicle_hh_share": 0.0443,
+      "people_of_color_share": 0.4395,
+      "population": 3884.0,
+      "median_household_income": 56027.0
+    },
+    {
+      "name": "Census Tract 35.06; Escambia County; Florida",
+      "geoid": "12033003506",
+      "poverty_rate": 0.1348,
+      "zero_vehicle_hh_share": 0.0756,
+      "people_of_color_share": 0.3468,
+      "population": 5303.0,
+      "median_household_income": 66694.0
+    },
+    {
+      "name": "Census Tract 35.07; Escambia County; Florida",
+      "geoid": "12033003507",
+      "poverty_rate": 0.0958,
+      "zero_vehicle_hh_share": 0.1018,
+      "people_of_color_share": 0.2724,
+      "population": 6762.0,
+      "median_household_income": 64903.0
+    },
+    {
+      "name": "Census Tract 35.09; Escambia County; Florida",
+      "geoid": "12033003509",
+      "poverty_rate": 0.2733,
+      "zero_vehicle_hh_share": 0.1334,
+      "people_of_color_share": 0.48,
+      "population": 4696.0,
+      "median_household_income": 60192.0
+    },
+    {
+      "name": "Census Tract 35.10; Escambia County; Florida",
+      "geoid": "12033003510",
+      "poverty_rate": 0.216,
+      "zero_vehicle_hh_share": 0.0409,
+      "people_of_color_share": 0.4485,
+      "population": 2361.0,
+      "median_household_income": 56013.0
+    },
+    {
+      "name": "Census Tract 35.11; Escambia County; Florida",
+      "geoid": "12033003511",
+      "poverty_rate": 0.1538,
+      "zero_vehicle_hh_share": 0.0498,
+      "people_of_color_share": 0.2079,
+      "population": 2063.0,
+      "median_household_income": 73938.0
+    },
+    {
+      "name": "Census Tract 35.12; Escambia County; Florida",
+      "geoid": "12033003512",
+      "poverty_rate": 0.1487,
+      "zero_vehicle_hh_share": 0.106,
+      "people_of_color_share": 0.4787,
+      "population": 4500.0,
+      "median_household_income": 83573.0
+    },
+    {
+      "name": "Census Tract 36.03; Escambia County; Florida",
+      "geoid": "12033003603",
+      "poverty_rate": 0.0884,
+      "zero_vehicle_hh_share": 0.0215,
+      "people_of_color_share": 0.1948,
+      "population": 11968.0,
+      "median_household_income": 99846.0
+    },
+    {
+      "name": "Census Tract 36.07; Escambia County; Florida",
+      "geoid": "12033003607",
+      "poverty_rate": 0.1566,
+      "zero_vehicle_hh_share": 0.1275,
+      "people_of_color_share": 0.2894,
+      "population": 4164.0,
+      "median_household_income": 53750.0
+    },
+    {
+      "name": "Census Tract 36.08; Escambia County; Florida",
+      "geoid": "12033003608",
+      "poverty_rate": 0.0454,
+      "zero_vehicle_hh_share": 0.0455,
+      "people_of_color_share": 0.3839,
+      "population": 8473.0,
+      "median_household_income": 80253.0
+    },
+    {
+      "name": "Census Tract 36.09; Escambia County; Florida",
+      "geoid": "12033003609",
+      "poverty_rate": 0.0913,
+      "zero_vehicle_hh_share": 0.0721,
+      "people_of_color_share": 0.2496,
+      "population": 3341.0,
+      "median_household_income": 65344.0
+    },
+    {
+      "name": "Census Tract 36.10; Escambia County; Florida",
+      "geoid": "12033003610",
+      "poverty_rate": 0.0704,
+      "zero_vehicle_hh_share": 0.0245,
+      "people_of_color_share": 0.3566,
+      "population": 6212.0,
+      "median_household_income": 85232.0
+    },
+    {
+      "name": "Census Tract 36.11; Escambia County; Florida",
+      "geoid": "12033003611",
+      "poverty_rate": 0.0483,
+      "zero_vehicle_hh_share": 0.057,
+      "people_of_color_share": 0.2598,
+      "population": 5778.0,
+      "median_household_income": 89688.0
+    },
+    {
+      "name": "Census Tract 36.12; Escambia County; Florida",
+      "geoid": "12033003612",
+      "poverty_rate": 0.051,
+      "zero_vehicle_hh_share": 0.018,
+      "people_of_color_share": 0.1794,
+      "population": 5904.0,
+      "median_household_income": 83922.0
+    },
+    {
+      "name": "Census Tract 36.13; Escambia County; Florida",
+      "geoid": "12033003613",
+      "poverty_rate": 0.0425,
+      "zero_vehicle_hh_share": 0.0106,
+      "people_of_color_share": 0.226,
+      "population": 4585.0,
+      "median_household_income": 102417.0
+    },
+    {
+      "name": "Census Tract 36.14; Escambia County; Florida",
+      "geoid": "12033003614",
+      "poverty_rate": 0.1732,
+      "zero_vehicle_hh_share": 0.0382,
+      "people_of_color_share": 0.2828,
+      "population": 6633.0,
+      "median_household_income": 66829.0
+    },
+    {
+      "name": "Census Tract 37; Escambia County; Florida",
+      "geoid": "12033003700",
+      "poverty_rate": 0.1857,
+      "zero_vehicle_hh_share": 0.0942,
+      "people_of_color_share": 0.3798,
+      "population": 6441.0,
+      "median_household_income": 86227.0
+    },
+    {
+      "name": "Census Tract 38; Escambia County; Florida",
+      "geoid": "12033003800",
+      "poverty_rate": 0.0783,
+      "zero_vehicle_hh_share": 0.0393,
+      "people_of_color_share": 0.2361,
+      "population": 4714.0,
+      "median_household_income": 67083.0
+    },
+    {
+      "name": "Census Tract 39; Escambia County; Florida",
+      "geoid": "12033003900",
+      "poverty_rate": 0.1307,
+      "zero_vehicle_hh_share": 0.0373,
+      "people_of_color_share": 0.15,
+      "population": 5226.0,
+      "median_household_income": 70551.0
+    },
+    {
+      "name": "Census Tract 40; Escambia County; Florida",
+      "geoid": "12033004000",
+      "poverty_rate": 0.2122,
+      "zero_vehicle_hh_share": 0.0994,
+      "people_of_color_share": 0.5822,
+      "population": 4988.0,
+      "median_household_income": 36591.0
+    },
+    {
+      "name": "Census Tract 9900; Escambia County; Florida",
+      "geoid": "12033990000",
+      "poverty_rate": null,
+      "zero_vehicle_hh_share": null,
+      "people_of_color_share": null,
+      "population": 0.0,
+      "median_household_income": null
+    }
+  ]
+}

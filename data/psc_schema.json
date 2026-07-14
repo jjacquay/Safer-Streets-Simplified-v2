@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "PSC title"
+    },
+    "tagline": {
+      "type": "string",
+      "title": "One-sentence problem this PSC addresses (from page hero or 'Why' section)"
+    },
+    "narrative": {
+      "type": "string",
+      "title": "2-3 sentence plain-English description of how the countermeasure works and what crash types it reduces. Verbatim from the FHWA page or tightly paraphrased."
+    },
+    "crash_reduction": {
+      "type": "string",
+      "title": "Crash-reduction statistic if quoted on the page (e.g. '83% reduction in fatal/injury crashes at intersections')"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Absolute URL of the largest representative photo on the page (hero or first photograph showing the countermeasure in real-world use). Must be a direct image URL ending in .jpg/.jpeg/.png/.webp."
+    },
+    "image_alt": {
+      "type": "string",
+      "title": "Alt text or caption of that image, if available on the page"
+    },
+    "url": {
+      "type": "string",
+      "title": "Source URL"
+    }
+  }
+}

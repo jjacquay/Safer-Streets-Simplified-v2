@@ -1,0 +1,2339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="SaferStreets Simplified (Escambia MVP) — a plain-language street safety tool for residents, journalists, teachers, nonprofits, and city council members." />
+<title>SaferStreets Simplified — Escambia MVP</title>
+<link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+<link rel="apple-touch-icon" href="assets/brand/logo-mark.png" />
+
+<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin />
+
+<!-- Leaflet is self-hosted (vendor/leaflet) so a CDN outage can't take down the app. -->
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+
+<style>
+  /* ---------- design tokens (WCAG AA verified contrast) ---------- */
+  :root{
+    --bg:#ffffff;
+    --bg-alt:#f4f6f8;
+    --surface:#ffffff;
+    --ink:#0b2545;            /* brand navy family, on white ~15:1 */
+    --ink-soft:#36495a;       /* on white: 8.6:1  (was muted #6b7a87 ~ 4.0:1 — fixed) */
+    --ink-faint:#56697a;      /* on white: 5.9:1  */
+    --line:#c9d2db;           /* non-text 3:1+ on white */
+    --line-strong:#8a98a7;
+    --navy:#012c63;           /* logo navy (car / check / wordmark), on white ~13.6:1 */
+    --brand:#016bdf;          /* logo blue (pedestrian), on white ~5.0:1 (AA) */
+    --brand-ink:#ffffff;
+    --brand-hover:#0154b0;
+    --brand-green:#5d9c37;    /* logo green (bike) — large elements / swatches */
+    --accent:#016bdf;         /* brand blue for accent links + input focus */
+    --warn-bg:#fff4e5;
+    --warn-ink:#7a3a00;       /* on warn-bg ~ 7:1 */
+    --ok:#3f7a1f;             /* brand-green family, on white ~5.5:1 */
+    --ok-bg:#eaf3e1;
+    /* 3-tier red gradient — every tier reads as red (all corridors are on the high-injury network) */
+    --risk-vhigh:#67000d;    /* Highest */
+    --risk-high:#a50f15;     /* Higher */
+    --risk-med:#cb181d;      /* High (still saturated red, not orange) */
+    --risk-low:#cb181d;      /* unused but defined for safety */
+    /* WCAG AA text colors on white */
+    --risk-vhigh-text:#67000d;  /* 14:1 on white */
+    --risk-high-text:#a50f15;   /* 6.6:1 on white */
+    --risk-med-text:#cb181d;    /* 5.9:1 on white */
+    --risk-low-text:#a50f15;    /* unused */
+    /* Priority bands (map-line colors): amber -> orange -> red, chosen to stay
+       visible on the light basemap. No green — every corridor is high-injury. */
+    --band-yellow:#b8860b;
+    --band-orange:#c25610;
+    --band-red:#b3261e;
+    --focus:#016bdf;
+    --shadow:0 1px 2px rgba(14,26,36,.06), 0 4px 12px rgba(14,26,36,.06);
+    --radius:10px;
+    --radius-sm:6px;
+    --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+    --space-5:24px; --space-6:32px; --space-7:48px;
+    --tap:44px; /* WCAG 2.2 target size */
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1a24;
+      --bg-alt:#142532;
+      --surface:#172a39;
+      --ink:#f5f8fa;          /* 17:1 on bg */
+      --ink-soft:#cbd5df;     /* 11:1 on bg */
+      --ink-faint:#9aaab8;    /* 6.3:1 on bg */
+      --line:#33485a;
+      --line-strong:#6c8095;
+      --navy:#cfe0f5;         /* navy role inverts to a light tint on dark bg */
+      --brand:#6fb0ff;        /* logo-blue tint, ~8:1 on bg */
+      --brand-ink:#0e1a24;
+      --brand-hover:#a7d0ff;
+      --brand-green:#7bc14a;
+      --accent:#6fb0ff;
+      --warn-bg:#3a2410;
+      --warn-ink:#ffd9b3;
+      --ok:#8fce6a;
+      --ok-bg:#143523;
+      --risk-vhigh:#ff7a7a;
+      --risk-high:#ff9d8a;
+      --risk-med:#ffb8a3;
+      --risk-low:#ffb8a3;
+      --risk-vhigh-text:#ff7a7a;
+      --risk-high-text:#ff9d8a;
+      --risk-med-text:#ffb8a3;
+      --risk-low-text:#ffb8a3;
+      --band-yellow:#ffcf4d;
+      --band-orange:#ffa24d;
+      --band-red:#ff6b6b;
+      --focus:#6fb0ff;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35);
+    }
+  }
+  [data-theme="light"]{ color-scheme: light; }
+  [data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#0e1a24; --bg-alt:#142532; --surface:#172a39;
+    --ink:#f5f8fa; --ink-soft:#cbd5df; --ink-faint:#9aaab8;
+    --line:#33485a; --line-strong:#6c8095;
+    --navy:#cfe0f5;
+    --brand:#6fb0ff; --brand-ink:#0e1a24; --brand-hover:#a7d0ff; --brand-green:#7bc14a;
+    --accent:#6fb0ff; --warn-bg:#3a2410; --warn-ink:#ffd9b3;
+    --ok:#8fce6a; --ok-bg:#143523;
+    --risk-vhigh:#ff7a7a; --risk-high:#ff9d8a; --risk-med:#ffb8a3; --risk-low:#ffb8a3;
+    --risk-vhigh-text:#ff7a7a; --risk-high-text:#ff9d8a; --risk-med-text:#ffb8a3; --risk-low-text:#ffb8a3;
+    --band-yellow:#ffcf4d; --band-orange:#ffa24d; --band-red:#ff6b6b;
+    --focus:#6fb0ff;
+  }
+
+  /* ---------- base ---------- */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); overflow-x: hidden; }
+  body{
+    font-family: var(--font);
+    font-size: 16px;          /* WCAG: body ≥ 16px */
+    line-height: 1.55;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,svg{ max-width:100%; display:block; }
+  a{ color:var(--brand); text-decoration: underline; text-underline-offset:2px; }
+  a:hover{ color:var(--brand-hover); }
+
+  /* Focus — visible, high-contrast, WCAG 2.4.7 / 2.4.11 */
+  :focus{ outline:none; }
+  :focus-visible{
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Skip link */
+  .skip{
+    position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+  }
+  .skip:focus{
+    position:fixed; left:12px; top:12px; width:auto; height:auto;
+    background:var(--brand); color:var(--brand-ink); padding:10px 14px;
+    border-radius: var(--radius-sm); z-index: 9999; text-decoration:none;
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- layout ---------- */
+  .topbar{
+    position: sticky; top:0; z-index: 50;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px;
+    display:flex; align-items:center; gap: 12px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight: 700; font-size: 18px; color:var(--ink);
+    text-decoration:none;
+  }
+  .brand .brand-logo{
+    width:38px; height:38px; border-radius:9px;
+    background:#fff; padding:2px;
+    border:1px solid var(--line);
+    object-fit:contain; flex:none;
+  }
+  .footer-logo{
+    display:block; margin:0 auto;
+    width:180px; height:auto;
+    background:#fff; padding:10px 16px;
+    border-radius:12px; border:1px solid var(--line);
+  }
+  /* flex on <summary> hides the native marker; provide our own caret */
+  .details-caret{ display:inline-block; transition:transform .12s ease; }
+  details[open] > summary .details-caret{ transform:rotate(90deg); }
+  .brand small{ display:block; font-weight:500; font-size:12px; color: var(--ink-faint); }
+  .topbar-spacer{ flex:1; }
+  .topbar-actions{ display:flex; gap:8px; align-items:center; }
+
+  .icon-btn{
+    min-width: var(--tap); min-height: var(--tap);
+    width: var(--tap); height: var(--tap);
+    display:inline-flex; align-items:center; justify-content:center;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    cursor: pointer; font-size: 18px;
+  }
+  .icon-btn:hover{ background: var(--bg-alt); }
+
+  /* countermeasures table */
+  .cm-summary{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 14px;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+  }
+  .cm-summary > div{ font-size: 14px; }
+  .cm-summary span{ display:block; margin-top: 4px; font-size: 18px; font-weight: 600; }
+  .cm-table-wrap{ overflow-x: auto; }
+  .cm-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .cm-table th, .cm-table td{
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .cm-table th{
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: var(--bg-alt);
+  }
+  .cm-table td.num, .cm-table th.num{ text-align: right; white-space: nowrap; }
+  .cm-treat-name{ font-weight: 600; }
+  .cm-treat-desc{ color: var(--ink-soft); font-size: 13px; margin-top: 2px; }
+  .cm-source{ color: var(--ink-faint); font-size: 12px; margin-top: 2px; }
+
+  .layout{
+    display:grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 60px);
+  }
+  .sidebar{
+    border-right: 1px solid var(--line);
+    background: var(--bg-alt);
+    padding: 16px 12px;
+  }
+  .sidenav{ display:flex; flex-direction:column; gap:4px; }
+  .sidenav a{
+    display:flex; align-items:center; gap:10px;
+    padding: 10px 12px;
+    min-height: var(--tap);
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+  }
+  .sidenav a .num{
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-faint); font-size: 12px; width: 22px;
+  }
+  .sidenav a:hover{ background: var(--surface); }
+  .sidenav a[aria-current="page"]{
+    background: var(--surface); color: var(--brand); font-weight: 700;
+    border: 1px solid var(--line);
+  }
+
+  .main{ padding: 20px 20px 80px; max-width: 1100px; width: 100%; min-width: 0; }
+  .main > *{ min-width: 0; }
+  section.panel{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+  section.panel > header{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:12px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  section.panel h2{ margin: 0 0 4px; font-size: 22px; line-height:1.25; color:var(--ink); }
+  section.panel p.lede{ margin: 0; color: var(--ink-soft); max-width: 68ch; }
+
+  /* Section badge so users always see which question they're answering */
+  .qbadge{
+    display:inline-block;
+    background: var(--bg-alt); color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing:.02em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- buttons / controls ---------- */
+  .btn{
+    min-height: var(--tap);
+    display:inline-flex; align-items:center; justify-content:center;
+    gap:8px; padding: 10px 16px;
+    background: var(--brand); color: var(--brand-ink);
+    border: 1px solid var(--brand);
+    border-radius: var(--radius-sm);
+    font-weight: 600; font-size: 15px;
+    cursor: pointer; text-decoration: none;
+  }
+  .btn:hover{ background: var(--brand-hover); border-color: var(--brand-hover); }
+  .btn.secondary{
+    background: var(--surface); color: var(--ink); border-color: var(--line-strong);
+  }
+  .btn.secondary:hover{ background: var(--bg-alt); }
+  .btn[disabled]{ opacity: .55; cursor: not-allowed; }
+
+  /* Inputs */
+  label.field{
+    display:flex; flex-direction:column; gap:6px;
+    font-size: 14px; color: var(--ink-soft); font-weight: 600;
+  }
+  .field input[type="search"],
+  .field input[type="text"],
+  .field select{
+    min-height: var(--tap);
+    padding: 10px 12px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-family: inherit;
+  }
+  .field input::placeholder{ color: var(--ink-faint); }
+
+  /* Chips */
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding: 6px 10px;
+    background: var(--bg-alt); color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 13px; font-weight: 600;
+  }
+  .chip.brand{ background: color-mix(in srgb, var(--brand) 14%, var(--surface)); color: var(--brand); border-color: color-mix(in srgb, var(--brand) 35%, var(--line)); }
+  .chip.warn{ background: var(--warn-bg); color: var(--warn-ink); border-color: color-mix(in srgb, var(--warn-ink) 40%, var(--line)); }
+  .notice{
+    background: var(--warn-bg); color: var(--warn-ink);
+    border: 1px solid color-mix(in srgb, var(--warn-ink) 30%, var(--line));
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    font-size: 14px; margin: 12px 0 0;
+  }
+  .notice strong{ display:block; margin-bottom:2px; }
+
+  /* Priority score + band badges (0–100, yellow -> orange -> red; no green) */
+  .b-yellow{ --bnum:#7a5c00; --bbg:#f6c500; --bfg:#231b00; }
+  .b-orange{ --bnum:#a24a08; --bbg:#b5560f; --bfg:#ffffff; }
+  .b-red{    --bnum:#b3261e; --bbg:#b3261e; --bfg:#ffffff; }
+  @media (prefers-color-scheme: dark){
+    .b-yellow{ --bnum:#ffd766; --bbg:#ffcf4d; --bfg:#231b00; }
+    .b-orange{ --bnum:#ffb066; --bbg:#ffa24d; --bfg:#2a1600; }
+    .b-red{    --bnum:#ff8a8a; --bbg:#ff6b6b; --bfg:#2a0a0a; }
+  }
+  [data-theme="dark"] .b-yellow{ --bnum:#ffd766; --bbg:#ffcf4d; --bfg:#231b00; }
+  [data-theme="dark"] .b-orange{ --bnum:#ffb066; --bbg:#ffa24d; --bfg:#2a1600; }
+  [data-theme="dark"] .b-red{    --bnum:#ff8a8a; --bbg:#ff6b6b; --bfg:#2a0a0a; }
+  [data-theme="light"] .b-yellow{ --bnum:#7a5c00; --bbg:#f6c500; --bfg:#231b00; }
+  [data-theme="light"] .b-orange{ --bnum:#a24a08; --bbg:#b5560f; --bfg:#ffffff; }
+  [data-theme="light"] .b-red{    --bnum:#b3261e; --bbg:#b3261e; --bfg:#ffffff; }
+  .pscore{ font-variant-numeric: tabular-nums; font-weight: 800; font-size: 22px; line-height: 1; color: var(--bnum); }
+  .pscore .of100{ font-size: 12px; font-weight: 600; color: var(--ink-faint); }
+  .band-pill{
+    display:inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
+    background: var(--bbg); color: var(--bfg); white-space: nowrap;
+  }
+
+  /* Risk pills */
+  .risk{
+    display:inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
+    border: 1px solid currentColor;
+  }
+  .risk.vhigh{ color: var(--risk-vhigh-text); }
+  .risk.high{ color: var(--risk-high-text); }
+  .risk.med{ color: var(--risk-med-text); }
+  .risk.low{ color: var(--risk-low-text); }
+
+  /* Status bar — visible system state */
+  .statusbar{
+    display:flex; flex-wrap:wrap; gap:10px;
+    padding: 10px 12px;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  .statusbar strong{ color: var(--ink); }
+  .statusbar .sep{ color: var(--ink-faint); }
+
+  /* ---------- workflow cards ---------- */
+  .cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .card{
+    background: var(--surface); border:1px solid var(--line);
+    border-radius: var(--radius); padding: 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .card h3, .card h2.card-h{ margin: 4px 0; font-size: 17px; font-weight: 600; }
+  .card .step{
+    font-size: 12px; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: .05em; font-weight: 700;
+  }
+
+  /* Street-safety-as-health-equity callout (SDOH framing) */
+  .sdoh-note{
+    margin-top: 16px;
+    display: grid; grid-template-columns: auto 1fr; gap: 12px;
+    align-items: start;
+    background: color-mix(in srgb, var(--brand) 6%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--brand) 28%, var(--line));
+    border-left: 4px solid var(--brand);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .sdoh-note .sdoh-icon{ font-size: 20px; line-height: 1.4; }
+  .sdoh-note h3{ margin: 0 0 4px; font-size: 15px; color: var(--ink); }
+  .sdoh-note p{ margin: 0; font-size: 14px; color: var(--ink-soft); max-width: 72ch; }
+  .sdoh-note a{ color: var(--brand); }
+
+  /* Plain-language "why this ranks here" line in the detail panel */
+  .detail-why{
+    margin: 0; font-size: 14px; color: var(--ink-soft);
+    background: var(--bg-alt); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 10px 12px;
+  }
+  .detail-why strong{ color: var(--ink); }
+
+  /* Loading skeleton for the corridor list / first data fetch */
+  .list-loading{ display: grid; gap: 8px; }
+  .skeleton-row{
+    height: 56px; border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(90deg, var(--bg-alt) 25%, var(--surface) 37%, var(--bg-alt) 63%);
+    background-size: 400% 100%;
+    animation: skel 1.4s ease infinite;
+  }
+  @keyframes skel{ 0%{ background-position: 100% 0; } 100%{ background-position: -100% 0; } }
+  @media (prefers-reduced-motion: reduce){ .skeleton-row{ animation: none; } }
+
+  /* ---------- map ---------- */
+  #map{
+    height: 460px; border-radius: var(--radius);
+    border:1px solid var(--line); overflow:hidden;
+  }
+  .leaflet-control-zoom a{
+    width: var(--tap) !important;
+    height: var(--tap) !important;
+    line-height: var(--tap) !important;
+    font-size: 22px !important;
+    color: var(--ink) !important;
+    background: var(--surface) !important;
+    border-color: var(--line) !important;
+  }
+  .leaflet-popup-content{ font-family: var(--font); font-size: 14px; color: var(--ink); max-width: 280px; }
+  .leaflet-popup-content strong{ font-size: 15px; }
+  .leaflet-popup-content .pop-stats{ margin-top: 6px; color: var(--ink-muted); }
+  .leaflet-popup-content .pop-stats b{ color: var(--ink); }
+  .leaflet-container{ background: var(--bg-alt); }
+
+  .legend{
+    display:flex; flex-wrap:wrap; gap:14px;
+    margin-top:12px; padding:10px 12px;
+    background: var(--surface); border:1px solid var(--line);
+    border-radius: var(--radius); font-size: 14px;
+  }
+  .legend-title{ font-weight: 600; }
+  .legend-item{ display:inline-flex; align-items:center; gap:6px; }
+  .swatch{ display:inline-block; width:18px; height:6px; border-radius:3px; }
+  .swatch-vhigh{ background: var(--risk-vhigh); }
+  .swatch-high{ background: var(--risk-high); }
+  .swatch-med{ background: var(--risk-med); }
+  .swatch-low{ background: var(--risk-low); }
+  .swatch-red{ background: var(--band-red); }
+  .swatch-orange{ background: var(--band-orange); }
+  .swatch-yellow{ background: var(--band-yellow); }
+  .swatch-heat{ width:14px; height:14px; border-radius:3px; background: linear-gradient(135deg, rgba(162,58,0,.15), rgba(162,58,0,.75)); }
+
+  .map-toolbar{
+    display:grid; gap:10px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin-bottom: 12px;
+  }
+
+  /* ---------- corridor list ---------- */
+  .corridor-list{ list-style:none; padding:0; margin: 0; display:grid; gap:8px; }
+  .corridor-btn{
+    width:100%; text-align:left;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 12px 14px; cursor: pointer;
+    display:grid; grid-template-columns: 1fr auto; gap: 10px;
+    min-height: var(--tap);
+  }
+  .corridor-btn:hover{ border-color: var(--line-strong); background: var(--bg-alt); }
+  .corridor-btn[aria-pressed="true"]{
+    border-color: var(--brand);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 30%, transparent);
+    background: color-mix(in srgb, var(--brand) 6%, var(--surface));
+  }
+  .corridor-btn .name{ font-weight: 700; color: var(--ink); }
+  .corridor-btn .place{ color: var(--ink-soft); font-size: 13px; }
+  .corridor-btn .score{
+    font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px;
+    color: var(--ink);
+  }
+
+  /* ---------- detail / designer ---------- */
+  .grid-2{
+    display:grid; gap:20px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  /* ---------- FHWA PSC spotlight (v4) ---------- */
+  .psc-spotlight{
+    background: var(--bg-alt); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .psc-fig{ margin: 0; }
+  .psc-fig img{
+    display:block; width:100%; height:auto; max-height:280px; object-fit: cover;
+    border-radius: var(--radius-sm); border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  /* Icon-style images (e.g. the speed-limit category badge) shouldn't stretch */
+  .psc-fig img.is-icon{ max-height: 140px; width:auto; max-width:160px; margin: 0 auto; object-fit: contain; border: none; background: transparent; }
+  .psc-caption{ font-size: 12px; margin: 6px 0 0; }
+  .psc-title-row{ display:flex; align-items:baseline; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
+  .psc-title{ margin: 0; font-size: 17px; font-weight: 700; color: var(--ink); }
+  #psc-reduce{ background: var(--ok-bg); color: var(--ok); border: 1px solid var(--ok); font-weight: 700; font-size: 12px; }
+  #psc-reduce:empty{ display:none; }
+  .psc-tagline{ margin: 0; font-weight: 600; color: var(--ink); }
+  .psc-narrative{ margin: 0; color: var(--ink-soft); }
+  .psc-source{ font-size: 13px; margin: 0; }
+  .psc-source a{ color: var(--brand); text-decoration: underline; }
+
+  /* ---------- packet ---------- */
+  .packet-preview{
+    background: var(--surface);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    padding: 16px;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .packet-preview h3{ margin: 0 0 8px; font-size: 18px; }
+  .packet-preview ul{ margin: 8px 0 0 1.2em; padding: 0; }
+
+  /* ---------- helpers ---------- */
+  .visually-hidden{
+    position:absolute !important;
+    width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .stack{ display:flex; flex-direction:column; gap:12px; }
+  .muted{ color: var(--ink-soft); }
+  .right{ text-align:right; }
+
+  /* ---------- responsive ---------- */
+  .menu-toggle{ display:none; }
+  @media (max-width: 880px){
+    .layout{ grid-template-columns: 1fr; }
+    .sidebar{
+      position: fixed; inset: 60px 0 auto 0;
+      transform: translateY(-110%); transition: transform .18s ease;
+      z-index: 40; padding: 12px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      max-height: calc(100vh - 60px); overflow-y: auto;
+    }
+    .sidebar[data-open="true"]{ transform: translateY(0); }
+    .menu-toggle{ display:inline-flex; }
+    .grid-2{ grid-template-columns: 1fr; }
+    section.panel{ padding: 16px; }
+    .main{ padding: 16px 14px 80px; }
+    #map{ height: 380px; }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+
+  /* ============ v5 HERO ============ */
+  .hero{
+    position: relative;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(220,38,38,0.18), transparent 60%),
+      radial-gradient(900px 500px at 10% 110%, rgba(1,107,223,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--line);
+    padding: clamp(24px, 4vw, 56px) clamp(16px, 4vw, 32px);
+    overflow: hidden;
+  }
+  .hero-inner{
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+  }
+  @media (max-width: 880px){
+    .hero-inner{ grid-template-columns: 1fr; }
+  }
+  .hero-eyebrow{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .hero-eyebrow::before{
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--risk-vhigh, #dc2626);
+    box-shadow: 0 0 0 0 rgba(220,38,38,0.6);
+    animation: heroPulse 2s ease-out infinite;
+  }
+  @keyframes heroPulse{
+    0%{ box-shadow: 0 0 0 0 rgba(220,38,38,0.6); }
+    70%{ box-shadow: 0 0 0 10px rgba(220,38,38,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(220,38,38,0); }
+  }
+  .hero h1.hero-h{
+    font-size: clamp(28px, 4.8vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    font-weight: 800;
+  }
+  .hero h1.hero-h em{
+    font-style: normal;
+    background: linear-gradient(180deg, transparent 60%, rgba(220,38,38,0.25) 60%);
+    padding: 0 2px;
+  }
+  .hero-sub{
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+    max-width: 56ch;
+  }
+  .hero-form{
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 24px;
+    max-width: 560px;
+  }
+  .hero-form input[type="text"]{
+    flex: 1 1 280px;
+    min-width: 0;
+    height: 52px;
+    padding: 0 16px;
+    font-size: 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .hero-form input[type="text"]:focus{
+    outline: none;
+    border-color: var(--accent, #2563eb);
+    box-shadow: 0 0 0 3px rgba(1,107,223,0.18);
+  }
+  .hero-form button{
+    height: 52px;
+    padding: 0 24px;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    background: var(--ink);
+    color: var(--bg);
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.15s;
+  }
+  .hero-form button:hover{ opacity: 0.9; }
+  .hero-form button:active{ transform: translateY(1px); }
+  .hero-form .hero-form-hint{
+    width: 100%;
+    font-size: 12px; color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .hero-stats{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .hero-stat{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+  }
+  .hero-stat .num{
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .hero-stat .num.is-danger{ color: var(--risk-vhigh, #dc2626); }
+  .hero-stat .lbl{
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .hero-map-wrap{
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+    background: var(--surface);
+  }
+  .hero-map{
+    width: 100%;
+    aspect-ratio: 4/3;
+    min-height: 320px;
+    background: var(--bg-alt);
+  }
+  .hero-map-badge{
+    position: absolute;
+    top: 12px; left: 12px;
+    background: rgba(0,0,0,0.78);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+  /* Homepage search result — the "nearest corridor + countermeasure" callout */
+  .hero-result{
+    margin: 2px 0 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--brand);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .hero-result[hidden]{ display: none; }
+  .hero-result-loading{ display:flex; align-items:center; gap:10px; color: var(--ink-soft); font-weight:600; font-size:14px; }
+  .hero-spinner{
+    width:18px; height:18px; border-radius:50%; flex:none;
+    border:2px solid var(--line); border-top-color: var(--brand);
+    animation: hero-spin .7s linear infinite;
+  }
+  @keyframes hero-spin{ to{ transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .hero-spinner{ animation: none; } }
+  .hero-result-err{ color: var(--warn-ink); font-weight:600; margin:0; }
+  .hero-result-head{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:2px; }
+  .hero-result-eyebrow{ font-size:12px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; color: var(--ok); }
+  .hero-result-name{ font-size:19px; font-weight:800; color: var(--ink); margin:4px 0 2px; line-height:1.2; }
+  .hero-result-meta{ font-size:13px; color: var(--ink-soft); margin:0 0 8px; }
+  .hero-result-cm{ font-size:14px; color: var(--ink); margin:0 0 12px; }
+  .hero-result-actions{ display:flex; flex-wrap:wrap; gap:8px; }
+
+  /* Featured case study — real federal grant + real crash-data source, above the fold */
+  .feature-band{
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-alt);
+    padding: clamp(20px, 3vw, 36px) clamp(16px, 4vw, 32px);
+  }
+  .feature-inner{ max-width: 1280px; margin: 0 auto; }
+  .feature-h{ font-size: clamp(19px, 2.4vw, 26px); line-height: 1.28; margin: 10px 0 8px; }
+  .feature-sub{ color: var(--ink-soft); max-width: 78ch; margin: 0 0 16px; }
+  .feature-stats{
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin-bottom: 14px;
+  }
+  .feature-stat{
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 10px 12px;
+  }
+  .feature-stat .num{ font-size: clamp(20px, 2.2vw, 26px); font-weight: 800; color: var(--brand); line-height: 1.1; }
+  .feature-stat .lbl{ font-size: 12.5px; color: var(--ink-faint); margin-top: 4px; }
+  .feature-fine{ font-size: 13px; color: var(--ink-faint); max-width: 78ch; margin: 0 0 14px; }
+  .feature-actions{ display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn-outline{
+    background: transparent; color: var(--brand); border: 1px solid var(--brand);
+  }
+  .btn-outline:hover{ background: color-mix(in srgb, var(--brand) 10%, transparent); }
+
+  /* v5 MAGAZINE LAYOUT */
+  .magazine{
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(20px, 3vw, 36px);
+    align-items: start;
+  }
+  @media (max-width: 980px){ .magazine{ grid-template-columns: 1fr; } }
+  .magazine .scroll-col{ min-width: 0; }
+  .magazine .map-col{ min-width: 0; }
+  .sticky-card{
+    position: sticky;
+    top: 80px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    background: var(--surface);
+  }
+  .sticky-card .map-canvas{
+    width: 100%;
+    aspect-ratio: 4/5;
+    min-height: 420px;
+  }
+  @media (max-width: 980px){
+    .sticky-card{ position: static; }
+    .sticky-card .map-canvas{ aspect-ratio: 4/3; min-height: 320px; }
+  }
+
+  /* v5 PSC CARD STACK */
+  .psc-stack{ display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+  .psc-card{
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--surface);
+    transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+  }
+  .psc-card:hover{ box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-1px); }
+  .psc-card.is-primary{ border-color: rgba(220,38,38,0.4); box-shadow: 0 4px 14px rgba(220,38,38,0.08); }
+  @media (max-width: 640px){ .psc-card{ grid-template-columns: 1fr; } }
+  .psc-figure{ position: relative; background: var(--bg-alt); min-height: 160px; overflow: hidden; }
+  .psc-figure img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+  .psc-figure-placeholder{
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+  }
+  .pos-badge{
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.82); color: #fff;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px;
+  }
+  .psc-card.is-primary .pos-badge{ background: var(--risk-vhigh, #dc2626); }
+  .psc-body{ padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .psc-meta{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .psc-source-chip{
+    display: inline-flex; align-items: center;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .psc-source-chip.s-FHWA{ background: #fee2e2; color: #991b1b; border-color: rgba(153,27,27,0.2); }
+  .psc-source-chip.s-NACTO{ background: #dbeafe; color: #1e40af; border-color: rgba(30,64,175,0.2); }
+  .psc-source-chip.s-FDOT{ background: #fef3c7; color: #92400e; border-color: rgba(146,64,14,0.2); }
+  .psc-source-chip.s-CNU{ background: #dcfce7; color: #166534; border-color: rgba(22,101,52,0.2); }
+  [data-theme="dark"] .psc-source-chip.s-FHWA{ background: rgba(220,38,38,0.18); color: #fecaca; }
+  [data-theme="dark"] .psc-source-chip.s-NACTO{ background: rgba(59,130,246,0.18); color: #bfdbfe; }
+  [data-theme="dark"] .psc-source-chip.s-FDOT{ background: rgba(245,158,11,0.18); color: #fde68a; }
+  [data-theme="dark"] .psc-source-chip.s-CNU{ background: rgba(34,197,94,0.18); color: #bbf7d0; }
+  .psc-card-title{ font-size: 17px; font-weight: 700; line-height: 1.25; margin: 0; color: var(--ink); }
+  .psc-card-narrative{ font-size: 14px; line-height: 1.5; color: var(--ink-soft); margin: 0; }
+  .psc-card-narrative.is-clamped{ display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .psc-card-actions{ display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; align-items: center; }
+  .psc-expand-btn{
+    background: none; border: none; padding: 0;
+    font-size: 13px; font-weight: 600;
+    color: var(--accent, #2563eb); cursor: pointer;
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  .psc-expand-btn:hover{ opacity: 0.8; }
+  .psc-card-actions a{ font-size: 12.5px; color: var(--ink-soft); text-decoration: none; }
+  .psc-card-actions a:hover{ text-decoration: underline; }
+  .psc-factors{ display: flex; gap: 6px; flex-wrap: wrap; font-size: 11px; color: var(--ink-soft); }
+  .psc-factor-tag{ background: var(--bg-alt); padding: 2px 7px; border-radius: 4px; border: 1px solid var(--line); }
+</style>
+</head>
+<body data-theme="auto">
+
+<a href="#main" class="skip">Skip to main content</a>
+<div id="sr-announce" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<header class="topbar" role="banner">
+  <button class="icon-btn menu-toggle" type="button"
+          aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidenav"
+          id="menu-toggle">
+    <span aria-hidden="true">☰</span>
+  </button>
+  <a class="brand" href="#overview" aria-label="SaferStreets Simplified, Escambia MVP home">
+    <img class="brand-logo" src="assets/brand/logo-mark.png" alt="" aria-hidden="true" width="38" height="38" />
+    <span>
+      SaferStreets <small>Escambia · Plain-language MVP</small>
+    </span>
+  </a>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-actions">
+<button class="icon-btn" type="button" id="theme-toggle"
+            aria-label="Switch between light and dark color theme">
+      <span aria-hidden="true" id="theme-icon">◐</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="hero" aria-labelledby="hero-h">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="hero-eyebrow">Escambia County · Live data</span>
+      <h1 id="hero-h" class="hero-h">Find the most <em>dangerous street</em> near you — and what to do about it.</h1>
+      <p class="hero-sub">Enter an address or ZIP. We'll show you the nearest high-risk corridor and possible countermeasures from FHWA's national guidance — a starting point for a conversation with your community and FDOT, not an engineering recommendation.</p>
+      <form class="hero-form" id="hero-form" role="search" aria-label="Find nearest corridor">
+        <label for="hero-address" class="visually-hidden" style="position:absolute;left:-9999px">Find the high-risk corridor nearest an address or ZIP code</label>
+        <input type="text" id="hero-address" placeholder="Address, neighborhood, or ZIP (e.g. 32504)" autocomplete="off" />
+        <button type="submit" id="hero-go">Show me</button>
+        <span class="hero-form-hint">Escambia County only · Powered by OpenStreetMap</span>
+      </form>
+      <div class="hero-result" id="hero-result" role="status" aria-live="polite" hidden></div>
+      <div class="hero-stats" role="list">
+        <div class="hero-stat" role="listitem">
+          <div class="num is-danger" id="hero-fatality-count">169</div>
+          <div class="lbl">Countywide fatalities 2022–2024</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="num" id="hero-corridor-count">18</div>
+          <div class="lbl">High-risk corridors</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="num">31</div>
+          <div class="lbl">Proven countermeasures</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-map-wrap">
+      <div id="hero-map" class="hero-map" aria-label="Crash injury heat map of Escambia County"></div>
+      <div class="hero-map-badge">Crash injury heat map · 2018–2024</div>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="Sections">
+    <nav id="sidenav" aria-label="Main sections">
+      <ul class="sidenav" role="list" style="list-style:none;padding:0;margin:0">
+        <li><a href="#hero"      data-nav><span class="num">01</span>Find your street</a></li>
+        <li><a href="#overview"  data-nav><span class="num">02</span>Overview</a></li>
+        <li><a href="#map-section" data-nav><span class="num">03</span>Priority map</a></li>
+        <li><a href="#ranking"   data-nav><span class="num">04</span>Corridor ranking</a></li>
+        <li><a href="#detail"    data-nav><span class="num">05</span>Best fixes</a></li>
+        <li><a href="#packet"    data-nav><span class="num">06</span>Packet builder</a></li>
+        <li><a href="#countermeasures" data-nav><span class="num">07</span>Countermeasures</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="main" class="main" tabindex="-1">
+
+    <!-- OVERVIEW -->
+    <section class="panel" id="overview" aria-labelledby="overview-h">
+      <header>
+        <div>
+          <span class="qbadge">Why are we here?</span>
+          <h1 id="overview-h">Make street safety understandable in plain language.</h1>
+          <p class="lede">
+            SaferStreets Simplified helps city council members, nonprofits, journalists, teachers, and residents
+            see where streets are most dangerous in Escambia County, what to do first, and how to explain
+            those choices in everyday language.
+          </p>
+        </div>
+        <a class="btn" href="#map-section">Open the priority map</a>
+      </header>
+
+      <ul class="cards" role="list" style="list-style:none; padding:0; margin:0">
+        <li class="card">
+          <span class="step">Question 1</span>
+          <h2 class="card-h">Where is the risk?</h2>
+          <p class="muted">A map and short list of the most dangerous streets, with simple filters for schools, transit, and neighborhood.</p>
+        </li>
+        <li class="card">
+          <span class="step">Question 2</span>
+          <h2 class="card-h">What should we do?</h2>
+          <p class="muted">For each street, possible FHWA Proven Safety Countermeasures and a costed treatment table — a conversation-starter for residents, elected leaders, and FDOT, not an engineering design.</p>
+        </li>
+        <li class="card">
+          <span class="step">Question 3</span>
+          <h2 class="card-h">Why this corridor?</h2>
+          <p class="muted">A plain-language story you can paste into a memo, email, or meeting packet — and a one-pager to download.</p>
+        </li>
+      </ul>
+
+      <div class="sdoh-note" role="note">
+        <span class="sdoh-icon" aria-hidden="true">🫀</span>
+        <div>
+          <h3>Street safety is a health issue — and it isn't shared evenly.</h3>
+          <p>
+            <a href="https://odphp.health.gov/healthypeople/priority-areas/social-determinants-health/literature-summaries" rel="noopener" target="_blank">Healthy People 2030</a>,
+            the U.S. national health framework, counts the <em>neighborhood and built environment</em> among the five social
+            determinants of health, with traffic injury a recognized outcome. Crash risk rarely falls evenly: residents
+            in lower-income neighborhoods and households without a car rely more on walking, biking, and transit, putting
+            them in closer, more frequent contact with the county's most dangerous roads. Where U.S. Census demographics
+            are available for a corridor, this tool shows them in the <em>“Who lives here”</em> panel so the equity
+            picture sits beside the crash counts. You can also filter the map by <em>low-income areas</em> below.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATUS BAR -->
+    <div class="statusbar" role="region" aria-live="polite" aria-atomic="true" id="statusbar">
+      <span><strong>Showing</strong> <span id="status-count">18</span> corridors</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span><strong>Filter:</strong> <span id="status-filter">all priorities, all neighborhoods</span></span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span><strong>Selected:</strong> <span id="status-selected">none yet</span></span>
+    </div>
+
+    <!-- MAP -->
+    <section class="panel" id="map-section" aria-labelledby="map-h">
+      <header>
+        <div>
+          <span class="qbadge">Where is the risk?</span>
+          <h2 id="map-h">Priority map</h2>
+          <p class="lede">Use the filters to narrow the map. Each colored line is a corridor; darker and thicker lines have more crashes. Toggle the heatmap to see crash density anywhere in the county.</p>
+        </div>
+      </header>
+
+      <div class="map-toolbar" role="group" aria-label="Map filters">
+        <label class="field" for="f-search">
+          Filter this list by name
+          <input id="f-search" type="search" placeholder="Corridor or neighborhood, e.g. Cervantes" autocomplete="off" aria-describedby="f-search-hint" />
+          <span id="f-search-hint" class="visually-hidden">Filters the corridors already shown below. To search by your own address or ZIP, use the “Find your street” box at the top of the page.</span>
+        </label>
+        <label class="field" for="f-risk">
+          Priority
+          <select id="f-risk">
+            <option value="all">All priorities</option>
+            <option value="red">Top priority</option>
+            <option value="orange">High priority</option>
+            <option value="yellow">Elevated</option>
+          </select>
+        </label>
+        <label class="field" for="f-tag">
+          Who or what it serves
+          <select id="f-tag">
+            <option value="all">Any tag</option>
+            <option value="schools">Schools</option>
+            <option value="transit">Transit riders</option>
+            <option value="bike-route">Bike routes</option>
+            <option value="low-income">Low-income areas</option>
+            <option value="wide-road">Wide roads</option>
+            <option value="night-crashes">Night crashes</option>
+          </select>
+        </label>
+        <label class="field" for="f-place">
+          Neighborhood
+          <select id="f-place">
+            <option value="all">All neighborhoods</option>
+          </select>
+        </label>
+        <label class="field" for="f-heatmap">
+          Crash heatmap
+          <select id="f-heatmap">
+            <option value="off">Off</option>
+            <option value="on">On</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="map" role="region" aria-label="Map of Escambia priority corridors"></div>
+      <div class="legend" aria-label="Map legend">
+        <span class="legend-title">Priority (0–100)</span>
+        <span class="legend-item"><span class="swatch swatch-red" aria-hidden="true"></span>Top priority (70+)</span>
+        <span class="legend-item"><span class="swatch swatch-orange" aria-hidden="true"></span>High priority (55–69)</span>
+        <span class="legend-item"><span class="swatch swatch-yellow" aria-hidden="true"></span>Elevated (under 55)</span>
+        <span class="legend-item"><span class="swatch swatch-heat" aria-hidden="true"></span>Heatmap cell (more crashes = darker)</span>
+      </div>
+      <p class="muted" style="margin-top:10px">
+        <strong>Every corridor shown is already on the high-injury priority network.</strong> The 0–100 priority score ranks corridors <em>within</em> that pre-filtered set (100 = the county's highest-priority corridor), not against all roads — so even the lowest score here is still elevated. None of these streets are “safe.”
+        Road centerlines from <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>.
+        Crash data: FDOT public layers, all reported crashes 2018&ndash;2022 (14,261 points) plus NHTSA FARS fatal crashes 2022&ndash;2024 (169 points).
+        Florida SB 1614 (March 2023) created a 60-day public-access privacy window, so non-fatal 2023+ data is not yet public; this view uses federal FARS fatals to keep the highest-severity tier current.
+        Corridor selection: <a href="https://storymaps.arcgis.com/stories/554f18eb6b864ea39c559f223dcf21ff" rel="noopener" target="_blank">Emerald Coast Regional Council (ECRC) SS4A high-injury network</a>, City of Pensacola ATP, and FDOT HSIP top segments.
+      </p>
+    </section>
+
+    <!-- RANKING -->
+    <section class="panel" id="ranking" aria-labelledby="ranking-h">
+      <header>
+        <div>
+          <span class="qbadge">Which is worst?</span>
+          <h2 id="ranking-h">Corridor ranking</h2>
+          <p class="lede">Ranked by a 0–100 priority score (100 = the county's highest-priority corridor). Color shows the priority band — none are low, since every corridor here is already high-injury. Choose one for details.</p>
+        </div>
+      </header>
+      <ul id="corridor-list" class="corridor-list" aria-label="Ranked corridors"></ul>
+      <p id="corridor-empty" class="muted" hidden>
+        No corridors match the current filters. Try broadening risk or clearing the neighborhood filter.
+      </p>
+    </section>
+
+    <!-- DETAIL / DESIGNER -->
+    <section class="panel" id="detail" aria-labelledby="detail-h">
+      <header>
+        <div>
+          <span class="qbadge">What should we do?</span>
+          <h2 id="detail-h"><span id="detail-name">Pick a corridor to see details</span></h2>
+          <p class="lede" id="detail-place">Choose a street from the map or ranking above.</p>
+        </div>
+      </header>
+
+      <div class="magazine">
+        <div class="scroll-col stack">
+          <p id="detail-summary" class="muted">When you select a corridor, you'll see a plain-language summary here.</p>
+          <p id="detail-why" class="detail-why" hidden></p>
+          <div class="chips" id="detail-tags" role="group" aria-label="Audience tags"></div>
+          <div>
+            <strong>A countermeasure worth discussing</strong>
+            <p id="detail-treatment" class="muted" style="margin-top:4px">Select a corridor to see a possible starting point.</p>
+          </div>
+          <div>
+            <strong id="message-label">Plain-language message</strong>
+            <p id="detail-message" class="muted" style="margin-top:4px">—</p>
+          </div>
+
+          <div id="detail-hotspot" hidden>
+            <strong>Where on this corridor</strong>
+            <p id="detail-hotspot-text" class="muted" style="margin-top:4px"></p>
+            <p id="detail-hotspot-source" class="muted" style="font-size:12px; margin-top:4px"></p>
+          </div>
+
+          <div id="detail-equity" hidden>
+            <strong>Who lives here (equity context)</strong>
+            <p id="detail-equity-text" class="muted" style="margin-top:4px"></p>
+            <p id="detail-equity-source" class="muted" style="font-size:12px; margin-top:4px"></p>
+          </div>
+
+        <!-- v5: 3-PSC CARD STACK -->
+        <div aria-labelledby="psc-h" style="margin-top:8px">
+          <h2 class="card-h" id="psc-h" style="margin-bottom:4px">Possible Proven Safety Countermeasures</h2>
+          <p class="muted" style="margin:0 0 4px" id="psc-empty">Select a corridor above to see three FHWA Proven Safety Countermeasures that could apply, based on its crash profile — a starting point for a conversation with FDOT or a licensed engineer, not an engineering recommendation.</p>
+          <div id="psc-stack" class="psc-stack" aria-live="polite"></div>
+        </div>
+      </div><!-- /.scroll-col -->
+
+        <div class="map-col">
+          <div class="sticky-card" role="region" aria-label="Selected corridor map">
+            <div id="detail-map" class="map-canvas"></div>
+          </div>
+        </div>
+      </div><!-- /.magazine -->
+    </section>
+
+    <!-- PACKET -->
+    <section class="panel" id="packet" aria-labelledby="packet-h">
+      <header>
+        <div>
+          <span class="qbadge">How do we explain it?</span>
+          <h2 id="packet-h">Packet builder</h2>
+          <p class="lede">A one-page summary you can hand to a council member, paste into a memo, or read aloud at a meeting.</p>
+        </div>
+        <button class="btn" id="download-packet" type="button" aria-label="Download the one-page packet as a text file">
+          Download packet
+        </button>
+      </header>
+
+      <div class="packet-preview" id="packet-preview" aria-live="polite">
+        <h3 id="pp-name">No corridor selected</h3>
+        <p id="pp-summary" class="muted">Select a corridor to build a packet.</p>
+        <ul id="pp-bullets"></ul>
+        <p class="notice" id="pp-notice" hidden>This packet is a public-information discussion starter, not a traffic engineering study, design, or professional recommendation. Any treatment needs review by a qualified engineer and the road's owner (FDOT for state roads; the county or city for local roads).</p>
+      </div>
+    </section>
+
+    <!-- COUNTERMEASURES -->
+    <section class="panel" id="countermeasures" aria-labelledby="cm-h">
+      <header>
+        <div>
+          <span class="qbadge">What does it cost?</span>
+          <h2 id="cm-h">Possible countermeasures &amp; planning-level costs</h2>
+          <p class="lede" id="cm-lede">Possible FHWA-published treatments matched to the dominant crash types on the selected corridor, with national planning-level cost and crash-reduction estimates.</p>
+        </div>
+      </header>
+      <div id="cm-empty" class="muted">Select a corridor to see possible treatment options.</div>
+      <div id="cm-summary" class="cm-summary" hidden>
+        <div><strong>Total estimated cost</strong><br><span id="cm-total">—</span></div>
+        <div><strong>Annual KSI reduction</strong><br><span id="cm-ksi">—</span></div>
+        <div><strong>Return per $1 invested</strong><br><span id="cm-bcr">—</span></div>
+        <div><strong>Treatments matched</strong><br><span id="cm-count">—</span></div>
+      </div>
+      <p class="muted" id="cm-bcr-note" style="font-size:13px" hidden></p>
+      <div class="notice" id="cm-notice" hidden>
+        <strong>This is not a traffic engineering study.</strong>
+        These are candidate countermeasures drawn from FHWA's published national guidance, matched heuristically to this corridor's crash factors — not a site-specific design or a professional recommendation. Costs and crash-reduction figures are national planning-level estimates, not a site-specific engineering estimate. Any treatment shown here needs review by a qualified engineer and approval from the road's owner (FDOT for state roads; the county or city for local roads) before it moves forward. Use this to start that conversation, not to end it.
+      </div>
+      <details id="cm-table-details" hidden>
+        <summary style="cursor:pointer; font-weight:600; min-height:var(--tap); display:flex; align-items:center; gap:8px;"><span class="details-caret" aria-hidden="true">▸</span>See the full costed treatment table</summary>
+        <div class="cm-table-wrap" id="cm-table-wrap">
+          <table class="cm-table" id="cm-table" aria-label="Countermeasures matched to corridor crash types">
+            <thead>
+              <tr>
+                <th scope="col">Treatment</th>
+                <th scope="col">Targets</th>
+                <th scope="col">CMF</th>
+                <th scope="col">Est. cost</th>
+                <th scope="col">KSI / yr saved</th>
+              </tr>
+            </thead>
+            <tbody id="cm-tbody"></tbody>
+          </table>
+          <p class="muted" style="margin-top:10px">
+            CMF = Crash Modification Factor. A CMF of 0.45 means the treatment reduces crashes of that type by 55%. These are national averages, not a site-specific engineering study.
+            Sources: <a href="https://highways.dot.gov/safety/proven-safety-countermeasures" rel="noopener">FHWA Proven Safety Countermeasures</a>,
+            <a href="https://www.cmfclearinghouse.org/" rel="noopener">FHWA CMF Clearinghouse</a> (3-5 star only),
+            FDOT D3 Long-Range Estimates 2024.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <footer class="muted" style="text-align:center; font-size: 13px; margin-top: 24px">
+      <img class="footer-logo" src="assets/brand/logo-lockup.png" alt="SaferStreets Simplified — Escambia" width="180" />
+      <p style="margin:12px auto 0; max-width:70ch">Built on FDOT crash data (2018–2022, all severities) and NHTSA FARS fatals (2022–2024). A prioritization tool — cost and crash-reduction figures are planning estimates, not engineering quotes.</p>
+      <details style="max-width:70ch; margin:12px auto 0; text-align:left">
+        <summary style="cursor:pointer; min-height:var(--tap); display:flex; align-items:center; justify-content:center; gap:8px; font-weight:600"><span class="details-caret" aria-hidden="true">▸</span>About the data</summary>
+        <ul style="margin-top:8px">
+          <li><a href="data/escambia_corridors.geojson">Corridor GeoJSON</a> — 18 corridors (OSM centerlines) with crash counts, risk scores, matched countermeasures, and plain-language summaries.</li>
+          <li><a href="data/escambia_crash_grid.geojson">Crash-density grid</a> — 150 m cells with aggregated FDOT crash counts; cells with fewer than 2 crashes suppressed.</li>
+          <li>Built by the open pipeline in the project repo (<code>scripts/</code>); refreshed monthly from FDOT, NHTSA FARS, and Census ACS sources.</li>
+          <li><a href="https://signal4analytics.com/" rel="noopener" target="_blank">Signal Four Analytics</a> — the crash-report database maintained by FDOT and the University of Florida that underlies Florida's official crash records, including the FDOT layers this site uses. It is also the source for the Fairfield Drive / Pensacola Boulevard case study featured above the map.</li>
+        </ul>
+      </details>
+      <details style="max-width:70ch; margin:12px auto 0; text-align:left">
+        <summary style="cursor:pointer; min-height:var(--tap); display:flex; align-items:center; justify-content:center; gap:8px; font-weight:600"><span class="details-caret" aria-hidden="true">▸</span>Acknowledgements &amp; prior art</summary>
+        <ul style="margin-top:8px">
+          <li><a href="https://github.com/tooledesign/Safer-Streets-Priority-Finder" rel="noopener" target="_blank">Safer Streets Priority Finder</a> (Toole Design, MIT license) — an independent, more advanced tool for network-wide safety analysis, including Bayesian predictive risk modeling for road segments with no crash history yet. This site is a separate, independently built codebase (different stack, no shared code) aimed at a simpler, public-facing use case; its "where on this corridor" hotspot feature is a small, simplified analog of SSPF's sliding-window method — dividing a corridor into fixed segments to show which stretch concentrates the most crashes, rather than SSPF's full network-wide, overlapping-window discovery process. SSPF is the tool to reach for if you need to analyze an entire road network from raw crash data, including segments that haven't crashed yet.</li>
+          <li><a href="https://cyclingmax.worldbank.org/" rel="noopener" target="_blank">CyclingMAX</a> (World Bank / ITDP / Progress Analytics) — the conservatism pattern behind this site's benefit-cost estimates (a flat discount applied to all benefits to acknowledge model uncertainty) is adapted from CyclingMAX's "Induced Benefit Factor."</li>
+          <li>The Fairfield Drive / Pensacola Boulevard case study above the map draws on a draft (April 2026) baseline memo Kimley-Horn prepared for the <a href="https://www.ecrc.org/" rel="noopener" target="_blank">Emerald Coast Regional Council</a> (ECRC, formerly the West Florida Regional Planning Council) under its USDOT Safe Streets and Roads for All grant, and on the <a href="https://storymaps.arcgis.com/stories/554f18eb6b864ea39c559f223dcf21ff" rel="noopener" target="_blank">ECRC regional high-injury-network StoryMap</a>. Figures there cover 2021–2025 on specific study segments — a different window and extent than this site's own 2018–2022 + FARS corridor counts.</li>
+          <li>Road centerlines: <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors. Crash data: FDOT, NHTSA FARS, Signal Four Analytics. Demographics: US Census Bureau ACS. Countermeasures: FHWA Proven Safety Countermeasures and CMF Clearinghouse.</li>
+        </ul>
+      </details>
+    </footer>
+  </main>
+</div>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- theme toggle ---------- */
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const stored = localStorage.getItem('ss-theme');
+  if (stored === 'light' || stored === 'dark') document.body.setAttribute('data-theme', stored);
+  function refreshIcon(){
+    const mode = document.body.getAttribute('data-theme');
+    if (mode === 'dark') themeIcon.textContent = '☾';
+    else if (mode === 'light') themeIcon.textContent = '☀';
+    else themeIcon.textContent = '◐';
+  }
+  refreshIcon();
+  themeToggle.addEventListener('click', () => {
+    const cur = document.body.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : (cur === 'light' ? 'auto' : 'dark');
+    if (next === 'auto'){ document.body.removeAttribute('data-theme'); localStorage.removeItem('ss-theme'); }
+    else { document.body.setAttribute('data-theme', next); localStorage.setItem('ss-theme', next); }
+    refreshIcon();
+  });
+
+  /* ---------- mobile menu ---------- */
+  const menuBtn = document.getElementById('menu-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  menuBtn.addEventListener('click', () => {
+    const open = sidebar.getAttribute('data-open') === 'true';
+    sidebar.setAttribute('data-open', String(!open));
+    menuBtn.setAttribute('aria-expanded', String(!open));
+  });
+  // Close on nav click (mobile)
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 880px)').matches){
+        sidebar.setAttribute('data-open','false');
+        menuBtn.setAttribute('aria-expanded','false');
+      }
+    });
+  });
+
+  // Mark current nav item via IntersectionObserver
+  const navLinks = Array.from(document.querySelectorAll('[data-nav]'));
+  const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const navMap = new Map(sections.map((s, i) => [s.id, navLinks[i]]));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        navLinks.forEach(a => a.removeAttribute('aria-current'));
+        const link = navMap.get(e.target.id);
+        if (link) link.setAttribute('aria-current','page');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s => obs.observe(s));
+
+  /* ---------- runtime config ----------
+     Map tiles (OpenStreetMap, CARTO) and the Nominatim geocoder are free, shared
+     community endpoints whose usage policies cap production volume. Before heavy
+     public traffic, swap these for a keyed provider (Mapbox, MapTiler, Stadia, …)
+     by editing this one object — nothing else references the URLs directly. */
+  const CONFIG = {
+    tileUrl: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    tileAttribution: '&copy; OpenStreetMap',
+    tileMaxZoom: 18,
+    heroTileUrl: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+    heroTileAttribution: '&copy; OSM &copy; CARTO',
+    heroTileMaxZoom: 16,
+    geocodeBase: 'https://nominatim.openstreetmap.org/search',
+    geocodeViewbox: '-87.70,30.20,-86.95,31.15',
+  };
+
+  /* ---------- state ---------- */
+  const state = {
+    corridors: [],
+    filtered: [],
+    selected: null,
+    filters: { search:'', risk:'all', tag:'all', place:'all', heatmap:'off' },
+    map: null,
+    lines: new Map(),    // id -> L.geoJSON layer (corridor polyline)
+    heatLayer: null,     // L.geoJSON for hex grid
+  };
+
+  /* ---------- map init ---------- */
+  const map = L.map('map', { zoomControl: true, scrollWheelZoom: false })
+              .setView([30.45, -87.23], 11);
+  state.map = map;
+  L.tileLayer(CONFIG.tileUrl, {
+    maxZoom: CONFIG.tileMaxZoom,
+    attribution: CONFIG.tileAttribution
+  }).addTo(map);
+
+  /* ---------- helpers ---------- */
+  // Priority bands. Every corridor is on the high-injury network, so the scale
+  // is deliberately floor-raised (nothing reads as "low" / green).
+  const BAND = {
+    red:    { label: 'Top priority',  order: 3 },
+    orange: { label: 'High priority', order: 2 },
+    yellow: { label: 'Elevated',      order: 1 },
+  };
+  // Derive a 0–100 priority score + band for every corridor from the raw
+  // composite `score`. 100 = the highest-priority corridor in the county's
+  // high-injury network; the scale is relative to that worst corridor.
+  function assignPriorityScores(){
+    const scores = state.corridors.map(c => c.score || 0);
+    const lo = Math.min.apply(null, scores);
+    const hi = Math.max.apply(null, scores);
+    const span = (hi - lo) || 1;
+    state.corridors.forEach(c => {
+      c.priority = Math.round(40 + ((c.score || 0) - lo) / span * 60); // 40..100
+      c.band = c.priority >= 70 ? 'red' : c.priority >= 55 ? 'orange' : 'yellow';
+    });
+  }
+  // Line weight scales with corridor score AND current map zoom.
+  // Min 1.5px far out, max ~9px when zoomed all the way in.
+  function weightFor(score, zoom){
+    const z = (typeof zoom === 'number') ? zoom : (state.map ? state.map.getZoom() : 11);
+    // Zoom factor: 0.35 at z=9, 1.0 at z=13, 1.6 at z=16
+    const zf = Math.max(0.35, Math.min(1.6, (z - 8) * 0.22));
+    const base = 1.4 + Math.sqrt(score) * 0.22; // ~1.4 .. ~7.0
+    return Math.max(1.2, Math.min(9, base * zf));
+  }
+  function bandLineColor(band){
+    const styles = getComputedStyle(document.body);
+    const m = { red:'--band-red', orange:'--band-orange', yellow:'--band-yellow' };
+    return (styles.getPropertyValue(m[band] || '--band-red') || '#b3261e').trim();
+  }
+  function heatColor(weight){
+    const a = Math.max(0.15, Math.min(0.85, weight / 4));
+    return `rgba(162, 58, 0, ${a.toFixed(2)})`;
+  }
+  function fmtInt(n){ return Number(n||0).toLocaleString('en-US'); }
+
+  function $(id){ return document.getElementById(id); }
+
+  /* ---------- load data ---------- */
+  // Show a loading skeleton so a slow (or failing) fetch isn't a silent blank
+  // page — feedback within the Doherty threshold, and an honest system state.
+  (function showListLoading(){
+    const ul = $('corridor-list');
+    if (ul){
+      ul.setAttribute('aria-busy', 'true');
+      ul.innerHTML = '<div class="list-loading" aria-hidden="true">' +
+        '<div class="skeleton-row"></div><div class="skeleton-row"></div>' +
+        '<div class="skeleton-row"></div><div class="skeleton-row"></div></div>';
+    }
+    const sc = $('status-count'); if (sc) sc.textContent = '…';
+  })();
+
+  fetch('data/escambia_corridors.geojson')
+    .then(r => r.json())
+    .then(gj => {
+      state.corridors = gj.features.map(f => ({
+        id: f.properties.id,
+        name: f.properties.name,
+        place: f.properties.place,
+        risk: f.properties.risk,
+        score: f.properties.score,
+        treatment: f.properties.treatment,
+        tags: f.properties.tags || [],
+        sources: f.properties.sources || [],
+        summary: f.properties.summary,
+        message: f.properties.message,
+        crash_count: f.properties.crash_count || 0,
+        fatal_count: f.properties.fatal_count || 0,
+        serious_injury_count: f.properties.serious_injury_count || 0,
+        ksi_count: f.properties.ksi_count || 0,
+        ksi_per_mile: f.properties.ksi_per_mile || 0,
+        length_mi: f.properties.length_mi || 0,
+        time_of_day: f.properties.time_of_day || {},
+        countermeasures: f.properties.countermeasures || [],
+        countermeasure_total_low: f.properties.countermeasure_total_low || 0,
+        countermeasure_total_high: f.properties.countermeasure_total_high || 0,
+        countermeasure_annual_ksi_reduced: f.properties.countermeasure_annual_ksi_reduced || 0,
+        crash_factors: f.properties.crash_factors || {},
+        crash_factors_ksi: f.properties.crash_factors_ksi || {},
+        psc: f.properties.psc || null,
+        equity: f.properties.equity || null,
+        hotspot: f.properties.hotspot || null,
+        bca: f.properties.bca || null,
+        geometry: f.geometry,
+      }));
+      assignPriorityScores();
+      populatePlaceFilter();
+      addCorridorLines();
+      applyFilters();
+      // Keep the hero "high-risk corridors" stat in sync with the data file
+      // so it can't drift when corridors are added or removed.
+      const heroCount = document.getElementById('hero-corridor-count');
+      if (heroCount) heroCount.textContent = String(state.corridors.length);
+    })
+    .catch(err => {
+      console.error('Data load failed', err);
+      const ul = $('corridor-list');
+      if (ul){ ul.innerHTML = ''; ul.removeAttribute('aria-busy'); }
+      const sc = $('status-count'); if (sc) sc.textContent = '0';
+      $('corridor-empty').hidden = false;
+      $('corridor-empty').textContent = 'Could not load corridor data. Please check your connection and refresh the page.';
+    });
+
+  let heatLoaded = false;
+  function loadHeatLayer(){
+    if (heatLoaded) return Promise.resolve();
+    heatLoaded = true;
+    return fetch('data/escambia_crash_grid.geojson')
+      .then(r => r.json())
+      .then(gj => {
+        state.heatLayer = L.geoJSON(gj, {
+          style: f => ({
+            color: 'transparent',
+            weight: 0,
+            fillColor: heatColor(f.properties.weight || 0),
+            fillOpacity: 0.85,
+          }),
+          interactive: false,
+        });
+      })
+      .catch(err => { console.error('Heatmap load failed', err); heatLoaded = false; });
+  }
+
+  function populatePlaceFilter(){
+    const sel = $('f-place');
+    const places = Array.from(new Set(state.corridors.map(c => c.place))).sort();
+    places.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p; opt.textContent = p;
+      sel.appendChild(opt);
+    });
+  }
+
+  function addCorridorLines(){
+    state.corridors.forEach(c => {
+      if (!c.geometry) return;
+      const layer = L.geoJSON(c.geometry, {
+        style: {
+          color: bandLineColor(c.band),
+          weight: weightFor(c.score),
+          opacity: 0.9,
+          lineCap: 'round',
+          lineJoin: 'round',
+        },
+      });
+      const popupHtml = `
+        <strong>${escapeHtml(c.name)}</strong><br>
+        <span style="color:#56697a">${escapeHtml(c.place)} · priority ${c.priority}/100 (${escapeHtml(BAND[c.band].label)})</span>
+        <div class="pop-stats">
+          <b>${fmtInt(c.crash_count)}</b> crashes along ${c.length_mi.toFixed(1)} mi<br>
+          <b>${fmtInt(c.fatal_count)}</b> fatal · <b>${fmtInt(c.serious_injury_count)}</b> serious injury
+        </div>`;
+      layer.bindPopup(popupHtml);
+      layer.on('click', () => selectCorridor(c.id));
+      layer.on('mouseover', () => layer.setStyle({ weight: weightFor(c.score) + 2, opacity: 1 }));
+      layer.on('mouseout', () => layer.setStyle({ weight: weightFor(c.score), opacity: 0.9 }));
+      layer.addTo(map);
+      state.lines.set(c.id, layer);
+    });
+    try {
+      const group = L.featureGroup(Array.from(state.lines.values()));
+      map.fitBounds(group.getBounds(), { padding: [30, 30] });
+    } catch (e) {}
+    // Restyle on zoom so lines thin out when zoomed out and grow when zoomed in.
+    map.on('zoomend', () => {
+      const z = map.getZoom();
+      state.corridors.forEach(c => {
+        const layer = state.lines.get(c.id);
+        if (layer) layer.setStyle({ weight: weightFor(c.score, z) });
+      });
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  /* ---------- filters ---------- */
+  ['f-search','f-risk','f-tag','f-place','f-heatmap'].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('input', readFilters);
+    el.addEventListener('change', readFilters);
+  });
+
+  function readFilters(){
+    state.filters.search = $('f-search').value.trim().toLowerCase();
+    state.filters.risk = $('f-risk').value;
+    state.filters.tag = $('f-tag').value;
+    state.filters.place = $('f-place').value;
+    state.filters.heatmap = $('f-heatmap').value;
+    applyFilters();
+    updateHeatmap();
+  }
+
+  function updateHeatmap(){
+    if (state.filters.heatmap === 'on'){
+      loadHeatLayer().then(() => {
+        if (state.heatLayer && !map.hasLayer(state.heatLayer)) state.heatLayer.addTo(map);
+      });
+    } else if (state.heatLayer && map.hasLayer(state.heatLayer)){
+      map.removeLayer(state.heatLayer);
+    }
+  }
+
+  function applyFilters(){
+    const f = state.filters;
+    state.filtered = state.corridors.filter(c => {
+      if (f.risk !== 'all' && c.band !== f.risk) return false;
+      if (f.place !== 'all' && c.place !== f.place) return false;
+      if (f.tag !== 'all' && !c.tags.includes(f.tag)) return false;
+      if (f.search){
+        const hay = (c.name + ' ' + c.place + ' ' + c.summary).toLowerCase();
+        if (!hay.includes(f.search)) return false;
+      }
+      return true;
+    });
+    state.filtered.sort((a,b) => (b.priority - a.priority) || (b.score - a.score));
+    renderList();
+    syncMapVisibility();
+    updateStatus();
+  }
+
+  function renderList(){
+    const ul = $('corridor-list');
+    ul.innerHTML = '';
+    ul.removeAttribute('aria-busy');
+    if (state.filtered.length === 0){
+      $('corridor-empty').hidden = false;
+      return;
+    }
+    $('corridor-empty').hidden = true;
+    state.filtered.forEach(c => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'corridor-btn b-' + c.band;
+      btn.setAttribute('aria-pressed', String(state.selected === c.id));
+      btn.dataset.id = c.id;
+      btn.innerHTML = `
+        <span>
+          <span class="name">${escapeHtml(c.name)}</span><br>
+          <span class="place">${escapeHtml(c.place)} · ${fmtInt(c.crash_count)} crashes, ${fmtInt(c.fatal_count)} fatal</span>
+          <span class="band-pill" style="margin-left:8px">${escapeHtml(BAND[c.band].label)}</span>
+        </span>
+        <span class="pscore" aria-label="Priority score ${c.priority} out of 100">${c.priority}<span class="of100">/100</span></span>
+      `;
+      btn.addEventListener('click', () => selectCorridor(c.id));
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  }
+
+  function syncMapVisibility(){
+    const ids = new Set(state.filtered.map(c => c.id));
+    state.lines.forEach((layer, id) => {
+      if (ids.has(id)){ if (!map.hasLayer(layer)) layer.addTo(map); }
+      else { if (map.hasLayer(layer)) map.removeLayer(layer); }
+    });
+  }
+
+  function updateStatus(){
+    $('status-count').textContent = state.filtered.length;
+    const f = state.filters;
+    const parts = [];
+    parts.push(f.risk === 'all' ? 'all priorities' : (BAND[f.risk] ? BAND[f.risk].label.toLowerCase() : f.risk));
+    parts.push(f.place === 'all' ? 'all neighborhoods' : f.place);
+    parts.push(f.tag === 'all' ? 'all tags' : f.tag.replace('-', ' '));
+    if (f.search) parts.push('search "' + f.search + '"');
+    $('status-filter').textContent = parts.join(', ');
+    const sel = state.corridors.find(c => c.id === state.selected);
+    $('status-selected').textContent = sel ? sel.name : 'none yet';
+  }
+
+  /* ---------- plain-language "why this ranks here" ----------
+     Explains the 0–100 priority number from the corridor's OWN data so a
+     non-engineer can see what drives it (data literacy / earn-trust). */
+  const FACTOR_LABELS = {
+    ped: 'people walking', bike: 'people biking', intersection: 'intersection crashes',
+    lane_departure: 'run-off-road / lane-departure crashes', night: 'nighttime crashes',
+    motorcycle: 'motorcycle crashes', speeding: 'speeding', impaired: 'impaired driving',
+    distracted: 'distracted driving',
+  };
+  function whyRanksHere(c){
+    if (!c) return '';
+    const total = state.corridors.length;
+    // Rank position (1 = worst) by the same order the list uses.
+    const ordered = state.corridors.slice().sort((a,b) => (b.priority - a.priority) || (b.score - a.score));
+    const rank = ordered.findIndex(x => x.id === c.id) + 1;
+    const bits = [];
+    bits.push('It ranks <strong>#' + rank + ' of ' + total + '</strong> corridors here');
+    const dens = Number(c.ksi_per_mile || 0);
+    if (dens > 0) bits.push('with about <strong>' + dens.toFixed(1) + ' killed or seriously injured per mile</strong>');
+    else if (c.ksi_count) bits.push('with <strong>' + fmtInt(c.ksi_count) + '</strong> killed or seriously injured');
+    // Dominant contributing factor from the corridor's crash-factor profile.
+    const cf = c.crash_factors || {};
+    let topKey = null, topVal = 0;
+    Object.keys(cf).forEach(k => { if (cf[k] > topVal){ topVal = cf[k]; topKey = k; } });
+    let tail = '';
+    if (topKey && FACTOR_LABELS[topKey] && topVal > 0){
+      tail = ' Its crashes concentrate around <strong>' + FACTOR_LABELS[topKey] + '</strong>.';
+    }
+    return bits.join(', ') + '.' + tail +
+      ' The 0–100 score is relative to the county’s worst corridor, so a high number means high priority — not a safe street.';
+  }
+
+  /* ---------- selection ---------- */
+  function selectCorridor(id, opts){
+    opts = opts || {};
+    state.selected = id;
+    document.querySelectorAll('.corridor-btn').forEach(b => {
+      b.setAttribute('aria-pressed', String(b.dataset.id === id));
+    });
+    const c = state.corridors.find(x => x.id === id);
+    if (!c) return;
+    $('detail-name').textContent = c.name;
+    const stats = `${c.length_mi.toFixed(1)} mi · ${fmtInt(c.crash_count)} crashes (FDOT 2018–2022 + FARS fatals 2022–2024) · ${fmtInt(c.fatal_count)} fatal, ${fmtInt(c.serious_injury_count)} serious injury`;
+    $('detail-place').textContent = c.place + ' · ' + stats;
+    $('detail-summary').textContent = c.summary;
+    const whyEl = $('detail-why');
+    if (whyEl){ whyEl.innerHTML = whyRanksHere(c); whyEl.hidden = false; }
+    $('detail-treatment').textContent = c.treatment;
+    $('detail-message').textContent = c.message;
+    $('message-label').textContent = 'Plain-language message';
+    const tags = $('detail-tags');
+    tags.innerHTML = '';
+    c.tags.forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'chip brand';
+      span.textContent = t.replace('-', ' ');
+      tags.appendChild(span);
+    });
+    const bandPill = document.createElement('span');
+    bandPill.className = 'band-pill b-' + c.band;
+    bandPill.textContent = BAND[c.band].label + ' · ' + c.priority + '/100';
+    tags.appendChild(bandPill);
+
+    updateStatus();
+    updatePacket(c);
+    updateCountermeasures(c);
+    updatePscSpotlight(c);
+    updateHotspot(c);
+    updateEquity(c);
+
+    // Pan map to corridor bounds and open popup at center
+    const layer = state.lines.get(id);
+    if (layer){
+      try { map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 14 }); } catch (e) {}
+      try { layer.openPopup(layer.getBounds().getCenter()); } catch (e) {}
+    }
+    // Mirror the selection onto the detail map (syncDetailMapToCorridor is hoisted)
+    syncDetailMapToCorridor(c);
+
+    // Perceivable feedback: selecting a corridor updates the detail, countermeasure,
+    // and packet panels further down the page. Announce it for screen readers and,
+    // unless the caller opts out (e.g. the hero, which shows its own callout),
+    // bring the detail panel into view so the action's effect is visible.
+    const announce = $('sr-announce');
+    if (announce){
+      announce.textContent = 'Loaded ' + c.name + ': priority ' + c.priority +
+        ' of 100, ' + BAND[c.band].label + '. Details, countermeasures, and packet updated below.';
+    }
+    if (opts.scroll !== false){
+      const d = document.getElementById('detail');
+      if (d) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Don't steal focus aggressively — keyboard users keep their place
+  }
+
+  /* ---------- packet ---------- */
+  function updatePacket(c){
+    $('pp-name').textContent = c.name;
+    $('pp-summary').textContent = c.summary;
+    $('pp-notice').hidden = false;
+    const ul = $('pp-bullets');
+    ul.innerHTML = '';
+    const bullets = [
+      'Neighborhood: ' + c.place,
+      'Priority: ' + BAND[c.band].label + ' (' + c.priority + ' out of 100)',
+      'Crashes (FDOT 2018–2022 + FARS 2022–2024): ' + fmtInt(c.crash_count) +
+        ' total, ' + fmtInt(c.fatal_count) + ' fatal, ' + fmtInt(c.serious_injury_count) + ' serious',
+      'Possible countermeasure to discuss: ' + c.treatment,
+      'Plain-language message: ' + c.message,
+    ];
+    if (c.countermeasures && c.countermeasures.length > 0){
+      bullets.push('Full countermeasure package: $' + fmtInt(c.countermeasure_total_low) + ' – $' + fmtInt(c.countermeasure_total_high) +
+        ', est. ' + c.countermeasure_annual_ksi_reduced.toFixed(1) + ' KSI/yr prevented');
+    }
+    if (c.bca){
+      bullets.push('Estimated return: ' + bcrText(c.bca) + ' in avoided crash costs (planning-level; see packet for method)');
+    }
+    if (c.hotspot){
+      bullets.push('Where to start: ' + hotspotSentence(c.hotspot));
+    }
+    if (c.equity && c.equity.tract_count){
+      bullets.push('Equity context: ' + equitySentence(c.equity));
+    }
+    bullets.forEach(t => {
+      const li = document.createElement('li'); li.textContent = t; ul.appendChild(li);
+    });
+  }
+
+  /* ---------- countermeasures ---------- */
+  function fmtCmfPct(cmf){
+    const pct = Math.round((1 - cmf) * 100);
+    return 'CMF ' + cmf.toFixed(2) + ' (' + pct + '% reduction)';
+  }
+  function bcrText(bca){
+    // Lead with the conservative low end; handle sub-break-even honestly.
+    if (!bca) return null;
+    const lo = bca.bcr_low, hi = bca.bcr_high;
+    if (lo < 1) return 'roughly break-even ($' + lo.toFixed(1) + '–$' + hi.toFixed(1) + ' back per $1)';
+    return 'at least $' + lo.toFixed(1) + ' back per $1 (up to $' + hi.toFixed(1) + ')';
+  }
+
+  function updateCountermeasures(c){
+    const empty = $('cm-empty');
+    const summary = $('cm-summary');
+    const details = $('cm-table-details');
+    const bcrNote = $('cm-bcr-note');
+    const notice = $('cm-notice');
+    const tbody = $('cm-tbody');
+    tbody.innerHTML = '';
+    if (!c || !c.countermeasures || c.countermeasures.length === 0){
+      empty.hidden = false;
+      empty.textContent = c
+        ? 'No published countermeasures pass the threshold for this corridor (crash counts on each contributing factor are below the FHWA-recommended minimums).'
+        : 'Select a corridor to see possible treatment options.';
+      summary.hidden = true;
+      details.hidden = true;
+      bcrNote.hidden = true;
+      notice.hidden = true;
+      // Clear stale values so nothing from the prior corridor can leak if the
+      // summary is ever unhidden by a later code path.
+      ['cm-total','cm-ksi','cm-bcr','cm-count'].forEach(id => { $(id).textContent = '—'; });
+      return;
+    }
+    empty.hidden = true;
+    summary.hidden = false;
+    details.hidden = false;
+    details.open = false; // collapsed by default; the summary tiles tell the story
+    notice.hidden = false;
+    $('cm-total').textContent = '$' + fmtInt(c.countermeasure_total_low) +
+      ' – $' + fmtInt(c.countermeasure_total_high);
+    $('cm-ksi').textContent = c.countermeasure_annual_ksi_reduced.toFixed(1) +
+      ' KSI prevented per year';
+    if (c.bca){
+      $('cm-bcr').textContent = bcrText(c.bca);
+      bcrNote.textContent = c.bca.method;
+      bcrNote.hidden = false;
+    } else {
+      $('cm-bcr').textContent = '—';
+      bcrNote.hidden = true;
+    }
+    $('cm-count').textContent = c.countermeasures.length + ' treatments';
+    c.countermeasures.forEach(cm => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="cm-treat-name">${escapeHtml(cm.name)}</div>
+          <div class="cm-treat-desc">${escapeHtml(cm.description)}</div>
+          <div class="cm-source">${escapeHtml(cm.cmf_source)}</div>
+        </td>
+        <td>${escapeHtml(cm.target)}<br><span class="muted" style="font-size:12px">${fmtInt(cm.target_count)} crashes (${fmtInt(cm.target_ksi)} KSI)</span></td>
+        <td>${fmtCmfPct(cm.cmf)}</td>
+        <td class="num">$${fmtInt(cm.cost_low)}<br>– $${fmtInt(cm.cost_high)}</td>
+        <td class="num">${cm.annual_ksi_reduced.toFixed(2)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  /* (audience toggle removed in v4 — single consolidated message field) */
+
+  /* ---------- v5: 3-PSC card stack ---------- */
+  // escapeHtml protects markup but not URL schemes — a data-supplied
+  // "javascript:" href would still execute on click. Allow http(s) only.
+  function safeUrl(u){
+    return typeof u === 'string' && /^https?:\/\//i.test(u.trim()) ? u : null;
+  }
+
+  function updatePscSpotlight(c){
+    const stack = document.getElementById('psc-stack');
+    const empty = document.getElementById('psc-empty');
+    if (!stack) return;
+    if (!c || !Array.isArray(c.psc) || c.psc.length === 0){
+      stack.innerHTML = '';
+      if (empty){ empty.hidden = false; empty.textContent = 'Select a corridor above to see three evidence-based countermeasures matched to its crash profile.'; }
+      return;
+    }
+    if (empty) empty.hidden = true;
+
+    const cards = c.psc.map((p, idx) => {
+      const pos = p.position || (idx + 1);
+      const source = String(p.source || 'FHWA').toUpperCase();
+      const isPrimary = pos === 1;
+      const imgSrc = p.image_local || p.image_url || '';
+      const altText = p.image_alt || (p.title ? p.title + ' example' : 'Countermeasure example');
+      const figure = imgSrc
+        ? '<img src="' + escapeHtml(imgSrc) + '" alt="' + escapeHtml(altText) + '" loading="lazy" />'
+        : '<div class="psc-figure-placeholder">No image</div>';
+      const reduceChip = p.crash_reduction
+        ? '<span class="chip" style="font-size:11px">' + escapeHtml(p.crash_reduction) + '</span>'
+        : '';
+      const why = p.why_text ? '<p class="psc-card-narrative" style="font-size:12.5px"><strong>Why this corridor:</strong> ' + escapeHtml(p.why_text) + '</p>' : '';
+      return (
+        '<article class="psc-card' + (isPrimary ? ' is-primary' : '') + '" data-pos="' + pos + '">' +
+          '<div class="psc-figure">' +
+            figure +
+            '<span class="pos-badge" aria-label="Rank ' + pos + '">' + pos + '</span>' +
+          '</div>' +
+          '<div class="psc-body">' +
+            '<div class="psc-meta">' +
+              '<span class="psc-source-chip s-' + escapeHtml(source) + '">' + escapeHtml(source) + '</span>' +
+              reduceChip +
+            '</div>' +
+            '<h3 class="psc-card-title">' + escapeHtml(p.title || '') + '</h3>' +
+            (p.tagline ? '<p class="psc-card-narrative" style="font-style:italic">' + escapeHtml(p.tagline) + '</p>' : '') +
+            '<p class="psc-card-narrative is-clamped" data-narr>' + escapeHtml(p.narrative || '') + '</p>' +
+            why +
+            '<div class="psc-card-actions">' +
+              '<button type="button" class="psc-expand-btn" data-expand aria-expanded="false">Read more</button>' +
+              (safeUrl(p.url) ? '<a href="' + escapeHtml(p.url) + '" target="_blank" rel="noopener">Open ' + escapeHtml(source) + ' source &#8599;</a>' : '') +
+            '</div>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
+    stack.innerHTML = cards;
+
+    // Graceful image fallback (replaces a former inline onerror handler so a
+    // strict Content-Security-Policy can forbid inline event handlers).
+    stack.querySelectorAll('.psc-figure img').forEach(img => {
+      img.addEventListener('error', function(){
+        if (this.dataset.failed) return;
+        this.dataset.failed = '1';
+        this.style.display = 'none';
+        this.insertAdjacentHTML('afterend', '<div class="psc-figure-placeholder">Image unavailable</div>');
+      });
+    });
+
+    stack.querySelectorAll('.psc-expand-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.psc-card');
+        const narr = card && card.querySelector('[data-narr]');
+        if (!narr) return;
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        if (expanded){
+          narr.classList.add('is-clamped');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.textContent = 'Read more';
+        } else {
+          narr.classList.remove('is-clamped');
+          btn.setAttribute('aria-expanded', 'true');
+          btn.textContent = 'Show less';
+        }
+      });
+    });
+  }
+
+  /* ---------- hotspot windows (simplified sliding-window analog) ---------- */
+  function hotspotSentence(h){
+    if (!h) return '';
+    const w = h.worst_window;
+    return 'Within this ' + h.corridor_length_mi.toFixed(1) + '-mile corridor, the ' +
+      h.window_length_mi.toFixed(1) + '-mile stretch from mile ' + w.start_mi.toFixed(1) +
+      ' to ' + w.end_mi.toFixed(1) + ' saw ' + fmtInt(w.crash_count) + ' of the corridor’s ' +
+      fmtInt(h.corridor_crash_count) + ' crashes (' + w.share_of_corridor_crashes_pct + '%)' +
+      (w.ksi_count > 0 ? ', including ' + fmtInt(w.ksi_count) + ' killed or seriously injured' : '') +
+      ' — the most concentrated segment to fix first.';
+  }
+
+  function updateHotspot(c){
+    const box = $('detail-hotspot');
+    if (!box) return;
+    const h = c && c.hotspot;
+    if (!h){ box.hidden = true; return; }
+    box.hidden = false;
+    $('detail-hotspot-text').textContent = hotspotSentence(h);
+    $('detail-hotspot-source').textContent = h.method;
+  }
+
+  /* ---------- equity context (ACS tract join) ---------- */
+  function pct(x){ return x == null ? null : Math.round(x * 100) + '%'; }
+
+  function equitySentence(eq){
+    if (!eq) return '';
+    const parts = [];
+    if (eq.zero_vehicle_hh_share != null) parts.push('about ' + pct(eq.zero_vehicle_hh_share) + ' of households have no car');
+    if (eq.poverty_rate != null) parts.push(pct(eq.poverty_rate) + ' of residents live below the poverty line');
+    if (eq.people_of_color_share != null) parts.push(pct(eq.people_of_color_share) + ' are people of color');
+    const tracts = eq.tract_count === 1 ? '1 census tract' : (eq.tract_count + ' census tracts');
+    let s = 'This corridor runs through ' + tracts + ' where ' + parts.join(', ') + '.';
+    if (eq.median_household_income != null) s += ' Median household income is about $' + fmtInt(eq.median_household_income) + '.';
+    return s;
+  }
+
+  function updateEquity(c){
+    const box = $('detail-equity');
+    if (!box) return;
+    const eq = c && c.equity;
+    if (!eq || !eq.tract_count){ box.hidden = true; return; }
+    box.hidden = false;
+    $('detail-equity-text').textContent = equitySentence(eq);
+    $('detail-equity-source').textContent = eq.method || 'ACS 5-year, tract-level.';
+  }
+
+  $('download-packet').addEventListener('click', () => {
+    const c = state.corridors.find(x => x.id === state.selected);
+    if (!c){
+      alert('Pick a corridor first, then download the packet.');
+      return;
+    }
+    const lines = [
+      'SaferStreets Simplified — Corridor Packet',
+      '=========================================',
+      'A public-information discussion starter — not a traffic engineering study,',
+      'design, or professional recommendation.',
+      '',
+      'Corridor: ' + c.name,
+      'Neighborhood: ' + c.place,
+      'Priority: ' + BAND[c.band].label + '  (' + c.priority + ' out of 100)',
+      '',
+      'What is going on here?',
+      '----------------------',
+      c.summary,
+      '',
+      'Crash counts (FDOT 2018-2022 + FARS 2022-2024)',
+      '----------------------------------------------',
+      '  Total crashes: ' + fmtInt(c.crash_count),
+      '  Fatal crashes: ' + fmtInt(c.fatal_count),
+      '  Serious injuries: ' + fmtInt(c.serious_injury_count),
+      '  Length: ' + c.length_mi.toFixed(1) + ' mi',
+      '  KSI per mile: ' + (c.ksi_per_mile || 0).toFixed(2),
+      '',
+      'A countermeasure worth discussing',
+      '----------------------------------',
+      c.treatment,
+      '',
+      'What this is — and isn\'t',
+      '-------------------------',
+      'This packet describes a possible FHWA Proven Safety Countermeasure matched to',
+      'this corridor\'s crash pattern. It is a public-information starting point for a',
+      'conversation with your community and FDOT (for state roads) or your county/city',
+      '(for local roads) — not a traffic engineering study, design, or professional',
+      'recommendation. Any treatment must be reviewed and approved by a qualified,',
+      'licensed engineer and the road\'s owner before it moves forward. Cost and',
+      'crash-reduction figures are national planning-level estimates, not site-specific',
+      'engineering estimates.',
+      '',
+      'Plain-language message',
+      '----------------------',
+      c.message,
+      '',
+    ];
+    if (c.hotspot){
+      lines.push('Where on this corridor');
+      lines.push('----------------------');
+      lines.push('  ' + hotspotSentence(c.hotspot));
+      lines.push('  Method: ' + c.hotspot.method);
+      lines.push('');
+    }
+    if (c.equity && c.equity.tract_count){
+      lines.push('Who lives here (equity context)');
+      lines.push('-------------------------------');
+      lines.push('  ' + equitySentence(c.equity));
+      lines.push('  Source: ' + (c.equity.method || 'ACS 5-year, tract-level.'));
+      lines.push('');
+    }
+    if (c.countermeasures && c.countermeasures.length > 0){
+      lines.push('Possible countermeasure package (planning-level costs)');
+      lines.push('-------------------------------------------------------');
+      lines.push('  Total estimated cost: $' + fmtInt(c.countermeasure_total_low) +
+        ' to $' + fmtInt(c.countermeasure_total_high));
+      lines.push('  Estimated KSI prevented per year: ' + c.countermeasure_annual_ksi_reduced.toFixed(1));
+      lines.push('');
+      c.countermeasures.forEach((cm, i) => {
+        lines.push('  ' + (i+1) + '. ' + cm.name);
+        lines.push('     CMF ' + cm.cmf.toFixed(2) + ' (' + Math.round((1-cm.cmf)*100) + '% reduction on ' + cm.target + ' crashes)');
+        lines.push('     Cost: $' + fmtInt(cm.cost_low) + ' to $' + fmtInt(cm.cost_high));
+        lines.push('     Est. KSI/yr saved: ' + cm.annual_ksi_reduced.toFixed(2));
+        lines.push('     Source: ' + cm.cmf_source);
+        lines.push('');
+      });
+    }
+    if (c.bca){
+      lines.push('Benefit-cost estimate (planning-level)');
+      lines.push('--------------------------------------');
+      lines.push('  Return per $1 invested: ' + bcrText(c.bca));
+      lines.push('  Annual monetized benefit: $' + fmtInt(c.bca.annual_benefit_usd));
+      lines.push('  Present value of benefits: $' + fmtInt(c.bca.pv_benefits_usd));
+      lines.push('  Method: ' + c.bca.method);
+      lines.push('  Sources: ' + c.bca.sources);
+      lines.push('');
+    }
+    lines.push('Audience tags: ' + c.tags.join(', '));
+    lines.push('');
+    lines.push('Data sources: FDOT public crash layers 2018-2022 (all severities), NHTSA FARS 2022-2024 (fatals).');
+    lines.push('Florida SB 1614 (Mar 2023) creates a 60-day public-access privacy window; non-fatal 2023+ data');
+    lines.push('is not yet public. CMF sources: FHWA Proven Safety Countermeasures, FHWA CMF Clearinghouse (3-5 star).');
+    lines.push('');
+    lines.push('(Generated by SaferStreets Simplified — Escambia MVP)');
+    const blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'saferstreets-' + c.id + '.txt';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+  });
+
+
+  /* ---------- v5: hero map + geocoding + detail map ---------- */
+  state.heroMap = null;
+  state.heroPin = null;
+  state.detailMap = null;
+  state.detailLayer = null;
+  state.detailPin = null;
+
+  function initHeroMap(){
+    const el = document.getElementById('hero-map');
+    if (!el || state.heroMap) return;
+    state.heroMap = L.map('hero-map', {
+      zoomControl: false,
+      scrollWheelZoom: false,
+      dragging: true,
+      doubleClickZoom: false,
+      attributionControl: false,
+      keyboard: false,
+      tap: false,
+    }).setView([30.45, -87.23], 10);
+    L.tileLayer(CONFIG.heroTileUrl, {
+      maxZoom: CONFIG.heroTileMaxZoom,
+      attribution: CONFIG.heroTileAttribution
+    }).addTo(state.heroMap);
+    L.control.attribution({ position: 'bottomright', prefix: false }).addAttribution('OSM').addTo(state.heroMap);
+  }
+
+  // Hero map = a crash-injury heat map of the county (the "where is it bad?"
+  // overview), rendered from the same aggregated 150 m grid the priority map's
+  // heatmap toggle uses. Cells are weighted so injuries and deaths count far
+  // more than fender-benders, so the heat tracks harm, not just crash volume.
+  let heroHeatDone = false;
+  function renderHeroHeat(){
+    if (!state.heroMap || heroHeatDone) return;
+    heroHeatDone = true;
+    fetch('data/escambia_crash_grid.geojson')
+      .then(r => r.json())
+      .then(gj => {
+        let maxScore = 0;
+        (gj.features || []).forEach(f => {
+          const p = f.properties || {};
+          // every crash counts; serious injuries and fatalities count much more
+          p._score = (p.total || 0) + 3 * (p.serious || 0) + 8 * (p.fatal || 0);
+          if (p._score > maxScore) maxScore = p._score;
+        });
+        const layer = L.geoJSON(gj, {
+          style: f => ({
+            stroke: false,
+            fillColor: heroHeatColor(maxScore ? f.properties._score / maxScore : 0),
+            fillOpacity: 0.72,
+          }),
+          interactive: false,
+        });
+        layer.addTo(state.heroMap);
+        try { state.heroMap.fitBounds(layer.getBounds(), { padding: [16, 16] }); } catch (e){}
+      })
+      .catch(err => { heroHeatDone = false; console.error('Hero heatmap load failed', err); });
+  }
+
+  // Yellow -> orange -> red -> deep maroon ramp for crash-injury intensity.
+  // sqrt lifts low/mid values so the whole county reads, not just a few hot cells.
+  function heroHeatColor(t){
+    t = Math.max(0, Math.min(1, Math.sqrt(t)));
+    const stops = [[255,237,160],[254,178,76],[240,59,32],[122,0,18]];
+    const seg = t * (stops.length - 1);
+    const i = Math.min(stops.length - 2, Math.floor(seg));
+    const f = seg - i, a = stops[i], b = stops[i + 1];
+    const ch = k => Math.round(a[k] + (b[k] - a[k]) * f);
+    return 'rgb(' + ch(0) + ',' + ch(1) + ',' + ch(2) + ')';
+  }
+
+  function initDetailMap(){
+    const el = document.getElementById('detail-map');
+    if (!el || state.detailMap) return;
+    state.detailMap = L.map('detail-map', {
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: false,
+    }).setView([30.45, -87.23], 11);
+    L.tileLayer(CONFIG.tileUrl, {
+      maxZoom: CONFIG.tileMaxZoom,
+      attribution: CONFIG.tileAttribution
+    }).addTo(state.detailMap);
+    L.control.attribution({ position: 'bottomright', prefix: false }).addAttribution('OSM').addTo(state.detailMap);
+  }
+
+  function syncDetailMapToCorridor(c){
+    if (!state.detailMap || !c || !c.geometry) return;
+    if (state.detailLayer){
+      try { state.detailMap.removeLayer(state.detailLayer); } catch(e){}
+    }
+    state.detailLayer = L.geoJSON(c.geometry, {
+      style: {
+        color: bandLineColor(c.band),
+        weight: 6,
+        opacity: 0.95,
+      }
+    }).addTo(state.detailMap);
+    try { state.detailMap.fitBounds(state.detailLayer.getBounds(), { padding: [30, 30], maxZoom: 15 }); } catch(e){}
+    // Force resize after fit (sticky containers sometimes mis-size)
+    setTimeout(() => { try { state.detailMap.invalidateSize(); } catch(e){} }, 250);
+  }
+
+
+  // Geocoding via Nominatim — limited to Escambia County bbox
+  function haversineMiles(a, b){
+    const R = 3958.8;
+    const toRad = d => d * Math.PI / 180;
+    const dLat = toRad(b.lat - a.lat);
+    const dLon = toRad(b.lon - a.lon);
+    const x = Math.sin(dLat/2)**2 + Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2;
+    return R * 2 * Math.asin(Math.sqrt(x));
+  }
+
+  // Shortest distance (miles) from a point to a corridor's actual line geometry,
+  // via a local equirectangular projection + point-to-segment math. This is why
+  // "nearest corridor" is honest even for long corridors — being on the road wins
+  // over a shorter corridor whose midpoint merely happens to sit closer.
+  function pointToSegMiles2(px, py, ax, ay, bx, by){
+    const dx = bx - ax, dy = by - ay;
+    const len2 = dx*dx + dy*dy;
+    let t = len2 === 0 ? 0 : ((px-ax)*dx + (py-ay)*dy) / len2;
+    t = t < 0 ? 0 : (t > 1 ? 1 : t);
+    const cx = ax + t*dx, cy = ay + t*dy;
+    return (px-cx)*(px-cx) + (py-cy)*(py-cy);
+  }
+  function pointToCorridorMiles(lat, lon, geom){
+    if (!geom) return Infinity;
+    const segs = [];
+    if (geom.type === 'LineString') segs.push(geom.coordinates);
+    else if (geom.type === 'MultiLineString') geom.coordinates.forEach(s => segs.push(s));
+    if (!segs.length) return Infinity;
+    const R = 3958.7613; // mi
+    const toRad = d => d * Math.PI / 180;
+    const cosLat = Math.cos(toRad(lat));
+    // project (lon,lat) -> local miles plane centered on the query point
+    const proj = (lo, la) => [R * toRad(lo - lon) * cosLat, R * toRad(la - lat)];
+    let best2 = Infinity;
+    for (const seg of segs){
+      for (let i = 0; i < seg.length - 1; i++){
+        const [ax, ay] = proj(seg[i][0], seg[i][1]);
+        const [bx, by] = proj(seg[i+1][0], seg[i+1][1]);
+        const d2 = pointToSegMiles2(0, 0, ax, ay, bx, by);
+        if (d2 < best2) best2 = d2;
+      }
+      if (seg.length === 1){
+        const [ax, ay] = proj(seg[0][0], seg[0][1]);
+        const d2 = ax*ax + ay*ay;
+        if (d2 < best2) best2 = d2;
+      }
+    }
+    return Math.sqrt(best2);
+  }
+
+  function findNearestCorridor(lat, lon){
+    if (!state.corridors || !state.corridors.length) return null;
+    let best = null, bestD = Infinity;
+    state.corridors.forEach(c => {
+      const d = pointToCorridorMiles(lat, lon, c.geometry);
+      if (d < bestD){ bestD = d; best = c; }
+    });
+    return best ? { corridor: best, distance: bestD } : null;
+  }
+
+  /* ---------- homepage search result callout ---------- */
+  function heroResultEl(){ return document.getElementById('hero-result'); }
+
+  function heroLoading(query){
+    const el = heroResultEl(); if (!el) return;
+    el.hidden = false;
+    el.innerHTML = '<div class="hero-result-loading"><span class="hero-spinner" aria-hidden="true"></span>' +
+      'Finding the nearest high-risk corridor near “' + escapeHtml(query) + '”…</div>';
+  }
+
+  function heroError(msg){
+    const el = heroResultEl(); if (!el) return;
+    el.hidden = false;
+    el.innerHTML = '<p class="hero-result-err">' + escapeHtml(msg) + '</p>' +
+      '<p class="hero-result-meta">This tool currently covers Escambia County, Florida only.</p>';
+  }
+
+  function heroCorridorResult(hit, near){
+    const el = heroResultEl(); if (!el) return;
+    const c = near.corridor;
+    // hit.display_name is external (Nominatim) — escape it. Keep the first two parts for brevity.
+    const place = escapeHtml(String(hit.display_name || '').split(',').slice(0, 2).join(',').trim() || 'your location');
+    const distPhrase = near.distance < 0.1
+      ? 'right on this corridor near ' + place
+      : 'about ' + near.distance.toFixed(1) + ' mi from ' + place;
+    const cmLine = c.treatment
+      ? '<p class="hero-result-cm"><strong>A countermeasure worth discussing:</strong> ' + escapeHtml(c.treatment) + '</p>'
+      : '';
+    el.hidden = false;
+    el.innerHTML =
+      '<div class="hero-result-head">' +
+        '<span class="hero-result-eyebrow">✓ Nearest high-risk corridor</span>' +
+        '<span class="band-pill b-' + escapeHtml(c.band) + '">' + escapeHtml(BAND[c.band].label) + ' · ' + c.priority + '/100</span>' +
+      '</div>' +
+      '<div class="hero-result-name">' + escapeHtml(c.name) + '</div>' +
+      '<p class="hero-result-meta">' + escapeHtml(c.place) + ' · ' + distPhrase +
+        ' · ' + fmtInt(c.crash_count) + ' crashes, ' + fmtInt(c.fatal_count) + ' fatal (2018–2024)</p>' +
+      cmLine +
+      '<div class="hero-result-actions">' +
+        '<button type="button" class="btn" id="hero-result-go">See full details &amp; build a packet</button>' +
+      '</div>';
+    const go = document.getElementById('hero-result-go');
+    if (go) go.addEventListener('click', () => {
+      const d = document.getElementById('detail');
+      if (d) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  async function geocodeAddress(query){
+    if (!query || query.length < 3){
+      heroError('Enter at least 3 characters — a street, neighborhood, or ZIP.');
+      return;
+    }
+    // In-flight guard: a shared geocoder (Nominatim) rate-limits, so don't stack requests.
+    if (state.geocoding) return;
+    state.geocoding = true;
+    heroLoading(query);
+    const url = CONFIG.geocodeBase + '?q=' + encodeURIComponent(query)
+      + '&countrycodes=us&viewbox=' + encodeURIComponent(CONFIG.geocodeViewbox)
+      + '&bounded=1&format=json&limit=1';
+    try {
+      const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      const arr = await r.json();
+      if (!arr || !arr.length){
+        heroError('No match in Escambia County for “' + query + '.” Try a street name or ZIP code.');
+        return;
+      }
+      const hit = arr[0];
+      const lat = parseFloat(hit.lat);
+      const lon = parseFloat(hit.lon);
+      // Drop pin on hero map (geographic context)
+      if (state.heroMap){
+        if (state.heroPin){ try { state.heroMap.removeLayer(state.heroPin); } catch(e){} }
+        state.heroPin = L.marker([lat, lon]).addTo(state.heroMap);
+        state.heroMap.setView([lat, lon], 12);
+      }
+      const near = findNearestCorridor(lat, lon);
+      if (near){
+        // Reuse the priority-map result logic: this populates the detail panel,
+        // countermeasures, packet, hotspot, and equity — then surface a callout.
+        // scroll:false — the hero shows its own result callout right here; don't
+        // yank the user down to the detail panel before they've read it.
+        selectCorridor(near.corridor.id, { scroll: false });
+        heroCorridorResult(hit, near);
+      } else {
+        heroError('Found that location, but no corridors are loaded yet. Please refresh and try again.');
+      }
+    } catch (e){
+      heroError('Search failed — the geocoder may be busy. Please try again in a moment.');
+    } finally {
+      state.geocoding = false;
+    }
+  }
+
+  // Wire hero form
+  const heroForm = document.getElementById('hero-form');
+  if (heroForm){
+    heroForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = (document.getElementById('hero-address') || {}).value || '';
+      geocodeAddress(q.trim());
+    });
+  }
+
+  // Init hero + detail maps. The hero heat map reads the crash grid directly,
+  // so it doesn't wait on the corridor GeoJSON.
+  function v5MapsReady(){
+    initHeroMap();
+    initDetailMap();
+    renderHeroHeat();
+  }
+  // Defer to next tick so Leaflet sees layout
+  setTimeout(v5MapsReady, 100);
+
+})();
+</script>
+
+</body>
+</html>

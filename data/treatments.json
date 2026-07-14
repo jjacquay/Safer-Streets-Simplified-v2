@@ -1,0 +1,559 @@
+{
+  "rectangular-rapid-flashing-beacons-rrfb": {
+    "slug": "rectangular-rapid-flashing-beacons-rrfb",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Rectangular Rapid Flashing Beacons (RRFB)",
+    "tagline": "RRFBs help drivers visibly locate crossing locations and yield to pedestrians at marked crosswalks where standard signs may not be sufficient.",
+    "narrative": "Rectangular Rapid Flashing Beacons (RRFBs) are pedestrian-actuated yellow LEDs that flash with an alternating high frequency to enhance the visibility of pedestrians at uncontrolled crosswalks. This countermeasure is particularly effective at multilane crossings and can reduce pedestrian crashes by up to 47 percent.",
+    "crash_reduction": "47% for pedestrian crashes",
+    "factors": [
+      "ped"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rrfb.jpg",
+    "image_local": "assets/treatments/rectangular-rapid-flashing-beacons-rrfb.jpg",
+    "image_alt": "RRFBs used at a trail crossing.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/rectangular-rapid-flashing-beacons-rrfb"
+  },
+  "longitudinal-rumble-strips-and-stripes-two-lane-roads": {
+    "slug": "longitudinal-rumble-strips-and-stripes-two-lane-roads",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Longitudinal Rumble Strips and Stripes on Two-Lane Roads",
+    "tagline": "Rumble strips and stripes are designed to address roadway departure crashes by alerting distracted, drowsy, or otherwise inattentive drivers who drift from their lane.",
+    "narrative": "Longitudinal rumble strips are milled or raised elements intended to alert drivers through vibration and sound that their vehicle has left the travel lane. Designed to address roadway departure crashes, they alert distracted, drowsy, or inattentive drivers who drift from their lane. These countermeasures are most effective when deployed systemically on two-lane roads.",
+    "crash_reduction": "44-64% reduction in head-on fatal and injury crashes on two-lane rural roads.",
+    "factors": [
+      "lane_departure"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rumble-strip.jpg",
+    "image_local": "assets/treatments/longitudinal-rumble-strips-and-stripes-two-lane-roads.jpg",
+    "image_alt": "Shoulder rumble strips and center line rumble stripes are installed on this roadway. Source: FHWA",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/longitudinal-rumble-strips-and-stripes-two-lane-roads"
+  },
+  "dedicated-left-and-right-turn-lanes-intersections": {
+    "slug": "dedicated-left-and-right-turn-lanes-intersections",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Dedicated Left- and Right-Turn Lanes at Intersections",
+    "tagline": "Auxiliary turn lanes provide physical separation between turning traffic and through traffic at intersections to reduce the potential for crashes.",
+    "narrative": "Auxiliary turn lanes provide physical separation between turning traffic that is slowing or stopped and adjacent through traffic at approaches to intersections . They provide for deceleration prior to a turn and storage for vehicles waiting to complete a turn, reducing the potential for crashes . This countermeasure primarily reduces collisions of vehicles turning left across opposing through traffic and rear-end collisions with vehicles following closely behind .",
+    "crash_reduction": "28-48% reduction in total crashes",
+    "factors": [
+      "intersection"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/inline-images/psc_lr_turnlanes_0.jpg",
+    "image_local": "assets/treatments/dedicated-left-and-right-turn-lanes-intersections.jpg",
+    "image_alt": "Left- and right-turn lanes at a two-way stop-controlled intersection.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/dedicated-left-and-right-turn-lanes-intersections"
+  },
+  "leading-pedestrian-interval": {
+    "slug": "leading-pedestrian-interval",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Leading Pedestrian Interval",
+    "tagline": "LPIs reduce potential conflicts between pedestrians and turning vehicles.",
+    "narrative": "A leading pedestrian interval (LPI) gives pedestrians the opportunity to enter the crosswalk at an intersection 3-7 seconds before vehicles are given a green indication. This allows pedestrians to better establish their presence in the crosswalk before vehicles have priority to turn right or left. By increasing visibility and reducing conflicts, this countermeasure can lead to a 13% reduction in pedestrian-vehicle crashes at intersections.",
+    "crash_reduction": "13% reduction in pedestrian-vehicle crashes at intersections",
+    "factors": [
+      "ped",
+      "intersection"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/psc_lpi-1.jpg",
+    "image_local": "assets/treatments/leading-pedestrian-interval.jpg",
+    "image_alt": "An LPI allows a pedestrian to establish a presence in the crosswalk before vehicles are given a green indication.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/leading-pedestrian-interval"
+  },
+  "lighting": {
+    "slug": "lighting",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Lighting",
+    "tagline": "The nighttime fatality rate is three times the daytime rate because only 25 percent of vehicle miles traveled occur at night.",
+    "narrative": "Lighting can be applied continuously along segments and at spot locations such as intersections and pedestrian crossings in order to reduce the chances of a crash . Adequate lighting provides safety benefits to all roadway users by providing horizontal and vertical illuminance levels that improve visibility . This countermeasure can reduce nighttime injury pedestrian crashes at intersections by up to 42 percent .",
+    "crash_reduction": "42% reduction in nighttime injury pedestrian crashes at intersections.",
+    "factors": [
+      "night",
+      "impaired"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/inline-images/lighting%28FHWA%29.JPG",
+    "image_local": "assets/treatments/lighting.jpg",
+    "image_alt": "Streetlights illuminating a section of roadway at night.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/lighting"
+  },
+  "backplates-retroreflective-borders": {
+    "slug": "backplates-retroreflective-borders",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Backplates with Retroreflective Borders",
+    "tagline": "Backplates with retroreflective borders improve the visibility of traffic signals to reduce crashes at signalized intersections.",
+    "narrative": "Backplates added to a traffic signal head improve the visibility of the illuminated face of the signal by introducing a controlled-contrast background. The improved visibility is made even more conspicuous by framing it with a 1- to 3-inch yellow retroreflective border, which is highly visible in both daytime and nighttime conditions. This treatment acts as a human factors enhancement that reduces total crashes at signalized intersections.",
+    "crash_reduction": "15% reduction in total crashes",
+    "factors": [
+      "intersection",
+      "night"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_backplate-2.png",
+    "image_local": "assets/treatments/backplates-retroreflective-borders.png",
+    "image_alt": "A conventional traffic signal with a signal backplate and yellow retroreflective border.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/backplates-retroreflective-borders"
+  },
+  "bicycle-lanes": {
+    "slug": "bicycle-lanes",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Bicycle Lanes",
+    "tagline": "Bicycle lanes address the safety problem of fatal and serious bicyclist crashes at non-intersection locations, which often occur when motorists overtake bicyclists due to speed and size differences .",
+    "narrative": "Providing bicycle facilities can mitigate or prevent interactions, conflicts, and crashes between bicyclists and motor vehicles, and create a network of safer roadways for bicycling . These lanes align with the Safe System Approach principle of recognizing human vulnerability—where separating users in space can enhance safety for all road users . Separated bicycle lanes using vertical elements provide additional safety benefits, especially on roadways with higher vehicle volumes and speeds .",
+    "crash_reduction": "53% for bicycle/vehicle crashes",
+    "factors": [
+      "bike"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_onroad-bike-lanes.jpg",
+    "image_local": "assets/treatments/bicycle-lanes.jpg",
+    "image_alt": "Bicycle lane in Washington, DC. Source: Alex Baca, Washington Area Bicyclist Association (WABA)",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/bicycle-lanes"
+  },
+  "roundabouts": {
+    "slug": "roundabouts",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Roundabouts",
+    "tagline": "The modern roundabout is an intersection with a circular configuration that safely and efficiently moves traffic and substantially reduces fatal and injury crashes.",
+    "narrative": "Roundabouts feature channelized, curved approaches that reduce vehicle speed, entry yield control that gives right-of-way to circulating traffic, and counterclockwise flow around a central island that minimizes conflict points. The net result of lower speeds and reduced conflicts is an environment where crashes that cause injury or fatality are substantially reduced.",
+    "crash_reduction": "82% reduction in fatal and injury crashes",
+    "factors": [
+      "intersection",
+      "speeding"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/PSC_roundabout-2.jpg",
+    "image_local": "assets/treatments/roundabouts.jpg",
+    "image_alt": "Example of a single-lane roundabout.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/roundabouts"
+  },
+  "systemic-application-multiple-low-cost-countermeasures-stop": {
+    "slug": "systemic-application-multiple-low-cost-countermeasures-stop",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Systemic Application of Multiple Low-Cost Countermeasures at Stop-Controlled Intersections",
+    "tagline": "This systemic approach to intersection safety increases driver awareness and recognition of intersections and potential conflicts.",
+    "narrative": "This systemic approach to intersection safety involves deploying a package of multiple low-cost countermeasures, including enhanced signing and pavement markings, at a large number of stop-controlled intersections within a jurisdiction. These countermeasures increase driver awareness and recognition of the intersections and potential conflicts, thereby reducing fatal and injury crashes.",
+    "crash_reduction": "10% reduction of fatal and injury crashes at all locations/types/areas",
+    "factors": [
+      "intersection"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/psc_syst_cost-1.jpg",
+    "image_local": "assets/treatments/systemic-application-multiple-low-cost-countermeasures-stop.jpg",
+    "image_alt": "Example of countermeasures on the through approach. Source: South Carolina DOT",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/systemic-application-multiple-low-cost-countermeasures-stop"
+  },
+  "appropriate-speed-limits-all-road-users": {
+    "slug": "appropriate-speed-limits-all-road-users",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Appropriate Speed Limits for All Road Users",
+    "tagline": "Speed control is one of the most important methods for reducing fatalities and serious injuries, especially on non-limited access roadways where vehicles and vulnerable road users mix.",
+    "narrative": "Addressing speed is fundamental to the Safe System Approach to making streets safer. States and local jurisdictions should set appropriate speed limits to reduce the significant risks drivers impose on others—especially vulnerable road users—and on themselves, as research shows that speed limit changes alone can lead to measurable declines in speeds and crashes.",
+    "crash_reduction": "Up to 26% reduction in fatalities (Seattle case study)",
+    "factors": [
+      "speeding",
+      "ped"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/2022-08/PSC_speedlimit_icon.png",
+    "image_local": "assets/treatments/appropriate-speed-limits-all-road-users.png",
+    "image_alt": "Safety Benefit Icon showing a speed limit sign with a question mark.",
+    "image_is_icon": true,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/appropriate-speed-limits-all-road-users"
+  },
+  "variable-speed-limits": {
+    "slug": "variable-speed-limits",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Variable Speed Limits",
+    "tagline": "Providing variable speeds limits (VSLs) capable of adapting to changing circumstances could reduce crash frequency and severity.",
+    "narrative": "Variable Speed Limits (VSLs) use prevailing roadway information—such as traffic speed, volumes, weather, and road surface conditions—to determine and display appropriate speeds to drivers, improving safety by reducing speed variance. When used as part of Active Traffic Management, VSLs can effectively mitigate rear-end, sideswipe, and other crashes on high-speed roadways.",
+    "crash_reduction": "FHWA reports that Variable Speed Limits can reduce crashes on freeways by up to 34% for total crashes, 65% for rear-end crashes, and 51% for fatal and injury crashes.",
+    "factors": [
+      "speeding"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/PSC_variable-speed-limits.jpg",
+    "image_local": "assets/treatments/variable-speed-limits.jpg",
+    "image_alt": "Four freeway lanes in the same direction. Over each travel lane is a variable speed limit sign reading 45.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/variable-speed-limits"
+  },
+  "medians-and-pedestrian-refuge-islands-urban-and-suburban-areas": {
+    "slug": "medians-and-pedestrian-refuge-islands-urban-and-suburban-areas",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Medians and Pedestrian Refuge Islands in Urban and Suburban Areas",
+    "tagline": "Pedestrian crashes account for approximately 17 percent of all traffic fatalities annually, and 74 percent of these occur at non-intersection locations.",
+    "narrative": "Installing a median or pedestrian refuge island can help improve safety by allowing pedestrians to cross one direction of traffic at a time. Transportation agencies should consider medians or pedestrian refuge islands in curbed sections of urban and suburban multilane roadways, particularly in areas with a significant mix of pedestrian and vehicle traffic.",
+    "crash_reduction": "46% to 56% reduction in pedestrian crashes",
+    "factors": [
+      "ped"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_ped_median-1.jpg",
+    "image_local": "assets/treatments/medians-and-pedestrian-refuge-islands-urban-and-suburban-areas.jpg",
+    "image_alt": "Example of a road with a median and pedestrian refuge islands.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/medians-and-pedestrian-refuge-islands-urban-and-suburban-areas"
+  },
+  "speed-safety-cameras": {
+    "slug": "speed-safety-cameras",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Speed Safety Cameras",
+    "tagline": "Safe Speeds is a core principle of the Safe System Approach since humans are less likely to survive high-speed crashes.",
+    "narrative": "Speed safety cameras (SSCs) are an effective and reliable technology used to supplement traditional enforcement, engineering, and education to alter speeding norms. These systems use speed measurement devices to detect violations and capture photographic or video evidence of vehicles exceeding set speed thresholds, reducing crashes across various roadway types.",
+    "crash_reduction": "54% reduction for all crashes and 47% for injury crashes on urban principal arterials.",
+    "factors": [
+      "speeding"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/2022-06/speed-safety-camera_icon.png",
+    "image_local": "assets/treatments/speed-safety-cameras.png",
+    "image_alt": "Icon depicting a speed safety camera and a car.",
+    "image_is_icon": true,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/speed-safety-cameras"
+  },
+  "walkways": {
+    "slug": "walkways",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Walkways",
+    "tagline": "With more than 6,200 pedestrian fatalities and 75,000 pedestrian injuries occurring in roadway crashes annually, it is important for transportation agencies to improve conditions and safety for pedestrians and to integrate walkways more fully into the transportation system.",
+    "narrative": "Well-designed pedestrian walkways, shared use paths, and sidewalks improve the safety and mobility of pedestrians by providing a direct and connected network of walking routes to desired destinations. These countermeasures significantly reduce crashes involving pedestrians walking along roadways by providing defined spaces separated from vehicle traffic.",
+    "crash_reduction": "65-89% reduction in crashes involving pedestrians walking along roadways.",
+    "factors": [
+      "ped"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_walkways-1.jpg",
+    "image_local": "assets/treatments/walkways.jpg",
+    "image_alt": "Example of a sidewalk in a residential area. The photograph shows a concrete sidewalk separated from the street by a grass buffer.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/walkways"
+  },
+  "pedestrian-hybrid-beacons": {
+    "slug": "pedestrian-hybrid-beacons",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Pedestrian Hybrid Beacons",
+    "tagline": "Nearly 74 percent of pedestrian fatalities occur at non-intersection locations, and vehicle speeds are often a major contributing factor (FHWA).",
+    "narrative": "The pedestrian hybrid beacon (PHB) is a traffic control device that uses a yellow to red lighting sequence to direct motorists to stop, providing pedestrians the right-of-way to safely cross higher-speed roadways. This countermeasure is particularly effective at reducing pedestrian crashes, total crashes, and serious injury or fatal crashes at midblock crossings and uncontrolled intersections (FHWA).",
+    "crash_reduction": "55% reduction in pedestrian crashes",
+    "factors": [
+      "ped"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_phb-example.jpg",
+    "image_local": "assets/treatments/pedestrian-hybrid-beacons.jpg",
+    "image_alt": "Example of PHBs mounted on a mast arm. Source: FHWA",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/pedestrian-hybrid-beacons"
+  },
+  "corridor-access-management": {
+    "slug": "corridor-access-management",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Corridor Access Management",
+    "tagline": "Every intersection, from a signalized intersection to an unpaved driveway, has the potential for conflicts between vehicles, pedestrians, and bicyclists.",
+    "narrative": "Access management refers to the design, application, and control of entry and exit points along a roadway, including intersections and driveways. By managing the number and types of conflict points—locations where the travel paths of two users intersect—this countermeasure enhances safety and reduces total and fatal/injury crashes for all modes.",
+    "crash_reduction": "5-23% reduction in total crashes along 2-lane rural roads and 25-31% reduction in fatal and injury crashes along urban/suburban arterials.",
+    "factors": [
+      "intersection"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_cam-1.png",
+    "image_local": "assets/treatments/corridor-access-management.png",
+    "image_alt": "Illustration: This schematic shows a signalized intersection with adjacent corridor access points. The main road (labeled \"MAINLINE\") has multiple access points on both sides, such as driveways or minor street connections. There is a signalized intersection where the mainline intersects with a \"CROSS STREET.\" The illustration highlights specific areas of the intersection including the \"Mainline approach corner,\" \"Mainline receiving corner,\" \"Corner clearance,\" and several \"Access points.\" Source: FHWA",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/corridor-access-management"
+  },
+  "road-safety-audit": {
+    "slug": "road-safety-audit",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Road Safety Audit",
+    "tagline": "Road Safety Audits (RSAs) provide an independent, multidisciplinary assessment of roadway safety to address limitations in traditional safety review procedures and reduce crashes.",
+    "narrative": "RSAs are performed by a multidisciplinary team independent of the project to consider all road users and account for human factors. They are documented in a formal report and require a formal response from the road owner, helping to reduce the number and severity of crashes due to safer designs.",
+    "crash_reduction": "10-60% reduction in total crashes",
+    "factors": [
+      "intersection",
+      "ped",
+      "bike"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rsa-2.jpg",
+    "image_local": "assets/treatments/road-safety-audit.jpg",
+    "image_alt": "Multi-disciplinary team performs field review during an RSA.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/road-safety-audit"
+  },
+  "crosswalk-visibility-enhancements": {
+    "slug": "crosswalk-visibility-enhancements",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Crosswalk Visibility Enhancements",
+    "tagline": "Poor lighting conditions, obstructions such as parked cars, and horizontal or vertical roadway curvature can reduce visibility at crosswalks, contributing to safety issues (FHWA).",
+    "narrative": "Crosswalk visibility enhancements, such as high-visibility markings, improved lighting, and enhanced signing, make pedestrians and other road users more visible to drivers (FHWA). High-visibility crosswalks use patterns like bar pairs or continental designs that are visible from farther away than traditional markings, helping to reduce pedestrian injury crashes by up to 40% (FHWA).",
+    "crash_reduction": "High-visibility crosswalks can reduce pedestrian injury crashes by up to 40% (FHWA).",
+    "factors": [
+      "ped"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/crosswalk-viz.jpg",
+    "image_local": "assets/treatments/crosswalk-visibility-enhancements.jpg",
+    "image_alt": "A high visibility crosswalk crossing a two-lane road. The two-lane road extends from the lower left to the upper right. On the left side of the road, there is a sidewalk with a pedestrian standing on it, facing the crosswalk. The crosswalk is marked with high-visibility longitudinal lines. There is a car in the right lane, approaching the crosswalk. On the right side of the road, there is another sidewalk. There are also several signs and a light pole visible.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/crosswalk-visibility-enhancements"
+  },
+  "road-diets-roadway-reconfiguration": {
+    "slug": "road-diets-roadway-reconfiguration",
+    "source": "FHWA",
+    "source_full": "Federal Highway Administration — Proven Safety Countermeasure",
+    "title": "Road Diets",
+    "tagline": "A Road Diet, or roadway reconfiguration, can improve safety, calm traffic, provide better mobility and access for all road users, and enhance overall quality of life.",
+    "narrative": "A Road Diet typically involves converting an existing four-lane undivided roadway to a three-lane roadway consisting of two through lanes and a center two-way left-turn lane (TWLTL). This reconfiguration reduces rear-end and left-turn crashes due to the dedicated left-turn lane and decreases right-angle crashes as side street motorists cross fewer travel lanes.",
+    "crash_reduction": "19-47% reduction in total crashes",
+    "factors": [
+      "speeding",
+      "ped",
+      "lane_departure"
+    ],
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_road-diet-1.jpg",
+    "image_local": "assets/treatments/road-diets-roadway-reconfiguration.jpg",
+    "image_alt": "Before and after example of a Road Diet.",
+    "image_is_icon": false,
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/road-diets-roadway-reconfiguration"
+  },
+  "protected-bike-lanes": {
+    "slug": "protected-bike-lanes",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Protected Bike Lanes",
+    "tagline": "Protected bike lanes, also known as separated bike lanes, provide a comfortable bike facility for people of all ages and abilities on all types of streets.",
+    "narrative": "Protected bike lanes are separated from general-purpose travel lanes with both a buffer and a vertical element, such as a median, curb, or flexible delineators. They provide a comfortable bike facility for people of all ages and abilities on all types of streets and can reduce motor vehicle-bike crashes by over 50%. These lanes are appropriate for all streets, especially those with traffic volumes over 6,000 vehicles per day or speeds above 25 mph.",
+    "crash_reduction": "reduce motor vehicle-bike crashes by over 50%",
+    "factors": [
+      "bike"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/p146_rendering_protected_PART3.png",
+    "image_local": "assets/treatments/protected-bike-lanes.png",
+    "image_alt": "p146_rendering_protected_PART3.png",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-bikeway-design-guide/designing-bikeways-for-all-ages-and-abilities/protected-bike-lanes/"
+  },
+  "pedestrian-safety-islands": {
+    "slug": "pedestrian-safety-islands",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Pedestrian Safety Islands",
+    "tagline": "A pedestrian safety island reduces the exposure time experienced by a pedestrian in the intersection.",
+    "narrative": "Pedestrian safety islands reduce exposure time in intersections by allowing pedestrians to cross one direction of traffic at a time. They are particularly effective on wide streets with high speeds or volumes, and should be at least 6 feet wide to accommodate bicycles or strollers. Design elements often include a 'nose' that extends past the crosswalk to protect waiting pedestrians and slow turning vehicles.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "intersection"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/Crossings_MedianRefuge_01-1024x102.png",
+    "image_local": "assets/treatments/pedestrian-safety-islands.png",
+    "image_alt": "Pedestrians crossing at a safety island in Chicago, IL",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/intersection-design-elements/crosswalks-and-crossings/pedestrian-safety-islands/"
+  },
+  "design-speed": {
+    "slug": "design-speed",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Design Speed",
+    "tagline": "Speed plays a critical role in crashes and the severity of their outcomes.",
+    "narrative": "Design speed is the speed at which a street is designed to be safe and comfortable for all users, emphasizing target speed over traditional operating speed. By aligning design criteria like lane width and curb radii with lower target speeds (10-30 mph), cities can proactively reduce crash risk and injury severity. Key design notes include implementing speed reduction mechanisms like narrower lanes, speed humps, and curb extensions to improve safety for pedestrians and cyclists.",
+    "crash_reduction": "47% pedestrian crashes",
+    "factors": [
+      "ped",
+      "bike",
+      "speeding"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/DSC08134-1024x768.png",
+    "image_local": "assets/treatments/design-speed.png",
+    "image_alt": "Hero image showing a person bicycling on a city street with cars and buildings.",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/design-controls/design-speed/"
+  },
+  "fdot-context-based-solutions": {
+    "slug": "fdot-context-based-solutions",
+    "source": "FDOT",
+    "source_full": "Florida Department of Transportation — Context-Based Solutions",
+    "title": "Context-Based Solutions",
+    "tagline": "FDOT Context-Based Solutions prioritizes placing the right road in the right place to support safety, reliability, and the effective movement of people and goods.",
+    "narrative": "FDOT adopts Context-Based Solutions to ensure roadway projects are context-sensitive and consider the needs of all users. The treatment works by using a context classification system comprising eight classifications (C1 to C6) to determine key design criteria such as lane width, design speed, and pedestrian facilities. It addresses safety by matching roadway design to surrounding land use, prioritizing the elimination of fatalities and serious injuries through the Safe System Approach.",
+    "crash_reduction": "50% of fatal bicycle and pedestrian crashes occur on roadway miles classified as C3C-Suburban Commercial, which makes up 24% of the state roadway system.",
+    "factors": [
+      "ped",
+      "bike",
+      "speeding"
+    ],
+    "image_url": "https://fdotwww.blob.core.windows.net/sitefinity/images/default-source/roadway/completestreets/files/fdot-context-classification.pdf?sfvrsn=2f723eb7_2",
+    "image_local": "",
+    "image_alt": "A 3D illustration of various FDOT Context Classifications showing different land use intensities and roadway types.",
+    "image_is_icon": false,
+    "url": "https://www.fdot.gov/roadway/context-based-solutions/default.shtm"
+  },
+  "neighborhood-main-street": {
+    "slug": "neighborhood-main-street",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Neighborhood Main Street",
+    "tagline": "Neighborhood main streets are a nexus of neighborhood life, with high pedestrian volumes, frequent parking turnover, key transit routes, and bicyclists all vying for limited space.",
+    "narrative": "Neighborhood main street design creates a narrower profile with high-quality pedestrian crossings and road diets to limit traffic speeds. By converting streets from 4 lanes to a 3-lane configuration with bike lanes and a center turning lane, weaving conflicts are eliminated and traffic flow is improved. These treatments address high pedestrian volumes, frequent parking turnover, and transit needs in constrained urban environments.",
+    "crash_reduction": "nearly half",
+    "factors": [
+      "ped",
+      "bike",
+      "intersection",
+      "speeding"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/2013/07/neighborhood_main_street_reconstruction.jpg",
+    "image_local": "",
+    "image_alt": "RECONSTRUCTION: The street illustrated above depicts a 64-foot roadway within a 94-foot right-of-way.",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/streets/neighborhood-main-street/"
+  },
+  "conventional-crosswalks": {
+    "slug": "conventional-crosswalks",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Conventional Crosswalks",
+    "tagline": "Crosswalks should be designed to offer as much comfort and protection to pedestrians as possible.",
+    "narrative": "Conventional crosswalks are designed to provide maximum comfort and protection to pedestrians by keeping intersection crossings compact and moving users directly into the driver’s field of vision. The treatment utilizes high-visibility markings like ladder or zebra patterns to improve driver yielding behavior and includes features such as advanced stop bars and accessible curb ramps. By reducing crossing distances and reinforcing yielding during turning phases, these crosswalks address frequent vehicle-pedestrian conflicts at intersections.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "bike",
+      "intersection",
+      "night"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/2013/07/conventional-crosswalks-reconstruction.jpg",
+    "image_local": "",
+    "image_alt": "Diagram showing a reconstruction of an intersection with high-visibility crosswalks, curb extensions, and advanced stop bars.",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/intersection-design-elements/crosswalks-and-crossings/conventional-crosswalks/"
+  },
+  "transit-streets": {
+    "slug": "transit-streets",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Transit Streets",
+    "tagline": "Building streets to support transit entails considering every passenger’s trip from start to finish, from the walking environment to dedicated transit lanes.",
+    "narrative": "Transit streets prioritize transit over general traffic, providing safe places for people to walk and access stops. Dedicated transit lanes and operational improvements like signal timings minimize delay at intersections and ensure transit moves freely regardless of congestion. These design elements aim to create a passenger experience competitive with driving while enhancing the public realm.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "intersection"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/2013/06/Street-Elements-Headers_Transit_Transit-Streets-1.jpg",
+    "image_local": "",
+    "image_alt": "A green and white streetcar in a city environment with buildings and pedestrians.",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/street-design-elements/transit-streets/"
+  },
+  "florida-dot-hits-milestone-context-based-design": {
+    "slug": "florida-dot-hits-milestone-context-based-design",
+    "source": "CNU",
+    "source_full": "Congress for the New Urbanism",
+    "title": "Florida DOT hits milestone in context-based design",
+    "tagline": "Florida DOT adopted eight context classifications to guide road design decisions as part of its Complete Streets Implementation.",
+    "narrative": "Florida Department of Transportation adopted eight context classifications to guide road design decisions as part of its Complete Streets Implementation. This system helps planners and engineers ensure roads are designed for the right vehicle speeds, road users, and trip types by considering land use, building configuration, and street connectivity. These classifications determine design controls like allowable speeds and lane widths to better accommodate pedestrians, bicycles, and transit users.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "bike",
+      "speeding"
+    ],
+    "image_url": "https://www.cnu.org/sites/default/files/context-classifications.jpg",
+    "image_local": "assets/treatments/florida-dot-hits-milestone-context-based-design.jpg",
+    "image_alt": "Figure 2: FDOT Context Classifications diagram showing eight context zones from natural to urban core.",
+    "image_is_icon": false,
+    "url": "https://www.cnu.org/publicsquare/2017/10/13/florida-dot-hits-milestone-context-based-design"
+  },
+  "downtown-1-way-street": {
+    "slug": "downtown-1-way-street",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Downtown 1-Way Street",
+    "tagline": "Narrowing broad downtown 1-way roadways using cycle tracks and transit lanes can optimize the street as a public space and reduce conflicts.",
+    "narrative": "Downtown 1-way streets can be redesigned by narrowing broad roadways with cycle tracks and transit lanes to optimize usage as public space. This treatment addresses conflicts between bicyclists and fast-moving traffic by implementing raised or parking-buffered cycle tracks, which also create pedestrian safety islands to decrease crossing exposure time. Key design notes include the application of red bus-only lanes at curbside or offset to manage heavy bus traffic and improve operations.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "bike",
+      "speeding"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/downtown-1-way-street-01.png",
+    "image_local": "assets/treatments/downtown-1-way-street.png",
+    "image_alt": "RECONSTRUCTION: The street illustrated above depicts a 46-foot roadway within an 86-foot right-of-way.",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/streets/downtown-1-way-street/"
+  },
+  "street-networks-101": {
+    "slug": "street-networks-101",
+    "source": "CNU",
+    "source_full": "Congress for the New Urbanism",
+    "title": "Street Networks 101",
+    "tagline": "The design and planning of street networks has become a lost art in contemporary transportation studies.",
+    "narrative": "Street networks serve as the backbone for communities, where compact and connected designs provide greater accessibility and safety. Research indicates that living in compact street network arrangements makes individuals three times less likely to be involved in a fatal crash compared to those in sparser, tree-like designs. These human-scale networks are designed to accommodate a diverse set of urban street types, prioritizing the needs of pedestrians and cyclists while creating efficient templates for dispersing traffic.",
+    "crash_reduction": "three times less likely to be involved in a fatal crash",
+    "factors": [
+      "ped",
+      "bike",
+      "intersection"
+    ],
+    "image_url": "https://www.cnu.org/sites/default/files/TucsonStreetcar_HDRinc.png",
+    "image_local": "assets/treatments/street-networks-101.png",
+    "image_alt": "Top photo: HDR, Inc",
+    "image_is_icon": false,
+    "url": "https://www.cnu.org/our-projects/street-networks/street-networks-101"
+  },
+  "sustainable-street-network-principles": {
+    "slug": "sustainable-street-network-principles",
+    "source": "CNU",
+    "source_full": "Congress for the New Urbanism",
+    "title": "Sustainable Street Network Principles",
+    "tagline": "We advocate a return to the historic understanding of the street network as a fundamental framework for safe, livable communities, where the human scale of the individual and the act of walking represent the basic unit of design.",
+    "narrative": "These principles advocate for a return to the historic understanding of the street network as a fundamental framework for safe, livable communities where walking is the basic unit of design. By creating a finely woven fabric of streets and blocks, the treatment provides direct pedestrian and bicycle routes while integrating with natural systems and other transportation modes. This approach addresses safety and place-making by maximizing choice and ensuring all people can travel in a safe, dignified, and efficient manner.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "bike"
+    ],
+    "image_url": "https://www.cnu.org/sites/default/files/TucsonStreetcar_HDRinc_1.png",
+    "image_local": "assets/treatments/sustainable-street-network-principles.png",
+    "image_alt": "Top photo: HDR, Inc",
+    "image_is_icon": false,
+    "url": "https://www.cnu.org/our-projects/street-networks/sustainable-street-network-principles"
+  },
+  "residential-boulevard": {
+    "slug": "residential-boulevard",
+    "source": "NACTO",
+    "source_full": "National Association of City Transportation Officials",
+    "title": "Residential Boulevard",
+    "tagline": "Retrofit residential boulevards by expanding or activating the median, adding curbside or left-side bike lanes, and curb extensions that provide direct access from homes to the center median.",
+    "narrative": "Retrofit residential boulevards by expanding or activating the median, adding curbside or left-side bike lanes, and curb extensions that provide direct access from homes to the center median. The treatment includes activating the central median with plantings, walkways, and seating, and implementing a raised cycle track to avoid conflicts with driveways. These design elements effectively expand recreational space while narrowing the overall cross-section to reinforce residential character and manage speeds.",
+    "crash_reduction": "",
+    "factors": [
+      "ped",
+      "bike",
+      "speeding"
+    ],
+    "image_url": "https://nacto.org/wp-content/uploads/12-Residential-Boulevard-Existing.png",
+    "image_local": "assets/treatments/residential-boulevard.png",
+    "image_alt": "Residential Boulevard - Reconstruction. The street illustrated above depicts an 80 foot roadway within a 110-foot right-of-way. Activate the central median with plantings, street trees, walkways, and seating. Broad central medians can become a community focal point as well as an active space for recreation, exercise, and leisure. Provide curb extensions and/or midblock crossings to make it safer and easier for residents to access the median. A raised cycle track takes advantage of the central right-of-way, avoids frequent conflicts with driveways and double-parked cars, and effectively expands the amount of recreational space along the corridor. Provide curbside parking for residents. Curbside parking provides access to the recreational median for visitors, space for residents’ guests to park, and narrows the overall cross-section of the road, reinforcing its residential character.",
+    "image_is_icon": false,
+    "url": "https://nacto.org/publication/urban-street-design-guide/streets/residential-boulevard/"
+  }
+}

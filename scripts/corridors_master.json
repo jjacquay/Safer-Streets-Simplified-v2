@@ -1,0 +1,567 @@
+{
+  "_comment": "Master corridor list. Each corridor has a stable id, plain-language name, the OSM query needed to fetch its centerline, and provenance flags. Sources: ECRC SS4A HIN (FL-AL TPO 2050 LRTP Needs Report Dec 2024), City of Pensacola ATP HIN, FDOT HSIP top segments, original MVP list, $10M SS4A flagship corridors.",
+  "corridors": [
+    {
+      "id": "C001",
+      "name": "Cervantes Street (W) — Pace to A",
+      "place": "Downtown / Belmont-DeVilliers",
+      "summary": "Wide road where people cross to reach buses, jobs, and clinics. Crashes here often involve people walking.",
+      "message": "Cervantes is the single highest-risk walking corridor downtown. Shorter, protected crossings would help transit riders and neighbors most. Cervantes is a primary walking route to downtown jobs, clinics, and transit. Shorter, signalized crossings are a proven way to reduce pedestrian conflicts here.",
+      "treatment": "Road diet + protected crosswalks",
+      "tags": [
+        "transit",
+        "schools",
+        "wide-road",
+        "pedestrian-deaths"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-1",
+        "Pensacola-ATP-HIN",
+        "FDOT-HSIP",
+        "RAISE-4553521"
+      ],
+      "osm": {
+        "name_pattern": "(?i)^(west )?cervantes street$",
+        "name_keys": [
+          "West Cervantes Street",
+          "W Cervantes St",
+          "Cervantes Street"
+        ],
+        "bbox": [
+          -87.275,
+          30.418,
+          -87.205,
+          30.425
+        ]
+      },
+      "resilience_message": "Cervantes is a primary walking route to downtown jobs, clinics, and transit. Shorter, signalized crossings are a proven way to reduce pedestrian conflicts here."
+    },
+    {
+      "id": "C002",
+      "name": "Mobile Highway / US 90 (W of Pine Forest)",
+      "place": "Brownsville / West Escambia",
+      "summary": "Fast traffic at night near bus stops. Many people walking are hit after dark.",
+      "message": "Brighter lights, slower speeds, and safer bus stops would prevent the most crashes per dollar on this stretch. Ranked #2 in the entire 5-county region. Mobile Highway carries workers to west-side industrial jobs and freight toward the port. Lighting and signal upgrades are among the most cost-effective crash countermeasures for a corridor like this.",
+      "treatment": "Lower speed limit + lighting + bus stop islands",
+      "tags": [
+        "transit",
+        "low-income",
+        "wide-road",
+        "night-crashes"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-17",
+        "ECRC-HIN-Escambia-14"
+      ],
+      "osm": {
+        "name_keys": [
+          "Mobile Highway",
+          "US 90"
+        ],
+        "bbox": [
+          -87.38,
+          30.435,
+          -87.23,
+          30.475
+        ]
+      },
+      "resilience_message": "Mobile Highway carries workers to west-side industrial jobs and freight toward the port. Lighting and signal upgrades are among the most cost-effective crash countermeasures for a corridor like this."
+    },
+    {
+      "id": "C003",
+      "name": "Nine Mile Road (W) — University to Pensacola Blvd",
+      "place": "North Escambia",
+      "summary": "Long distances between safe crossings near schools and shopping.",
+      "message": "Small islands in the middle of the road give families a safe place to pause when crossing. Top-ranked intersection in Escambia County. Nine Mile Road has the highest crash count in the five-county region. Median refuges and signal upgrades reduce crashes by roughly 41-56% in FHWA evaluations.",
+      "treatment": "Median refuges + signal timing for walkers",
+      "tags": [
+        "wide-road",
+        "schools",
+        "growing-area"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-9",
+        "ECRC-HIN-Escambia-19",
+        "ECRC-HIN-Escambia-21",
+        "FDOT-HSIP"
+      ],
+      "osm": {
+        "name_keys": [
+          "West Nine Mile Road",
+          "W Nine Mile Rd",
+          "Nine Mile Road",
+          "9 Mile Road",
+          "9 Mile Rd"
+        ],
+        "bbox": [
+          -87.33,
+          30.523,
+          -87.205,
+          30.54
+        ]
+      },
+      "resilience_message": "Nine Mile Road has the highest crash count in the five-county region. Median refuges and signal upgrades reduce crashes by roughly 41-56% in FHWA evaluations."
+    },
+    {
+      "id": "C004",
+      "name": "Navy Boulevard / US 98",
+      "place": "Warrington",
+      "summary": "Workers walking and biking to NAS Pensacola share lanes with fast traffic.",
+      "message": "A protected bike lane and clearer crosswalks would help shift workers get to and from base safely. Navy Boulevard is a daily commute route for NAS Pensacola personnel, contractors, and civilians. Protected bike lanes and clearer crossings reduce conflicts for people walking and biking to the base.",
+      "treatment": "Protected bike lane + crosswalk upgrades",
+      "tags": [
+        "transit",
+        "bike-route",
+        "military-base"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-2"
+      ],
+      "osm": {
+        "name_keys": [
+          "Navy Boulevard",
+          "US 98",
+          "SR 30"
+        ],
+        "bbox": [
+          -87.31,
+          30.395,
+          -87.225,
+          30.425
+        ]
+      },
+      "resilience_message": "Navy Boulevard is a daily commute route for NAS Pensacola personnel, contractors, and civilians. Protected bike lanes and clearer crossings reduce conflicts for people walking and biking to the base."
+    },
+    {
+      "id": "C005",
+      "name": "Davis Highway / SR 291",
+      "place": "Brent / Ferry Pass",
+      "summary": "Many driveways and missing sidewalk pieces force people into the street.",
+      "message": "Closing sidewalk gaps and tidying driveway access is a low-cost first step. FDOT HSIP top segment. Davis Highway runs through the Cordova retail core. Closing sidewalk gaps and managing driveway access are low-cost first steps.",
+      "treatment": "Access management + sidewalk gaps closed",
+      "tags": [
+        "wide-road",
+        "shopping",
+        "sidewalk-gaps"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-23",
+        "FDOT-HSIP",
+        "FDOT-D3-FY25-29"
+      ],
+      "osm": {
+        "name_keys": [
+          "North Davis Highway",
+          "N Davis Hwy",
+          "Davis Highway"
+        ],
+        "bbox": [
+          -87.215,
+          30.438,
+          -87.198,
+          30.518
+        ]
+      },
+      "resilience_message": "Davis Highway runs through the Cordova retail core. Closing sidewalk gaps and managing driveway access are low-cost first steps."
+    },
+    {
+      "id": "C006",
+      "name": "Palafox Street (N) / US 29",
+      "place": "Downtown North",
+      "summary": "Long urban corridor with mixed pedestrian, transit, and through-traffic conflicts.",
+      "message": "Tighter intersections and signal priority for walkers would slow turning cars and make walking to shops safer. Palafox is the spine of historic downtown. Low-cost signal and intersection upgrades reduce conflicts between turning cars and people walking.",
+      "treatment": "Curb extensions + slower speeds",
+      "tags": [
+        "downtown",
+        "small-business",
+        "walkable",
+        "transit"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-4"
+      ],
+      "osm": {
+        "name_keys": [
+          "North Palafox Street",
+          "N Palafox St",
+          "Palafox Street"
+        ],
+        "bbox": [
+          -87.225,
+          30.414,
+          -87.215,
+          30.47
+        ]
+      },
+      "resilience_message": "Palafox is the spine of historic downtown. Low-cost signal and intersection upgrades reduce conflicts between turning cars and people walking."
+    },
+    {
+      "id": "C007",
+      "name": "Bayou Boulevard / SR 296",
+      "place": "East Pensacola",
+      "summary": "Busy shopping area with long wait times to cross.",
+      "message": "Giving walkers a head start at the signal cuts conflicts with turning cars. FDOT HSIP top segment. Bayou Boulevard serves Cordova Mall and Sacred Heart Hospital. A leading pedestrian interval is a near-zero-cost signal-timing change that reduces turning conflicts.",
+      "treatment": "Crosswalk visibility + leading walk signals",
+      "tags": [
+        "shopping",
+        "transit",
+        "wide-road"
+      ],
+      "sources": [
+        "FDOT-HSIP",
+        "ECSAP-dangerous-road"
+      ],
+      "osm": {
+        "name_keys": [
+          "Bayou Boulevard",
+          "Brent Lane",
+          "SR 296",
+          "West Michigan Avenue"
+        ],
+        "bbox": [
+          -87.245,
+          30.443,
+          -87.195,
+          30.465
+        ]
+      },
+      "resilience_message": "Bayou Boulevard serves Cordova Mall and Sacred Heart Hospital. A leading pedestrian interval is a near-zero-cost signal-timing change that reduces turning conflicts."
+    },
+    {
+      "id": "C008",
+      "name": "US 29 / Pensacola Blvd — Cantonment & North",
+      "place": "Cantonment / Century",
+      "summary": "Long state highway with fatal crashes; flagged as one of the highest fatality corridors in FDOT D3.",
+      "message": "Signal coordination and ITS upgrades are the priority fixes identified for this rural-edge corridor. $10M SS4A flagship. US 29 is the freight route to the north county and Alabama. It's one of two Escambia corridors in ECRC's $10,000,000 federal SS4A grant for ITS safety-demonstration improvements (USDOT FY24).",
+      "treatment": "ITS deployment + signal coordination + lighting",
+      "tags": [
+        "schools",
+        "rural-edge",
+        "wide-road",
+        "fatal"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-8",
+        "ECRC-HIN-Escambia-15",
+        "SS4A-10M-flagship",
+        "FDOT-D3-FY25-29"
+      ],
+      "osm": {
+        "name_keys": [
+          "Pensacola Boulevard",
+          "US 29",
+          "SR 95"
+        ],
+        "bbox": [
+          -87.33,
+          30.47,
+          -87.19,
+          30.62
+        ]
+      },
+      "resilience_message": "US 29 is the freight route to the north county and Alabama. It's one of two Escambia corridors in ECRC's $10,000,000 federal SS4A grant for ITS safety-demonstration improvements (USDOT FY24)."
+    },
+    {
+      "id": "C009",
+      "name": "Fairfield Drive — Mobile Hwy to Texar",
+      "place": "Brownsville / Englewood",
+      "summary": "Broken sidewalks, dim lights, and unsafe bus stops; 941 crashes (FDOT 2018–2022 + FARS fatals 2022–2024), including 11 fatalities.",
+      "message": "A $10M federal SS4A grant is funding ITS safety-demonstration improvements on this exact stretch. Fairfield Drive carries workers to Sacred Heart, Baptist, and Cordova retail. ECRC's SS4A-funded crash study (Signal Four Analytics, 2021–2025) counted 1,725 crashes here, including 4 deaths.",
+      "treatment": "ITS + lighting + sidewalk + bus stop pads",
+      "tags": [
+        "transit",
+        "low-income",
+        "night-crashes",
+        "fatal"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-3",
+        "ECRC-HIN-Escambia-10",
+        "ECRC-HIN-Escambia-22",
+        "Pensacola-ATP-HIN",
+        "SS4A-10M-flagship"
+      ],
+      "osm": {
+        "name_keys": [
+          "Fairfield Drive",
+          "East Fairfield Drive",
+          "West Fairfield Drive",
+          "SR 295",
+          "SR 727"
+        ],
+        "bbox": [
+          -87.295,
+          30.43,
+          -87.18,
+          30.452
+        ]
+      },
+      "resilience_message": "Fairfield Drive carries workers to Sacred Heart, Baptist, and Cordova retail. A $10M federal SS4A grant is funding ITS safety-demonstration improvements on this stretch."
+    },
+    {
+      "id": "C010",
+      "name": "Scenic Highway — Summit to Langley",
+      "place": "East Hill / Scenic Heights",
+      "summary": "Drivers speed on a long, straight, scenic road shared with cyclists.",
+      "message": "Showing drivers their speed lowers it, and a bike lane gives riders a clear space. Scenic Highway sees frequent lane-departure crashes. Rumble strips and speed feedback are among the cheapest interventions in the FHWA catalog.",
+      "treatment": "Bike lane + speed feedback signs",
+      "tags": [
+        "bike-route",
+        "scenic",
+        "speeding"
+      ],
+      "sources": [
+        "MVP-original"
+      ],
+      "osm": {
+        "name_keys": [
+          "Scenic Highway",
+          "US 90 ALT"
+        ],
+        "bbox": [
+          -87.19,
+          30.405,
+          -87.155,
+          30.475
+        ]
+      },
+      "resilience_message": "Scenic Highway sees frequent lane-departure crashes. Rumble strips and speed feedback are among the cheapest interventions in the FHWA catalog."
+    },
+    {
+      "id": "C011",
+      "name": "Bayfront Parkway — Tarragona to 17th",
+      "place": "Waterfront",
+      "summary": "Visitors and locals cross between downtown and the waterfront trail.",
+      "message": "Better trail crossings link downtown to the bay for residents and visitors. Bayfront Parkway links downtown and the waterfront for residents and visitors. Improved trail crossings reduce conflicts along the route.",
+      "treatment": "Trail crossings + signal upgrades",
+      "tags": [
+        "waterfront",
+        "tourism",
+        "bike-route"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-13"
+      ],
+      "osm": {
+        "name_keys": [
+          "Bayfront Parkway"
+        ],
+        "bbox": [
+          -87.225,
+          30.405,
+          -87.19,
+          30.418
+        ]
+      },
+      "resilience_message": "Bayfront Parkway links downtown and the waterfront for residents and visitors. Improved trail crossings reduce conflicts along the route."
+    },
+    {
+      "id": "C012",
+      "name": "Pace Boulevard / SR 292",
+      "place": "Englewood",
+      "summary": "Wide road splitting a residential neighborhood with schools nearby. Pace × Cervantes is the most fatal intersection in Pensacola.",
+      "message": "Narrowing lanes and protected crossings would knit a divided neighborhood back together. Lighting study funded 2025. Pace Boulevard divides adjacent neighborhoods. Narrowing lanes and adding protected crossings improve walkability; a lighting study is funded for 2025.",
+      "treatment": "Road diet + protected crossings + lighting",
+      "tags": [
+        "wide-road",
+        "transit",
+        "schools",
+        "low-income",
+        "fatal"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-11",
+        "Pensacola-ATP-HIN",
+        "ECSAP-dangerous-road"
+      ],
+      "osm": {
+        "name_keys": [
+          "North Pace Boulevard",
+          "South Pace Boulevard",
+          "Pace Boulevard",
+          "SR 292"
+        ],
+        "bbox": [
+          -87.245,
+          30.395,
+          -87.225,
+          30.455
+        ]
+      },
+      "resilience_message": "Pace Boulevard divides adjacent neighborhoods. Narrowing lanes and adding protected crossings improve walkability; a lighting study is funded for 2025."
+    },
+    {
+      "id": "C013",
+      "name": "9th Avenue / SR 289",
+      "place": "East Pensacola",
+      "summary": "City-designated High Injury Network corridor; mixed residential and commercial.",
+      "message": "Speed management and intersection visibility are the levers on 9th Ave. 9th Avenue is the medical-district artery. Speed management and intersection-visibility upgrades support hospital and ambulance access.",
+      "treatment": "Speed management + intersection visibility",
+      "tags": [
+        "wide-road",
+        "schools",
+        "shopping"
+      ],
+      "sources": [
+        "Pensacola-ATP-HIN",
+        "FDOT-HSIP"
+      ],
+      "osm": {
+        "name_keys": [
+          "North 9th Avenue",
+          "9th Avenue",
+          "North Ninth Avenue"
+        ],
+        "bbox": [
+          -87.215,
+          30.415,
+          -87.2,
+          30.47
+        ]
+      },
+      "resilience_message": "9th Avenue is the medical-district artery. Speed management and intersection-visibility upgrades support hospital and ambulance access."
+    },
+    {
+      "id": "C014",
+      "name": "Airport Boulevard",
+      "place": "Cordova / Airport",
+      "summary": "Major east-west connector with shopping, hospitals, and the airport.",
+      "message": "Crosswalk visibility and signal timing for walkers near the mall and hospital cluster. Airport Boulevard serves a major hospital-and-retail employment cluster. Crosswalk-visibility and signal-timing fixes reduce conflicts for people walking.",
+      "treatment": "Crosswalks + leading walk signals",
+      "tags": [
+        "shopping",
+        "wide-road",
+        "hospitals"
+      ],
+      "sources": [
+        "Pensacola-ATP-HIN"
+      ],
+      "osm": {
+        "name_keys": [
+          "Airport Boulevard"
+        ],
+        "bbox": [
+          -87.225,
+          30.46,
+          -87.17,
+          30.48
+        ]
+      },
+      "resilience_message": "Airport Boulevard serves a major hospital-and-retail employment cluster. Crosswalk-visibility and signal-timing fixes reduce conflicts for people walking."
+    },
+    {
+      "id": "C015",
+      "name": "Creighton Road",
+      "place": "Ferry Pass",
+      "summary": "Residential collector with school access and active transportation gaps.",
+      "message": "Sidewalk connectivity and safe school crossings are the priorities here. Creighton Road serves multiple schools. Sidewalk connectivity and safe school crossings are the priorities here.",
+      "treatment": "Sidewalk completion + school crossings",
+      "tags": [
+        "schools",
+        "neighborhood"
+      ],
+      "sources": [
+        "Pensacola-ATP-HIN"
+      ],
+      "osm": {
+        "name_keys": [
+          "Creighton Road"
+        ],
+        "bbox": [
+          -87.22,
+          30.49,
+          -87.15,
+          30.502
+        ]
+      },
+      "resilience_message": "Creighton Road serves multiple schools. Sidewalk connectivity and safe school crossings are the priorities here."
+    },
+    {
+      "id": "C016",
+      "name": "Blue Angel Parkway / SR 173",
+      "place": "Southwest Escambia",
+      "summary": "Suburban arterial with rising crash frequency near growing residential areas.",
+      "message": "Roundabouts and access management are common Blue Angel countermeasures. Blue Angel Parkway is a main route to NAS Pensacola. Roundabouts and access management at the worst intersections reduce severe crashes.",
+      "treatment": "Roundabouts + access management",
+      "tags": [
+        "wide-road",
+        "suburban",
+        "growing-area"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-18"
+      ],
+      "osm": {
+        "name_keys": [
+          "Blue Angel Parkway",
+          "South Blue Angel Parkway",
+          "SR 173"
+        ],
+        "bbox": [
+          -87.395,
+          30.38,
+          -87.345,
+          30.47
+        ]
+      },
+      "resilience_message": "Blue Angel Parkway is a main route to NAS Pensacola. Roundabouts and access management at the worst intersections reduce severe crashes."
+    },
+    {
+      "id": "C017",
+      "name": "Pine Forest Road / SR 297",
+      "place": "Northwest Escambia",
+      "summary": "Rural arterial with the #2 intersection in the county for crashes.",
+      "message": "Intersection treatments at SR 297 / US 90 ALT are top priority. Pine Forest Road is a heavy-truck route to the industrial north. Intersection treatments at SR 297 / US 90 ALT are the top priority.",
+      "treatment": "Intersection redesign + signals",
+      "tags": [
+        "wide-road",
+        "rural-edge",
+        "fatal"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-20",
+        "FDOT-HSIP"
+      ],
+      "osm": {
+        "name_keys": [
+          "Pine Forest Road",
+          "SR 297"
+        ],
+        "bbox": [
+          -87.345,
+          30.5,
+          -87.305,
+          30.605
+        ]
+      },
+      "resilience_message": "Pine Forest Road is a heavy-truck route to the industrial north. Intersection treatments at SR 297 / US 90 ALT are the top priority."
+    },
+    {
+      "id": "C018",
+      "name": "Lillian Highway",
+      "place": "Warrington / West Pensacola",
+      "summary": "East-west arterial connecting Warrington to Mobile Hwy.",
+      "message": "Sidewalk completion and crosswalk visibility on a route with limited safe walking options. Lillian Highway connects west-side neighborhoods to major area employers. Sidewalk completion and crossing upgrades give people safer options on a route with limited walking infrastructure.",
+      "treatment": "Sidewalks + crosswalk visibility",
+      "tags": [
+        "transit",
+        "wide-road"
+      ],
+      "sources": [
+        "ECRC-HIN-Escambia-25"
+      ],
+      "osm": {
+        "name_keys": [
+          "Lillian Highway"
+        ],
+        "bbox": [
+          -87.33,
+          30.395,
+          -87.255,
+          30.41
+        ]
+      },
+      "resilience_message": "Lillian Highway connects west-side neighborhoods to major area employers. Sidewalk completion and crossing upgrades give people safer options on a route with limited walking infrastructure."
+    }
+  ]
+}

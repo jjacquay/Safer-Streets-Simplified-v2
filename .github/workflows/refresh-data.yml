@@ -1,0 +1,133 @@
+name: Refresh crash + corridor data
+
+# Refreshes the committed data from public, keyless sources on a GitHub-hosted
+# runner (which — unlike the Claude Code sandbox — has open outbound internet),
+# then opens a pull request.
+#
+# SAFE, NON-DESTRUCTIVE by design — it never rebuilds the corridor file from
+# scratch (the committed enrichment scripts are out of sync with the curated v5
+# data: map_corridors_to_psc.py would replace the rich `psc` card LIST with a
+# single dict and break the UI). Instead it updates only derived fields on the
+# EXISTING file and refreshes standalone outputs:
+#   • refresh_corridor_counts.py — recomputes crash counts / score / risk /
+#     crash_factors via the 30 m buffer join, overwriting ONLY those numeric
+#     fields; curated psc/countermeasures/equity/text are preserved.
+#   • build_countermeasures.py — recomputes cost/KSI from the new crash_factors.
+#   • build_hex_grid.py — rebuilds the heatmap grid (no curated content).
+#   • fetch_acs_escambia.py + join_acs_to_corridors.py — ADD/update `equity`
+#     (needs the CENSUS_API_KEY secret; soft-skips without it).
+# A sanity gate fails the run if `psc` ever stops being a list.
+#
+# Cannot fetch at all: Signal Four Analytics 2023+ NON-FATAL crashes (behind an
+# authenticated, agency-authorized login; FL SB 1614 60-day public window), so
+# non-fatal coverage stays at 2018–2022 until a manual Signal Four export.
+
+on:
+  workflow_dispatch:
+    inputs:
+      fars_years:
+        description: "FARS years to download (space-separated)"
+        default: "2022 2023 2024"
+  # Non-destructive, so safe to run on a schedule (07:17 UTC on the 3rd of each month):
+  schedule:
+    - cron: "17 7 3 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download NHTSA FARS national CSVs
+        run: |
+          set -eu
+          mkdir -p data/private/fars
+          for y in ${{ github.event.inputs.fars_years }}; do
+            url="https://static.nhtsa.gov/nhtsa/downloads/FARS/${y}/National/FARS${y}NationalCSV.zip"
+            echo "Fetching $url"
+            if curl -fsSL "$url" -o "/tmp/fars_${y}.zip"; then
+              mkdir -p "data/private/fars/fars_${y}"
+              unzip -oq "/tmp/fars_${y}.zip" -d "data/private/fars/fars_${y}" || echo "unzip failed for $y"
+            else
+              echo "::warning::FARS ${y} not available yet — skipping"
+            fi
+          done
+
+      - name: Fetch FDOT crashes (2018–2022, all severities)
+        run: python3 scripts/fetch_crashes_full.py
+
+      - name: Extract FARS fatals (2022–2024)
+        run: python3 scripts/fetch_fars_escambia.py
+
+      - name: Refresh corridor crash counts (numeric fields only, non-destructive)
+        run: python3 scripts/refresh_corridor_counts.py
+
+      - name: Recompute costed countermeasures from new crash factors
+        run: python3 scripts/build_countermeasures.py
+
+      - name: Recompute planning-level benefit-cost ratios
+        run: python3 scripts/add_benefit_cost.py
+
+      - name: Rebuild crash heatmap grid (no curated content)
+        run: python3 scripts/build_hex_grid.py
+
+      # The committed fallback key was placed here at the repo owner's direction.
+      # Census Data API keys are free and identify requests for rate-limiting only
+      # (no billing or data access), so exposure risk is minimal; a CENSUS_API_KEY
+      # repository secret, if ever configured, takes precedence automatically.
+      - name: Fetch ACS equity indicators
+        env:
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY || '7f8e556081d4057fe37080c01c0ae9fa018cdb1b' }}
+        run: python3 scripts/fetch_acs_escambia.py
+
+      - name: Join ACS equity context onto corridors (additive)
+        run: python3 scripts/join_acs_to_corridors.py
+
+      - name: Find hotspot windows within each corridor (additive)
+        run: python3 scripts/add_hotspot_windows.py
+
+      - name: Sanity-check output
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open("data/escambia_corridors.geojson"))
+          n = len(d["features"])
+          assert n >= 10, f"only {n} corridors — file looks corrupt"
+          p0 = d["features"][0]["properties"]
+          # the app requires psc to stay a LIST of rich cards
+          assert isinstance(p0.get("psc"), list), "psc is not a list — clobber detected"
+          # counts must be present and numeric
+          assert isinstance(p0.get("crash_count"), int), "crash_count missing after refresh"
+          assert isinstance(p0.get("countermeasures"), list), "countermeasures missing"
+          print(f"OK: {n} corridors; psc list intact; counts refreshed")
+          PY
+
+      - name: Open pull request with refreshed data
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: data-refresh/${{ github.run_id }}
+          title: "Data refresh: corridor counts + countermeasures + heatmap + equity"
+          commit-message: "Refresh corridor crash counts, countermeasures, heatmap, and equity"
+          body: |
+            Automated, non-destructive data refresh:
+            - Corridor crash counts / score / risk / crash_factors recomputed from
+              fresh FDOT (2018–2022) + FARS (2022–2024) via the 30 m buffer join
+              (numeric fields only — curated psc/text/equity preserved).
+            - Costed countermeasures recomputed from the new crash factors.
+            - Crash heatmap grid rebuilt.
+            - ACS `equity` context refreshed (if CENSUS_API_KEY is configured).
+
+            Non-fatal 2023+ crashes remain absent (manual Signal Four export).
+            Review is optional — the run fails if `psc` stops being a list.
+          add-paths: |
+            data/escambia_corridors.geojson
+            data/escambia_crash_grid.geojson
+            data/acs_escambia_tracts.json

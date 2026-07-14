@@ -1,0 +1,122 @@
+{
+  "rectangular-rapid-flashing-beacons-rrfb": {
+    "slug": "rectangular-rapid-flashing-beacons-rrfb",
+    "title": "Rectangular Rapid Flashing Beacons (RRFB)",
+    "tagline": "RRFBs help drivers visibly locate crossing locations and yield to pedestrians at marked crosswalks where standard signs may not be sufficient.",
+    "narrative": "Rectangular Rapid Flashing Beacons (RRFBs) are pedestrian-actuated yellow LEDs that flash with an alternating high frequency to enhance the visibility of pedestrians at uncontrolled crosswalks. This countermeasure is particularly effective at multilane crossings and can reduce pedestrian crashes by up to 47 percent.",
+    "crash_reduction": "47% for pedestrian crashes",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rrfb.jpg",
+    "image_alt": "RRFBs used at a trail crossing.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/rectangular-rapid-flashing-beacons-rrfb",
+    "image_local": "assets/psc/rectangular-rapid-flashing-beacons-rrfb.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rrfb.jpg"
+  },
+  "longitudinal-rumble-strips-and-stripes-two-lane-roads": {
+    "slug": "longitudinal-rumble-strips-and-stripes-two-lane-roads",
+    "title": "Longitudinal Rumble Strips and Stripes on Two-Lane Roads",
+    "tagline": "Rumble strips and stripes are designed to address roadway departure crashes by alerting distracted, drowsy, or otherwise inattentive drivers who drift from their lane.",
+    "narrative": "Longitudinal rumble strips are milled or raised elements intended to alert drivers through vibration and sound that their vehicle has left the travel lane. Designed to address roadway departure crashes, they alert distracted, drowsy, or inattentive drivers who drift from their lane. These countermeasures are most effective when deployed systemically on two-lane roads.",
+    "crash_reduction": "44-64% reduction in head-on fatal and injury crashes on two-lane rural roads.",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rumble-strip.jpg",
+    "image_alt": "Shoulder rumble strips and center line rumble stripes are installed on this roadway. Source: FHWA",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/longitudinal-rumble-strips-and-stripes-two-lane-roads",
+    "image_local": "assets/psc/longitudinal-rumble-strips-and-stripes-two-lane-roads.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_rumble-strip.jpg"
+  },
+  "dedicated-left-and-right-turn-lanes-intersections": {
+    "slug": "dedicated-left-and-right-turn-lanes-intersections",
+    "title": "Dedicated Left- and Right-Turn Lanes at Intersections",
+    "tagline": "Auxiliary turn lanes provide physical separation between turning traffic and through traffic at intersections to reduce the potential for crashes.",
+    "narrative": "Auxiliary turn lanes provide physical separation between turning traffic that is slowing or stopped and adjacent through traffic at approaches to intersections . They provide for deceleration prior to a turn and storage for vehicles waiting to complete a turn, reducing the potential for crashes . This countermeasure primarily reduces collisions of vehicles turning left across opposing through traffic and rear-end collisions with vehicles following closely behind .",
+    "crash_reduction": "28-48% reduction in total crashes",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/inline-images/psc_lr_turnlanes_0.jpg",
+    "image_alt": "Left- and right-turn lanes at a two-way stop-controlled intersection.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/dedicated-left-and-right-turn-lanes-intersections",
+    "image_local": "assets/psc/dedicated-left-and-right-turn-lanes-intersections.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/inline-images/psc_lr_turnlanes_0.jpg"
+  },
+  "leading-pedestrian-interval": {
+    "slug": "leading-pedestrian-interval",
+    "title": "Leading Pedestrian Interval",
+    "tagline": "LPIs reduce potential conflicts between pedestrians and turning vehicles.",
+    "narrative": "A leading pedestrian interval (LPI) gives pedestrians the opportunity to enter the crosswalk at an intersection 3-7 seconds before vehicles are given a green indication. This allows pedestrians to better establish their presence in the crosswalk before vehicles have priority to turn right or left. By increasing visibility and reducing conflicts, this countermeasure can lead to a 13% reduction in pedestrian-vehicle crashes at intersections.",
+    "crash_reduction": "13% reduction in pedestrian-vehicle crashes at intersections",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/psc_lpi-1.jpg",
+    "image_alt": "An LPI allows a pedestrian to establish a presence in the crosswalk before vehicles are given a green indication.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/leading-pedestrian-interval",
+    "image_local": "assets/psc/leading-pedestrian-interval.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/psc_lpi-1.jpg"
+  },
+  "lighting": {
+    "slug": "lighting",
+    "title": "Lighting",
+    "tagline": "The nighttime fatality rate is three times the daytime rate because only 25 percent of vehicle miles traveled occur at night.",
+    "narrative": "Lighting can be applied continuously along segments and at spot locations such as intersections and pedestrian crossings in order to reduce the chances of a crash . Adequate lighting provides safety benefits to all roadway users by providing horizontal and vertical illuminance levels that improve visibility . This countermeasure can reduce nighttime injury pedestrian crashes at intersections by up to 42 percent .",
+    "crash_reduction": "42% reduction in nighttime injury pedestrian crashes at intersections.",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/inline-images/lighting%28FHWA%29.JPG",
+    "image_alt": "Streetlights illuminating a section of roadway at night.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/lighting",
+    "image_local": "assets/psc/lighting.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/inline-images/lighting%28FHWA%29.JPG"
+  },
+  "backplates-retroreflective-borders": {
+    "slug": "backplates-retroreflective-borders",
+    "title": "Backplates with Retroreflective Borders",
+    "tagline": "Backplates with retroreflective borders improve the visibility of traffic signals to reduce crashes at signalized intersections.",
+    "narrative": "Backplates added to a traffic signal head improve the visibility of the illuminated face of the signal by introducing a controlled-contrast background. The improved visibility is made even more conspicuous by framing it with a 1- to 3-inch yellow retroreflective border, which is highly visible in both daytime and nighttime conditions. This treatment acts as a human factors enhancement that reduces total crashes at signalized intersections.",
+    "crash_reduction": "15% reduction in total crashes",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_backplate-2.png",
+    "image_alt": "A conventional traffic signal with a signal backplate and yellow retroreflective border.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/backplates-retroreflective-borders",
+    "image_local": "assets/psc/backplates-retroreflective-borders.png",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_backplate-2.png"
+  },
+  "bicycle-lanes": {
+    "slug": "bicycle-lanes",
+    "title": "Bicycle Lanes",
+    "tagline": "Bicycle lanes address the safety problem of fatal and serious bicyclist crashes at non-intersection locations, which often occur when motorists overtake bicyclists due to speed and size differences .",
+    "narrative": "Providing bicycle facilities can mitigate or prevent interactions, conflicts, and crashes between bicyclists and motor vehicles, and create a network of safer roadways for bicycling . These lanes align with the Safe System Approach principle of recognizing human vulnerability\u2014where separating users in space can enhance safety for all road users . Separated bicycle lanes using vertical elements provide additional safety benefits, especially on roadways with higher vehicle volumes and speeds .",
+    "crash_reduction": "53% for bicycle/vehicle crashes",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_onroad-bike-lanes.jpg",
+    "image_alt": "Bicycle lane in Washington, DC. Source: Alex Baca, Washington Area Bicyclist Association (WABA)",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/bicycle-lanes",
+    "image_local": "assets/psc/bicycle-lanes.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/psc_onroad-bike-lanes.jpg"
+  },
+  "roundabouts": {
+    "slug": "roundabouts",
+    "title": "Roundabouts",
+    "tagline": "The modern roundabout is an intersection with a circular configuration that safely and efficiently moves traffic and substantially reduces fatal and injury crashes.",
+    "narrative": "Roundabouts feature channelized, curved approaches that reduce vehicle speed, entry yield control that gives right-of-way to circulating traffic, and counterclockwise flow around a central island that minimizes conflict points. The net result of lower speeds and reduced conflicts is an environment where crashes that cause injury or fatality are substantially reduced.",
+    "crash_reduction": "82% reduction in fatal and injury crashes",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/PSC_roundabout-2.jpg",
+    "image_alt": "Example of a single-lane roundabout.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/roundabouts",
+    "image_local": "assets/psc/roundabouts.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/PSC_roundabout-2.jpg"
+  },
+  "systemic-application-multiple-low-cost-countermeasures-stop": {
+    "slug": "systemic-application-multiple-low-cost-countermeasures-stop",
+    "title": "Systemic Application of Multiple Low-Cost Countermeasures at Stop-Controlled Intersections",
+    "tagline": "This systemic approach to intersection safety increases driver awareness and recognition of intersections and potential conflicts.",
+    "narrative": "This systemic approach to intersection safety involves deploying a package of multiple low-cost countermeasures, including enhanced signing and pavement markings, at a large number of stop-controlled intersections within a jurisdiction. These countermeasures increase driver awareness and recognition of the intersections and potential conflicts, thereby reducing fatal and injury crashes.",
+    "crash_reduction": "10% reduction of fatal and injury crashes at all locations/types/areas",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/psc_syst_cost-1.jpg",
+    "image_alt": "Example of countermeasures on the through approach. Source: South Carolina DOT",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/systemic-application-multiple-low-cost-countermeasures-stop",
+    "image_local": "assets/psc/systemic-application-multiple-low-cost-countermeasures-stop.jpg",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/images/Safety/psc_syst_cost-1.jpg"
+  },
+  "appropriate-speed-limits-all-road-users": {
+    "slug": "appropriate-speed-limits-all-road-users",
+    "title": "Appropriate Speed Limits for All Road Users",
+    "tagline": "Speed control is one of the most important methods for reducing fatalities and serious injuries, especially on non-limited access roadways where vehicles and vulnerable road users mix.",
+    "narrative": "Addressing speed is fundamental to the Safe System Approach to making streets safer. States and local jurisdictions should set appropriate speed limits to reduce the significant risks drivers impose on others\u2014especially vulnerable road users\u2014and on themselves, as research shows that speed limit changes alone can lead to measurable declines in speeds and crashes.",
+    "crash_reduction": "Up to 26% reduction in fatalities (Seattle case study)",
+    "image_url": "https://highways.dot.gov/sites/fhwa.dot.gov/files/2022-08/PSC_speedlimit_icon.png",
+    "image_alt": "Safety Benefit Icon showing a speed limit sign with a question mark.",
+    "url": "https://highways.dot.gov/safety/proven-safety-countermeasures/appropriate-speed-limits-all-road-users",
+    "image_local": "assets/psc/appropriate-speed-limits-all-road-users.png",
+    "image_source": "https://highways.dot.gov/sites/fhwa.dot.gov/files/2022-08/PSC_speedlimit_icon.png"
+  }
+}

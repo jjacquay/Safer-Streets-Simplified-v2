@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Treatment or page title as shown on the page"
+    },
+    "tagline": {
+      "type": "string",
+      "title": "One-sentence summary of the problem this treatment addresses or what it does (from page intro/hero)"
+    },
+    "narrative": {
+      "type": "string",
+      "title": "2-4 sentence plain-English description of how the treatment works, what crash types or safety/place issues it addresses, and key design notes. Verbatim or tightly paraphrased from the page."
+    },
+    "crash_reduction": {
+      "type": "string",
+      "title": "Crash-reduction statistic if quoted on the page (e.g. '47% pedestrian crashes'). Empty string if no stat is given."
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Absolute URL of the largest representative image on the page (hero image, photograph, or diagram showing the treatment). Must be a direct image URL ending in .jpg/.jpeg/.png/.webp/.gif. Skip logos and navigation icons."
+    },
+    "image_alt": {
+      "type": "string",
+      "title": "Alt text or caption of that image, if available"
+    },
+    "url": {
+      "type": "string",
+      "title": "Source page URL"
+    },
+    "factors": {
+      "type": "array",
+      "items": {"type": "string"},
+      "title": "Which crash factors this treatment addresses. Choose from: ped, bike, intersection, lane_departure, speeding, impaired, night. Multiple OK."
+    }
+  }
+}

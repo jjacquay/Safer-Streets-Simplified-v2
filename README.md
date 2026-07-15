@@ -1,6 +1,6 @@
 # SaferStreets Simplified (Escambia MVP)
 
-**Live site:** https://safer-streets-simplified.vercel.app
+**Live site:** https://jjacquay.github.io/Safer-Streets-Simplified-v2/
 
 A plain-language street safety app for Escambia County, Florida. Built for city council members, nonprofits, journalists, teachers, and residents — not just traffic engineers.
 
@@ -15,7 +15,7 @@ The app answers three questions:
 - Single static `index.html`
 - [Leaflet](https://leafletjs.com/) 1.9.4 for the maps (hero overview, priority map, and per-corridor detail map), self-hosted under `vendor/leaflet/` so there is no third-party CDN dependency
 - A real `data/escambia_corridors.geojson` with 18 corridors as MultiLineString geometries (OpenStreetMap centerlines), joined to FDOT public crash data (2018–2022, all severities) and NHTSA FARS fatals (2022–2024), plus a `data/escambia_crash_grid.geojson` aggregated heatmap (150 m cells, low cells suppressed)
-- No build step; deploys directly to Vercel as static files
+- No build step; deploys directly to GitHub Pages as static files
 
 ## Local preview
 
@@ -27,14 +27,7 @@ python3 -m http.server 5173
 
 ## Deploy
 
-This repo is wired to Vercel with GitHub CI/CD. Every push to `main` triggers a new production deployment at **https://safer-streets-simplified.vercel.app**; pull requests get preview URLs. (Note: the Vercel project's production domain is `safer-streets-simplified`, which differs from the repo name — the dashboard lives at vercel.com/vcllc/saferstreets-simplified-escambia-mvp.)
-
-Vercel settings:
-
-- **Framework preset:** Other (Static HTML)
-- **Build command:** *(none)*
-- **Output directory:** `.`
-- `vercel.json` provides `cleanUrls`, security headers, and GeoJSON content-type for `/data/*`.
+This repo is deployed on GitHub Pages. The production site is **https://jjacquay.github.io/Safer-Streets-Simplified-v2/**.
 
 ## Accessibility
 

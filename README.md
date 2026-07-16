@@ -114,6 +114,20 @@ Geometry must be WGS84 lon/lat (`outSR=4326`). If a layer needs a token,
 download it once and pass `--county-file` / `--city-file`. Tests:
 `python3 scripts/test_recompute_corridor_districts.py` (also run in CI).
 
+### Pre-launch checklist (email generator)
+
+Open items before the rep-email generator is resident-facing. Ordered by
+priority — 1 and 2 are the real blockers; nothing below matters if the
+recipients are wrong.
+
+| # | Item | What's needed | Status |
+|---|------|---------------|--------|
+| 1 | **Roster accuracy** | Confirm all 7 city-council emails with the City Clerk (two — Moore, Patton — are pattern-inferred, not verified) and re-check the full roster each election. No map or API supplies contact info; this is manual. | ☐ Not started |
+| 2 | **District boundaries** | Confirm the real county (`gismaps.myescambia.com`) and city (`maps.cityofpensacola.com`) ArcGIS layer numbers + district field, then run `scripts/recompute_corridor_districts.py` (dry-run first). | ☐ Tooling merged; needs the real layers |
+| 3 | **Recipient framing** | Change UI labels from "your representatives" to "the officials responsible for this street" (the email targets the corridor's districts, not necessarily the sender's own). | ☐ Copy drafted |
+| 4 | **Crash date windows** | Split the ranges in the email + homepage: crashes are 2018–2022, fatalities run through 2024. Don't present them as one window. | ☐ Copy drafted |
+| 5 | **Refresh the JS tests** | `patches/test_v7.js` still asserts the pre-v8 subject line, locality sentence, and sign-off; update to the v8 text and run. | ☐ Not started |
+
 ## Project structure
 
 ```

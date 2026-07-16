@@ -80,6 +80,40 @@ This data is real, not synthetic. It is built by the scripts in `scripts/` (see 
 
 The homepage highlights a real, verifiable federal grant: **"ECRC Pensacola ITS Safety Demonstration Activities,"** a $10,000,000 Safe Streets and Roads for All (SS4A) grant USDOT awarded in FY24 to the [Emerald Coast Regional Council](https://www.ecrc.org/) (ECRC, formerly the West Florida Regional Planning Council) for ITS safety improvements on two Escambia corridors: Fairfield Drive (`C009` in this app) and Pensacola Boulevard. The featured stats (1,725 crashes / 4 deaths on Fairfield Drive, 2021–2025; 663 rear-end crashes, 38%; 160 of 524 Pensacola Boulevard crashes at one intersection) come from a **draft** (April 2026) baseline memo Kimley-Horn prepared for ECRC, built on **[Signal Four Analytics](https://signal4analytics.com/)** — the crash-report database maintained by FDOT and the University of Florida that also underlies this app's own FDOT crash layers. Those figures cover a narrower study window/segment than this app's own 2018–2022 + FARS corridor counts, so they're presented side by side rather than merged. (Two existing corridor entries, `C008` and `C009`, previously described this same $10M grant as funding "lighting" and "pedestrian crossings" — unverified specifics not stated in the source memo or the USDOT award title. That wording has been corrected to match the confirmed scope: "ITS safety-demonstration improvements.")
 
+### Representatives & district overlaps
+
+The email generator addresses each corridor's overlapping officials, resolved
+through `data/representatives.json`: a roster (county commission, city council,
+FDOT D3) plus a `corridor_districts` block mapping each corridor to the
+districts it runs through.
+
+**Verify before public launch** (see the file's `_meta.note`): the roster goes
+stale with every election, and two city-council emails are pattern-inferred, not
+confirmed. No map fixes contact info — that stays a manual check.
+
+`scripts/recompute_corridor_districts.py` regenerates the `corridor_districts`
+block from **current** district boundaries (the shipped block was built on a
+pre-2020-census city layer). It reads county and city district polygons from a
+live ArcGIS REST query **or** a pre-downloaded GeoJSON file (`--*-file`, for when
+the GIS hosts are unreachable), and marks a corridor as overlapping a district
+when any vertex falls inside it **or** any segment crosses its boundary — so a
+street that passes through a district between vertices is still caught. It fails
+loudly (exit 2, no write) on ArcGIS error bodies, zero features, a missing or
+out-of-range district field, an incomplete layer, or an orphaned corridor, and
+prints a before→after diff. Always dry-run first:
+
+```
+python3 scripts/recompute_corridor_districts.py \
+  --county-url "https://…/MapServer/<n>/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson" \
+  --city-url   "https://…/FeatureServer/<n>/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson" \
+  --dry-run
+# review the diff, then re-run without --dry-run to write
+```
+
+Geometry must be WGS84 lon/lat (`outSR=4326`). If a layer needs a token,
+download it once and pass `--county-file` / `--city-file`. Tests:
+`python3 scripts/test_recompute_corridor_districts.py` (also run in CI).
+
 ## Project structure
 
 ```

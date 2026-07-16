@@ -1,0 +1,21 @@
+name: CI
+
+# Runs the pure-stdlib test suites on every push and PR. No dependencies to
+# install — the geometry/data scripts and their tests use only the standard
+# library, so this stays fast and hermetic.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Corridor→district recompute tests
+        run: python3 scripts/test_recompute_corridor_districts.py

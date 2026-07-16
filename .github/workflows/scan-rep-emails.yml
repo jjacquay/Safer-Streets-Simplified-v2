@@ -1,0 +1,63 @@
+name: Scan representative emails
+
+# Periodic drift check for the official contact roster in
+# data/representatives.json. NON-DESTRUCTIVE: it fetches the official county/city
+# directory pages, diffs them against the roster, and opens a pull request
+# carrying a human-readable report. It NEVER edits representatives.json and never
+# flips a `verified` flag — a person reviews the report and, if a change is real,
+# edits the roster by hand. This keeps a human in the loop for data that emails
+# real elected officials.
+#
+# Expect partial results: the official sites may block automated fetches (both
+# returned HTTP 403 during development), in which case the affected body is
+# reported as "could not read source" rather than failing the run. Government
+# pages also restructure and obfuscate emails, so treat every finding as a
+# candidate for manual confirmation, not a confirmation.
+
+on:
+  workflow_dispatch:
+  # Quarterly-ish; contact rosters change on election cycles, not weekly.
+  schedule:
+    - cron: "23 8 5 1,4,7,10 *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scan official directory pages and write report
+        run: |
+          mkdir -p docs
+          python3 scripts/scan_representative_emails.py --out docs/rep-email-scan-report.md
+
+      - name: Open pull request with the scan report
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: rep-email-scan/${{ github.run_id }}
+          title: "Rep email scan: review contact drift (manual verification required)"
+          commit-message: "Add representative email scan report"
+          body: |
+            Automated, **non-destructive** representative-email drift check.
+
+            This PR adds only `docs/rep-email-scan-report.md`. It does **not** edit
+            `data/representatives.json` and does **not** change any `verified` flag.
+
+            **Action required (manual):** open the report, and for any address listed
+            as *new on page* or *missing from page*, confirm against the official
+            source (City Clerk for city council; myescambia.com for the county) and
+            edit `data/representatives.json` by hand if a change is warranted. A match
+            on a page is a candidate, not a confirmation — the roster stays
+            `verified: false` until a human checks it.
+
+            Some bodies may report "could not read source" if the official site
+            blocked the fetch this run; that is expected, not a failure.
+          add-paths: |
+            docs/rep-email-scan-report.md

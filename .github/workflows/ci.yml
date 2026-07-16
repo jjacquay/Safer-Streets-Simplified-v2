@@ -19,3 +19,5 @@ jobs:
           python-version: "3.12"
       - name: Corridor→district recompute tests
         run: python3 scripts/test_recompute_corridor_districts.py
+      - name: Representative email scan tests
+        run: python3 scripts/test_scan_representative_emails.py

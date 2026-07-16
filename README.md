@@ -85,16 +85,19 @@ The homepage highlights a real, verifiable federal grant: **"ECRC Pensacola ITS 
 `data/representatives.json` holds the official-contact data layer: a roster
 (Escambia County Commission, Pensacola City Council, FDOT D3) plus a
 `corridor_districts` block mapping each corridor to the districts it runs
-through.
+through. The **in-app email generator** (in the Packet builder section) consumes
+it: select a corridor, review the recipients, and open a pre-filled email — or
+copy the text — addressed to the officials responsible for that street.
 
-> **Status — read before relying on this.** This is the *data layer and its
-> tooling only.* There is **not yet an in-app email generator** that consumes it;
-> that remains future work (see `docs/IMPLEMENTATION.md` backlog). The roster is
-> also **unverified**: every email currently comes from a Google AI Overview
-> screenshot (a secondhand summary, not an official page) and is flagged
-> `verified: false` with its source and retrieval date. The `corridor_districts`
-> block is a schema-complete scaffold (empty arrays) until
-> `recompute_corridor_districts.py` is run against real district boundaries.
+> **Status — read before relying on this.** The generator works, but the data it
+> uses is **not launch-ready**. The roster is **unverified**: every email
+> currently comes from a Google AI Overview screenshot (a secondhand summary, not
+> an official page) and is flagged `verified: false` — the UI shows an "unverified
+> addresses" warning for exactly this reason. The `corridor_districts` block is a
+> schema-complete scaffold (empty arrays) until `recompute_corridor_districts.py`
+> is run against real district boundaries, so until then the generator can't
+> auto-match a street to specific districts and asks the user to pick recipients
+> from the full roster.
 
 **Verify before public use** (see the file's `_meta.note`): county-commission
 addresses are role-based (`district{N}@myescambia.com`) and stable across
@@ -150,8 +153,8 @@ and 2 are the real blockers; nothing below matters if the recipients are wrong.
 |---|------|---------------|--------|
 | 1 | **Roster accuracy** | Every email in `representatives.json` is currently **unverified** — sourced from a Google AI Overview screenshot, not an official page, and flagged `verified: false`. Confirm all 7 city-council emails with the City Clerk (person-based, change each election) and re-check the full roster each cycle. County addresses are role-based and structurally stable. No map or API supplies contact info; this is manual. | ☐ Emails imported (unverified) |
 | 2 | **District boundaries** | Confirm the real county (`gismaps.myescambia.com`) and city (`maps.cityofpensacola.com`) ArcGIS layer numbers + district field, then run `scripts/recompute_corridor_districts.py` (dry-run first). The `corridor_districts` block is an empty scaffold until this runs. | ☐ Tooling merged; needs the real layers |
-| 3 | **Build the in-app email generator** | The UI feature that turns a selected corridor + its `corridor_districts` into an addressed email does **not exist yet**. When built, label recipients "the officials responsible for this street" (not "your representatives" — the email targets the corridor's districts, not necessarily the sender's own). | ☐ Not started (data layer + tooling ready) |
-| 4 | **Crash date windows** | Wherever crash and fatality figures appear together (homepage; the email, once built): split the ranges — crashes are 2018–2022, fatalities run through 2024. Don't present them as one window. | ☐ Copy drafted |
+| 3 | **In-app email generator** | Built (Packet builder section): resolves a corridor's `corridor_districts` to officials, renders a recipient checklist (pre-checking matched districts), and opens a pre-filled `mailto:` or copies the text. Recipients are framed as "the officials responsible for this street." Logic is unit-tested (`scripts/test_email_generator.mjs`, in CI). Blocked on items 1–2 for accuracy: it shows an unverified-address warning and, with the district scaffold empty, asks the user to pick recipients. | ☑ Built; gated on roster + district data |
+| 4 | **Crash date windows** | Crashes (2018–2022) and fatalities (2022–2024) must never be shown as one range. Done in the generated email body; the homepage still needs a pass. | ◐ Email done; homepage pending |
 
 ## Project structure
 

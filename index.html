@@ -544,6 +544,25 @@
   .packet-preview h3{ margin: 0 0 8px; font-size: 18px; }
   .packet-preview ul{ margin: 8px 0 0 1.2em; padding: 0; }
 
+  /* ---------- email generator ---------- */
+  .email-gen{ margin-top: 16px; }
+  .email-gen h3{ margin: 0 0 4px; font-size: 18px; }
+  .eg-group{
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    padding: 10px 12px; margin: 10px 0 0;
+  }
+  .eg-group legend{ font-weight: 700; font-size: 14px; padding: 0 6px; }
+  .eg-recip{
+    display:flex; align-items:flex-start; gap:8px;
+    min-height: var(--tap); padding: 4px 0;
+    font-size: 15px; cursor: pointer;
+  }
+  .eg-recip input{ margin-top: 4px; width: 18px; height: 18px; }
+  .eg-recip[data-nomail="true"]{ color: var(--ink-faint); cursor: not-allowed; }
+  .eg-recip .eg-addr{ color: var(--ink-soft); font-size: 13px; }
+  .eg-note{ font-size: 13px; color: var(--ink-soft); margin: 8px 0 0; }
+  .eg-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
+
   /* ---------- helpers ---------- */
   .visually-hidden{
     position:absolute !important;
@@ -1170,6 +1189,19 @@
         <ul id="pp-bullets"></ul>
         <p class="notice" id="pp-notice" hidden>This packet is a public-information discussion starter, not a traffic engineering study, design, or professional recommendation. Any treatment needs review by a qualified engineer and the road's owner (FDOT for state roads; the county or city for local roads).</p>
       </div>
+
+      <div class="email-gen" id="email-gen" hidden>
+        <h3 id="eg-h">Email the officials responsible for this street</h3>
+        <p class="muted" id="eg-intro">These are the officials whose districts this corridor runs through — not necessarily your own representatives. Review the recipients, then open a pre-filled email in your mail app.</p>
+        <p class="notice" id="eg-unverified" hidden><strong>Unverified contact addresses</strong>These addresses have not been confirmed against an official source. Double-check each recipient before you send.</p>
+        <div id="eg-recipients" role="group" aria-label="Choose recipients"></div>
+        <p class="eg-note" id="eg-match-note" hidden></p>
+        <div class="eg-actions">
+          <button class="btn" id="eg-compose" type="button">Open email in your mail app</button>
+          <button class="btn secondary" id="eg-copy" type="button">Copy email text</button>
+        </div>
+        <p class="eg-note" id="eg-status" role="status" aria-live="polite"></p>
+      </div>
     </section>
 
     <!-- COUNTERMEASURES -->
@@ -1446,6 +1478,21 @@
       $('corridor-empty').textContent = 'Could not load corridor data. Please check your connection and refresh the page.';
     });
 
+  // Official-contact roster (an UNVERIFIED data layer — see the file's _meta).
+  // Loaded non-blocking: if it fails or is absent, the email generator stays
+  // hidden and the rest of the app is unaffected.
+  state.reps = null;
+  fetch('data/representatives.json')
+    .then(r => r.json())
+    .then(gj => {
+      state.reps = gj;
+      if (state.selected){
+        const c = state.corridors.find(x => x.id === state.selected);
+        if (c) updateEmailGenerator(c);
+      }
+    })
+    .catch(err => { console.error('Representatives load failed', err); });
+
   let heatLoaded = false;
   function loadHeatLayer(){
     if (heatLoaded) return Promise.resolve();
@@ -1686,6 +1733,7 @@
     updatePscSpotlight(c);
     updateHotspot(c);
     updateEquity(c);
+    updateEmailGenerator(c);
 
     // Pan map to corridor bounds and open popup at center
     const layer = state.lines.get(id);
@@ -2054,6 +2102,210 @@
     setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
   });
 
+
+  /* ---------- email the responsible officials ---------- */
+  // The pure logic below is unit-tested from scripts/test_email_generator.mjs,
+  // which extracts the code between these two markers and evaluates it in Node.
+  // Keep it DOM-free and self-contained so that extraction keeps working.
+  // ==== EMAIL-GEN PURE LOGIC START ====
+  function resolveOfficials(reps, corridorId){
+    const result = { county: [], city: [], fdot: [], matched: false };
+    if (!reps || !reps.roster) return result;
+    const roster = reps.roster;
+    const cd = (reps.corridor_districts && reps.corridor_districts[corridorId]) || null;
+    const byDistrict = (bodyKey, nums) => {
+      const members = (roster[bodyKey] && roster[bodyKey].members) || [];
+      if (!nums || !nums.length) return [];
+      const want = nums.map(String);
+      return members.filter(m => want.indexOf(String(m.district)) !== -1);
+    };
+    if (cd){
+      result.county = byDistrict('county_commission', cd.county);
+      result.city = byDistrict('city_council', cd.city);
+      result.matched = (result.county.length + result.city.length) > 0;
+    }
+    // FDOT D3 owns the state routes; always offered as an optional recipient.
+    result.fdot = (((roster.fdot_district_3 || {}).members) || []).filter(m => m.email);
+    return result;
+  }
+
+  function officialLabel(m){
+    const role = m.role ? ' (' + m.role + ')' : '';
+    const dist = (m.district != null) ? ' — District ' + m.district : '';
+    return (m.name || 'Unknown') + role + dist;
+  }
+
+  function anyUnverified(members){
+    return (members || []).some(m => m && m.email && m.verified === false);
+  }
+
+  function buildEmailSubject(corridor){
+    return 'Street safety on ' + corridor.name;
+  }
+
+  // Crash and fatality windows are kept SEPARATE on purpose: FDOT crash data runs
+  // 2018–2022 (all severities), FARS fatals run 2022–2024. Never present them as
+  // one range.
+  function buildEmailBody(corridor, opts){
+    opts = opts || {};
+    const c = corridor;
+    const fmt = (n) => Number(n || 0).toLocaleString('en-US');
+    const lines = [];
+    lines.push('Dear ' + (opts.salutation || 'Commissioner / Council Member') + ',');
+    lines.push('');
+    lines.push('I am writing as a resident concerned about safety on ' + c.name +
+      (c.place ? ' in ' + c.place : '') + '.');
+    lines.push('');
+    let stat = fmt(c.crash_count) + ' crashes were reported on this corridor in the FDOT public crash data for 2018–2022';
+    if (c.fatal_count){
+      stat += ', and NHTSA FARS records ' + fmt(c.fatal_count) + ' traffic death' +
+        (c.fatal_count === 1 ? '' : 's') + ' here for 2022–2024';
+    }
+    stat += '.';
+    if (c.priority != null){
+      stat += ' It ranks ' + c.priority + ' out of 100 on the county high-injury network.';
+    }
+    lines.push(stat);
+    if (c.treatment){
+      lines.push('');
+      lines.push('A commonly used first step for this crash pattern is: ' + c.treatment +
+        '. This is a discussion starter, not an engineering recommendation.');
+    }
+    lines.push('');
+    lines.push('Please consider prioritizing a safety review of this corridor with FDOT ' +
+      '(for state roads) or the county/city (for local roads).');
+    lines.push('');
+    lines.push('Thank you,');
+    lines.push('[Your name]');
+    lines.push('[Your address or neighborhood]');
+    lines.push('');
+    lines.push('—');
+    lines.push('Sent via SaferStreets Simplified, a public-information tool. Crash figures are ' +
+      'from FDOT public crash data (2018–2022, all severities) and NHTSA FARS (2022–2024, ' +
+      'fatal). This is not a traffic engineering study.');
+    return lines.join('\n');
+  }
+
+  function buildMailto(recipients, subject, body){
+    const to = (recipients || []).filter(Boolean).join(',');
+    return 'mailto:' + to + '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  }
+  // ==== EMAIL-GEN PURE LOGIC END ====
+
+  // Recipients currently checked in the UI.
+  function checkedRecipientEmails(){
+    return Array.from(document.querySelectorAll('.eg-check:checked'))
+      .map(cb => cb.value).filter(Boolean);
+  }
+
+  function renderRecipientGroup(box, title, members, matchedSet){
+    if (!members || !members.length) return;
+    const fs = document.createElement('fieldset');
+    fs.className = 'eg-group';
+    const lg = document.createElement('legend');
+    lg.textContent = title;
+    fs.appendChild(lg);
+    members.forEach(m => {
+      const hasEmail = !!m.email;
+      const isMatched = hasEmail && matchedSet.has(m.email);
+      const label = document.createElement('label');
+      label.className = 'eg-recip';
+      if (!hasEmail) label.setAttribute('data-nomail', 'true');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'eg-check';
+      cb.value = m.email || '';
+      cb.checked = isMatched;
+      cb.disabled = !hasEmail;
+      const txt = document.createElement('span');
+      txt.textContent = officialLabel(m) + ' ';
+      const addr = document.createElement('span');
+      addr.className = 'eg-addr';
+      addr.textContent = hasEmail ? '<' + m.email + '>' : '(no email on file)';
+      label.appendChild(cb);
+      label.appendChild(txt);
+      label.appendChild(addr);
+      fs.appendChild(label);
+    });
+    box.appendChild(fs);
+  }
+
+  function updateEmailGenerator(c){
+    const wrap = $('email-gen');
+    if (!wrap) return;
+    const box = $('eg-recipients');
+    const note = $('eg-match-note');
+    const unverified = $('eg-unverified');
+    const compose = $('eg-compose');
+    const copy = $('eg-copy');
+    $('eg-status').textContent = '';
+    box.innerHTML = '';
+
+    if (!state.reps || !state.reps.roster){
+      // Roster still loading or unavailable — show the section but explain why.
+      wrap.hidden = false;
+      note.hidden = false;
+      note.textContent = 'Official contact data is still loading or is unavailable.';
+      unverified.hidden = true;
+      compose.disabled = true; copy.disabled = true;
+      return;
+    }
+
+    wrap.hidden = false;
+    compose.disabled = false; copy.disabled = false;
+    const off = resolveOfficials(state.reps, c.id);
+    const matchedSet = new Set(
+      off.county.concat(off.city).map(m => m.email).filter(Boolean)
+    );
+    const roster = state.reps.roster;
+    const shown = [];
+    const push = (bodyKey) => {
+      const members = ((roster[bodyKey] || {}).members) || [];
+      members.forEach(m => shown.push(m));
+      return members;
+    };
+    renderRecipientGroup(box, 'Escambia County Commission', push('county_commission'), matchedSet);
+    renderRecipientGroup(box, 'Pensacola City Council', push('city_council'), matchedSet);
+    renderRecipientGroup(box, 'FDOT District 3 (state roads)', push('fdot_district_3'), matchedSet);
+
+    unverified.hidden = !anyUnverified(shown);
+
+    if (off.matched){
+      note.hidden = false;
+      note.textContent = 'Pre-checked recipients are the officials whose districts this street runs through. Add or remove any before sending.';
+    } else {
+      note.hidden = false;
+      note.textContent = 'We could not automatically match this street to specific districts yet (the corridor→district map is not populated). Choose the officials who represent this street before sending.';
+    }
+  }
+
+  (function wireEmailGenerator(){
+    const compose = $('eg-compose');
+    const copy = $('eg-copy');
+    if (!compose || !copy) return;
+    compose.addEventListener('click', () => {
+      const c = state.corridors.find(x => x.id === state.selected);
+      if (!c){ $('eg-status').textContent = 'Pick a corridor first.'; return; }
+      const emails = checkedRecipientEmails();
+      if (!emails.length){ $('eg-status').textContent = 'Select at least one recipient first.'; return; }
+      window.location.href = buildMailto(emails, buildEmailSubject(c), buildEmailBody(c, {}));
+      $('eg-status').textContent = 'Opening your mail app with ' + emails.length +
+        ' recipient' + (emails.length === 1 ? '' : 's') + '. Verify the addresses before sending.';
+    });
+    copy.addEventListener('click', () => {
+      const c = state.corridors.find(x => x.id === state.selected);
+      if (!c){ $('eg-status').textContent = 'Pick a corridor first.'; return; }
+      const emails = checkedRecipientEmails();
+      const text = 'To: ' + emails.join(', ') + '\nSubject: ' + buildEmailSubject(c) +
+        '\n\n' + buildEmailBody(c, {});
+      const done = () => { $('eg-status').textContent = 'Email text copied to your clipboard.'; };
+      const fail = () => { $('eg-status').textContent = 'Could not copy automatically — select the text manually.'; };
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(fail);
+      } else { fail(); }
+    });
+  })();
 
   /* ---------- v5: hero map + geocoding + detail map ---------- */
   state.heroMap = null;

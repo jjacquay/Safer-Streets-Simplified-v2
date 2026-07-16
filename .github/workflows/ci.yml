@@ -1,8 +1,9 @@
 name: CI
 
 # Runs the pure-stdlib test suites on every push and PR. No dependencies to
-# install — the geometry/data scripts and their tests use only the standard
-# library, so this stays fast and hermetic.
+# install — the Python geometry/data tests use only the standard library, and
+# the Node email-generator test uses only Node built-ins (it extracts the
+# email-gen logic straight out of index.html), so this stays fast and hermetic.
 
 on:
   push:
@@ -17,7 +18,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
       - name: Corridor→district recompute tests
         run: python3 scripts/test_recompute_corridor_districts.py
       - name: Representative email scan tests
         run: python3 scripts/test_scan_representative_emails.py
+      - name: Email generator logic tests
+        run: node scripts/test_email_generator.mjs

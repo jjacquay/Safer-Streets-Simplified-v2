@@ -27,14 +27,23 @@ python3 -m http.server 5173
 
 ## Deploy
 
-This repo is wired to Vercel with GitHub CI/CD. Every push to `main` triggers a new production deployment at **https://safer-streets-simplified.vercel.app**; pull requests get preview URLs. (Note: the Vercel project's production domain is `safer-streets-simplified`, which differs from the repo name — the dashboard lives at vercel.com/vcllc/saferstreets-simplified-escambia-mvp.)
+The repo is **Vercel-ready** — `vercel.json` carries the full static config
+(`cleanUrls`, security headers + CSP, and the GeoJSON content-type for
+`/data/*`) — but connecting it to Vercel is an account-side step. Confirm the
+target domain is live before assuming it is; the intended production domain is
+**https://safer-streets-simplified.vercel.app**.
 
-Vercel settings:
+Pick **one** of two ways to deploy (using both causes double deploys):
 
-- **Framework preset:** Other (Static HTML)
-- **Build command:** *(none)*
-- **Output directory:** `.`
-- `vercel.json` provides `cleanUrls`, security headers, and GeoJSON content-type for `/data/*`.
+1. **Vercel Git Integration (recommended).** In the Vercel dashboard: Add New →
+   Project → import this repo. Framework preset **Other (Static HTML)**, Build
+   command **(none)**, Output directory **`.`**. Every push to `main` then
+   deploys to production and every PR gets a preview URL. No repo changes needed.
+2. **GitHub Actions (`.github/workflows/deploy-vercel.yml`).** Deploys to
+   production after CI passes on `main`. Inert until you add three repo secrets
+   (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`) under Settings →
+   Secrets and variables → Actions. Delete the file if you use Git Integration
+   instead.
 
 ## Accessibility
 

@@ -1,0 +1,74 @@
+name: Deploy to Vercel
+
+# Deploys the static site to Vercel from CI. This is the "Path B" alternative to
+# Vercel's own Git Integration — use ONE of them, not both, or you'll get double
+# deploys. If you connect the repo in the Vercel dashboard instead, delete this
+# file.
+#
+# Runs a PRODUCTION deploy only after the CI workflow succeeds on `main`, plus a
+# manual trigger. It stays inert (the deploy job is skipped) until three repo
+# secrets exist — add them under Settings → Secrets and variables → Actions:
+#   VERCEL_TOKEN       - a Vercel access token (Vercel → Account → Tokens)
+#   VERCEL_ORG_ID      - from `.vercel/project.json` after `vercel link`, or the
+#                        dashboard (Team/User → Settings)
+#   VERCEL_PROJECT_ID  - from `.vercel/project.json` after `vercel link`
+#
+# Vercel reads vercel.json for the static config (no build step, headers, CSP),
+# so nothing else is needed here.
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Only deploy on a manual run, or when the CI run that triggered us passed.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: production
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Check for Vercel secrets
+        id: guard
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ] || [ -z "${{ secrets.VERCEL_ORG_ID }}" ] || [ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "Vercel secrets are not configured — skipping deploy."
+            echo "::notice::Add VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID to enable deploys."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.ready == 'true'
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
+
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.ready == 'true'
+        with:
+          node-version: "20"
+
+      - name: Install Vercel CLI
+        if: steps.guard.outputs.ready == 'true'
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings
+        if: steps.guard.outputs.ready == 'true'
+        run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy to production
+        if: steps.guard.outputs.ready == 'true'
+        # Static site, no build step — a plain deploy uploads the files as-is and
+        # Vercel applies vercel.json (headers/CSP/cleanUrls).
+        run: vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"

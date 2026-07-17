@@ -19,10 +19,17 @@ on:
   # Quarterly-ish; contact rosters change on election cycles, not weekly.
   schedule:
     - cron: "23 8 5 1,4,7,10 *"
-  # Probe mode: touching the scanner (or this file) in a PR runs the scan on a
-  # runner with open internet — the dev sandbox cannot reach these gov sites —
-  # and publishes the report as an artifact + step summary. No PR is opened
-  # from pull_request events.
+  # Probe mode: touching the scanner (or this file) on a branch runs the scan
+  # on a runner with open internet — the dev sandbox cannot reach these gov
+  # sites — and publishes the report as an artifact + step summary. Probe runs
+  # never open a PR. (Both push and pull_request triggers are declared; this
+  # repo has intermittently not delivered pull_request-event runs, and push
+  # runs fire reliably.)
+  push:
+    branches-ignore: [main]
+    paths:
+      - scripts/scan_representative_emails.py
+      - .github/workflows/scan-rep-emails.yml
   pull_request:
     paths:
       - scripts/scan_representative_emails.py
@@ -58,8 +65,8 @@ jobs:
           path: docs/rep-email-scan-report.md
 
       - name: Open pull request with the scan report
-        # Probe runs from pull_request events publish artifact + summary only.
-        if: github.event_name != 'pull_request'
+        # Probe runs (push / pull_request) publish artifact + summary only.
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v6
         with:
           branch: rep-email-scan/${{ github.run_id }}

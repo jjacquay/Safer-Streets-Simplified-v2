@@ -8,10 +8,10 @@ name: Refresh district boundaries
 # Runs on a GitHub-hosted runner because it needs open internet — the dev
 # sandbox 403s every government/GIS host. Two modes:
 #
-#   * pull_request (paths below): PROBE — report-only. Discovery + validation +
-#     a recompute dry-run; publishes the report as an artifact and step
-#     summary. Writes nothing, opens nothing, always green (the report is the
-#     product, even when it says "nothing found").
+#   * push / pull_request (paths below): PROBE — report-only. Discovery +
+#     validation + a recompute dry-run; publishes the report as an artifact and
+#     step summary. Writes nothing, opens nothing, always green (the report is
+#     the product, even when it says "nothing found").
 #   * workflow_dispatch: FULL — writes data/district_boundaries/*.geojson and
 #     the recomputed corridor_districts, then opens a pull request for human
 #     review. Optional county_url / city_url inputs bypass discovery when the
@@ -29,6 +29,11 @@ on:
       city_url:
         description: "Known city-council districts layer URL (skips discovery)"
         required: false
+  push:
+    branches-ignore: [main]
+    paths:
+      - scripts/fetch_district_boundaries.py
+      - .github/workflows/refresh-districts.yml
   pull_request:
     paths:
       - scripts/fetch_district_boundaries.py
@@ -50,7 +55,7 @@ jobs:
       - name: Discover and validate district layers
         run: |
           ARGS=""
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
             ARGS="--report-only"
           fi
           if [ -n "${{ github.event.inputs.county_url }}" ]; then

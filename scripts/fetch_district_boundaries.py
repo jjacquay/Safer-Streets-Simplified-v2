@@ -181,42 +181,81 @@ def query_layer_features(layer_url):
 
 
 def detect_district_field(feats, target):
-    """The first field guess that parses to a distinct in-range district on
-    every feature, or None."""
+    """The first field guess where every feature parses to an in-range district
+    AND the distinct values cover the full district set, or None. Feature count
+    may exceed the district count — districts are often split into multiple
+    polygons, and the recompute tool merges them by district value."""
     if not feats:
         return None
     props0 = feats[0].get("properties") or {}
+    want = set(target["valid_range"])
     for guess in target["field_guesses"]:
         if guess in props0 and R._all_parse(feats, guess, target["valid_range"]):
-            values = [R._parse_district(f["properties"].get(guess)) for f in feats]
-            if len(set(values)) == target["expected"]:
+            values = {R._parse_district(f["properties"].get(guess)) for f in feats}
+            if values == want:
                 return guess
     return None
 
 
 def validate_candidate(layer_url, target):
-    """Return {url, field, feats, payload} if the layer is exactly the target,
-    else raise DataError with the reason."""
+    """Return {url, field, feats, payload} if the layer covers exactly the
+    target's district set, else raise DataError with the reason."""
     feats, payload = query_layer_features(layer_url)
-    if len(feats) != target["expected"]:
-        raise R.DataError(f"{len(feats)} features (need exactly {target['expected']})")
+    # Sanity bound: a "districts" layer with dozens of rows is something else
+    # (precincts, parcels) even if a field happens to parse.
+    if not feats or len(feats) > 8 * target["expected"]:
+        raise R.DataError(f"{len(feats)} features (expected ~{target['expected']}, "
+                          f"allowing split-polygon districts)")
     field = detect_district_field(feats, target)
     if not field:
-        raise R.DataError("no field parses to one in-range district per feature")
+        keys = sorted((feats[0].get("properties") or {}).keys())[:12]
+        raise R.DataError(
+            f"{len(feats)} features but no field covers districts "
+            f"{sorted(set(target['valid_range']))} with every feature in range "
+            f"(fields include: {', '.join(keys)})")
     return {"url": layer_url, "field": field, "feats": feats, "payload": payload}
 
 
-def discover(target_key, log):
-    """All validated candidates for one target, deduped, with provenance."""
-    target = TARGETS[target_key]
-    candidate_urls = {}  # url -> provenance
+def _vertex_count(geom):
+    def count(x):
+        if isinstance(x, (list, tuple)):
+            if x and isinstance(x[0], (int, float)):
+                return 1
+            return sum(count(y) for y in x)
+        return 0
+    return count((geom or {}).get("coordinates") or [])
 
+
+def candidate_signature(cand):
+    """Cheap dataset fingerprint: same districts + geometry bulk = same layer
+    republished under another service name (common on municipal GIS servers)."""
+    districts = tuple(sorted(R._parse_district(f["properties"].get(cand["field"]))
+                             for f in cand["feats"]))
+    verts = sum(_vertex_count(f.get("geometry")) for f in cand["feats"])
+    return (districts, len(cand["feats"]), verts)
+
+
+def host_layer_candidates(log):
+    """Walk every candidate host ONCE and return all sublayers as
+    [{name, url, host}] — shared across targets so dead-host timeouts are paid
+    a single time."""
+    layers = []
     for host in CANDIDATE_HOSTS:
         log.append(f"walking {host}")
         for svc_url in walk_services_directory(host, log):
             for lyr in layers_of_service(svc_url, log):
-                if target["name_re"].search(lyr["name"]):
-                    candidate_urls.setdefault(lyr["url"], f"host-walk:{host}")
+                layers.append({"name": lyr["name"], "url": lyr["url"], "host": host})
+    return layers
+
+
+def discover(target_key, host_layers, log):
+    """All validated candidates for one target, deduped, with provenance."""
+    target = TARGETS[target_key]
+    candidate_urls = {}  # url -> provenance
+
+    for lyr in host_layers:
+        if target["name_re"].search(lyr["name"]):
+            candidate_urls.setdefault(lyr["url"], f"host-walk:{lyr['host']}")
 
     for q in target["agol_queries"]:
         log.append(f"AGOL search: {q!r}")
@@ -242,15 +281,22 @@ def discover(target_key, log):
 
 def choose(validated):
     """Exactly one candidate, or (None, reason). Official domains outrank
-    community copies; residual ambiguity is a hard stop, not a guess."""
+    community copies. Multiple equally-ranked candidates with the SAME data
+    fingerprint are copies of one dataset republished under several services
+    (common on municipal GIS servers) — pick one deterministically. Candidates
+    with DIFFERING data are a hard stop, never a guess."""
     if not validated:
         return None, "no candidate layer passed validation"
     official = [c for c in validated if c["official"]]
     pool = official or validated
-    if len(pool) == 1:
-        return pool[0], None
-    return None, (f"{len(pool)} equally-ranked candidates — refusing to guess: "
-                  + ", ".join(c["url"] for c in pool))
+    if len(pool) > 1:
+        if len({candidate_signature(c) for c in pool}) == 1:
+            chosen = sorted(pool, key=lambda c: c["url"])[0]
+            chosen["note"] = f"{len(pool)} identical copies found; chose deterministically"
+            return chosen, None
+        return None, (f"{len(pool)} equally-ranked candidates with DIFFERING data — "
+                      "refusing to guess: " + ", ".join(c["url"] for c in pool))
+    return pool[0], None
 
 
 def run_recompute(county_file, city_file, write):
@@ -281,8 +327,10 @@ def render_report(results, log, recompute_out):
         chosen, reason = res["chosen"], res["reason"]
         if chosen:
             lines.append(f"- **Selected:** `{chosen['url']}`")
-            lines.append(f"  - district field `{chosen['field']}`, "
+            lines.append(f"  - district field `{chosen['field']}`, {len(chosen['feats'])} features, "
                          f"official domain: {chosen['official']}, via {chosen['provenance']}")
+            if chosen.get("note"):
+                lines.append(f"  - {chosen['note']}")
         else:
             lines.append(f"- **No layer selected:** {reason}")
         if res["validated"] and (not chosen or len(res["validated"]) > 1):
@@ -321,7 +369,10 @@ def main(argv=None):
 
     log = []
     results = {}
-    for key, override in (("county", args.county_url), ("city", args.city_url)):
+    overrides = (("county", args.county_url), ("city", args.city_url))
+    # One shared host walk for every target that still needs discovery.
+    host_layers = host_layer_candidates(log) if any(not o for _, o in overrides) else []
+    for key, override in overrides:
         target = TARGETS[key]
         if override:
             log.append(f"{key}: using provided URL {override} (discovery skipped)")
@@ -336,7 +387,7 @@ def main(argv=None):
                                 "reason": f"provided URL failed validation: {e}",
                                 "validated": [], "rejected": [(override, "cli-override", str(e))]}
         else:
-            validated, rejected = discover(key, log)
+            validated, rejected = discover(key, host_layers, log)
             chosen, reason = choose(validated)
             results[key] = {"chosen": chosen, "reason": reason,
                             "validated": validated, "rejected": rejected}

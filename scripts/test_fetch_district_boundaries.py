@@ -63,10 +63,15 @@ def county_fc(count=5, field="COMMDIST", distinct=True):
     return fc(feats)
 
 
-def city_fc():
+def city_fc(split=False):
     big = square(-88.5, 29.5, -86.0, 31.8)
     feats = [feat({"DISTRICT": i}, big if i == 1 else square(900 + i, 950, 901 + i, 951))
              for i in range(1, 8)]
+    if split:
+        # Districts split into multiple polygons — 9 features covering 1..7,
+        # like the real maps.cityofpensacola.com layers.
+        feats.append(feat({"DISTRICT": 2}, square(970, 950, 971, 951)))
+        feats.append(feat({"DISTRICT": 5}, square(975, 950, 976, 951)))
     return fc(feats)
 
 
@@ -122,27 +127,50 @@ def test_validate_candidate():
     F.FETCH = fake_fetch({url + QUERY: county_fc(count=4)})
     try:
         F.validate_candidate(url, target)
-        check(False, "validate: 4-feature layer rejected")
+        check(False, "validate: incomplete layer (4 of 5 districts) rejected")
     except Exception as e:
-        check("need exactly 5" in str(e), "validate: 4-feature layer rejected")
+        check("no field covers districts" in str(e), "validate: incomplete layer (4 of 5 districts) rejected")
 
     F.FETCH = fake_fetch({url + QUERY: county_fc(distinct=False)})
     try:
         F.validate_candidate(url, target)
-        check(False, "validate: duplicate-district layer rejected")
+        check(False, "validate: all-one-district layer rejected")
     except Exception as e:
-        check("no field parses" in str(e), "validate: duplicate-district layer rejected")
+        check("no field covers districts" in str(e), "validate: all-one-district layer rejected")
+
+    # Split-polygon districts: 9 features covering districts 1..7 must PASS —
+    # the recompute tool merges split districts by value.
+    city_url = "https://maps.cityofpensacola.com/arcgis/rest/services/A/MapServer/34"
+    F.FETCH = fake_fetch({city_url + QUERY: city_fc(split=True)})
+    cand = F.validate_candidate(city_url, F.TARGETS["city"])
+    check(cand["field"] == "DISTRICT" and len(cand["feats"]) == 9,
+          "validate: split-polygon layer (9 feats, districts 1-7) passes")
 
 
 def test_choose():
-    off = {"url": "https://gismaps.myescambia.com/x/0", "official": True}
-    agol1 = {"url": "https://services.arcgis.com/a/x/0", "official": False}
-    agol2 = {"url": "https://services.arcgis.com/b/x/0", "official": False}
+    def cand(url, official, districts=(1, 2, 3, 4, 5), verts_scale=1):
+        feats = [feat({"D": d}, square(0, 0, verts_scale, verts_scale)) for d in districts]
+        return {"url": url, "official": official, "field": "D", "feats": feats}
+
+    off = cand("https://gismaps.myescambia.com/x/0", True)
+    agol1 = cand("https://services.arcgis.com/a/x/0", False)
+    agol2 = cand("https://services.arcgis.com/b/x/0", False)
     check(F.choose([])[0] is None, "choose: empty -> none")
     check(F.choose([agol1])[0] is agol1, "choose: single candidate wins")
     check(F.choose([off, agol1, agol2])[0] is off, "choose: official outranks community copies")
-    chosen, reason = F.choose([agol1, agol2])
-    check(chosen is None and "refusing to guess" in reason, "choose: peer ambiguity aborts")
+
+    # Same dataset republished under several services (identical fingerprints):
+    # pick deterministically instead of aborting.
+    copy_a = cand("https://maps.cityofpensacola.com/b/MapServer/34", True)
+    copy_b = cand("https://maps.cityofpensacola.com/a/MapServer/33", True)
+    chosen, reason = F.choose([copy_a, copy_b])
+    check(chosen is copy_b and "identical copies" in chosen.get("note", ""),
+          "choose: identical copies collapse to deterministic pick")
+
+    # Genuinely different data (different district sets) still aborts.
+    diff = cand("https://maps.cityofpensacola.com/c/MapServer/9", True, districts=(1, 2, 3, 4, 5, 1, 2))
+    chosen, reason = F.choose([copy_a, diff])
+    check(chosen is None and "DIFFERING data" in reason, "choose: differing-data peers abort")
 
 
 def test_report_no_candidates():

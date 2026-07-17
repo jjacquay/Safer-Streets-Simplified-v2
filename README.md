@@ -1,6 +1,6 @@
 # SaferStreets Simplified (Escambia MVP)
 
-**Live site:** https://safer-streets-simplified.vercel.app
+**Live site (V2):** https://safer-streets-simplified-v2.vercel.app _(a new deployment, separate from Safer Streets V1)_
 
 A plain-language street safety app for Escambia County, Florida. Built for city council members, nonprofits, journalists, teachers, and residents — not just traffic engineers.
 
@@ -29,16 +29,24 @@ python3 -m http.server 5173
 
 The repo is **Vercel-ready** — `vercel.json` carries the full static config
 (`cleanUrls`, security headers + CSP, and the GeoJSON content-type for
-`/data/*`) — but connecting it to Vercel is an account-side step. Confirm the
-target domain is live before assuming it is; the intended production domain is
-**https://safer-streets-simplified.vercel.app**.
+`/data/*`) — but connecting it to Vercel is an account-side step that has not
+been done yet.
+
+**Deploy V2 as its own new Vercel project.** The `safer-streets-simplified`
+domain belongs to Safer Streets **V1**, so V2 must be a *separate* project with a
+distinct domain. Name the new project e.g. `safer-streets-simplified-v2`, which
+gives the default domain **https://safer-streets-simplified-v2.vercel.app**
+(Vercel's domain follows the project name — if you choose a different name,
+update the URL above and in this file).
 
 Pick **one** of two ways to deploy (using both causes double deploys):
 
 1. **Vercel Git Integration (recommended).** In the Vercel dashboard: Add New →
-   Project → import this repo. Framework preset **Other (Static HTML)**, Build
-   command **(none)**, Output directory **`.`**. Every push to `main` then
-   deploys to production and every PR gets a preview URL. No repo changes needed.
+   Project → import this repo, and **name the project distinctly (e.g.
+   `safer-streets-simplified-v2`) so it does not collide with V1**. Framework
+   preset **Other (Static HTML)**, Build command **(none)**, Output directory
+   **`.`**. Every push to `main` then deploys to production and every PR gets a
+   preview URL. No repo changes needed.
 2. **GitHub Actions (`.github/workflows/deploy-vercel.yml`).** Deploys to
    production after CI passes on `main`. Inert until you add three repo secrets
    (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`) under Settings →

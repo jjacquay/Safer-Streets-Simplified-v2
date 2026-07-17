@@ -167,6 +167,16 @@ def agol_search(query, log):
     return urls
 
 
+def normalize_layer_url(url):
+    """Accept both bare layer URLs (…/MapServer/3) and full query URLs
+    (…/MapServer/3/query?where=…) — the recompute README documents the latter
+    form, so users will paste either."""
+    url = (url or "").split("?", 1)[0].rstrip("/")
+    if url.endswith("/query"):
+        url = url[: -len("/query")]
+    return url
+
+
 def query_layer_features(layer_url):
     """Download a layer's features; GeoJSON first, Esri JSON fallback."""
     params = "where=1%3D1&outFields=*&returnGeometry=true&outSR=4326"
@@ -174,7 +184,7 @@ def query_layer_features(layer_url):
     for fmt in ("geojson", "json"):
         try:
             payload = _fetch(f"{layer_url}/query?{params}&f={fmt}", timeout=60)
-            return R.features_from_payload(payload), payload
+            return R.features_from_payload(payload)
         except Exception as e:  # noqa: BLE001
             last_err = e
     raise R.DataError(f"query failed for {layer_url}: {last_err}")
@@ -198,9 +208,9 @@ def detect_district_field(feats, target):
 
 
 def validate_candidate(layer_url, target):
-    """Return {url, field, feats, payload} if the layer covers exactly the
-    target's district set, else raise DataError with the reason."""
-    feats, payload = query_layer_features(layer_url)
+    """Return {url, field, feats} if the layer covers exactly the target's
+    district set, else raise DataError with the reason."""
+    feats = query_layer_features(layer_url)
     # Sanity bound: a "districts" layer with dozens of rows is something else
     # (precincts, parcels) even if a field happens to parse.
     if not feats or len(feats) > 8 * target["expected"]:
@@ -213,7 +223,7 @@ def validate_candidate(layer_url, target):
             f"{len(feats)} features but no field covers districts "
             f"{sorted(set(target['valid_range']))} with every feature in range "
             f"(fields include: {', '.join(keys)})")
-    return {"url": layer_url, "field": field, "feats": feats, "payload": payload}
+    return {"url": layer_url, "field": field, "feats": feats}
 
 
 def _vertex_count(geom):
@@ -379,9 +389,10 @@ def main(argv=None):
     for key, override in overrides:
         target = TARGETS[key]
         if override:
+            override = normalize_layer_url(override)
             log.append(f"{key}: using provided URL {override} (discovery skipped)")
             try:
-                cand = validate_candidate(override.rstrip("/"), target)
+                cand = validate_candidate(override, target)
                 cand["provenance"] = "cli-override"
                 cand["official"] = is_official(override)
                 results[key] = {"chosen": cand, "reason": None,

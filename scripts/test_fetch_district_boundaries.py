@@ -75,6 +75,15 @@ def city_fc(split=False):
     return fc(feats)
 
 
+def test_normalize_layer_url():
+    base = "https://gismaps.myescambia.com/arcgis/rest/services/Escambia_County/MapServer/29"
+    check(F.normalize_layer_url(base) == base, "normalize: bare layer URL unchanged")
+    check(F.normalize_layer_url(base + "/") == base, "normalize: trailing slash stripped")
+    check(F.normalize_layer_url(base + "/query?where=1%3D1&f=geojson") == base,
+          "normalize: full recompute-style query URL accepted")
+    check(F.normalize_layer_url(base + "?f=json") == base, "normalize: bare querystring stripped")
+
+
 def test_is_official():
     check(F.is_official("https://gismaps.myescambia.com/arcgis/rest/services/X/MapServer/0") is True,
           "official: county host")
@@ -209,6 +218,7 @@ def test_main_report_only_end_to_end():
 
 
 if __name__ == "__main__":
+    test_normalize_layer_url()
     test_is_official()
     test_name_matching()
     test_walk_and_layers()

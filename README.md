@@ -1,6 +1,6 @@
 # SaferStreets Simplified (Escambia MVP)
 
-**Live site:** https://safer-streets-simplified.vercel.app
+**Live site:** TBD
 
 A plain-language street safety app for Escambia County, Florida. Built for city council members, nonprofits, journalists, teachers, and residents — not just traffic engineers.
 

@@ -16,25 +16,36 @@
 
 <style>
   /* ---------- design tokens (WCAG AA verified contrast) ---------- */
+
+  /* Self-hosted type (vendor/fonts, SIL OFL): Public Sans — the USWDS open
+     typeface — for UI; Libre Caslon Text for display. */
+  @font-face{ font-family:"Public Sans"; src:url("vendor/fonts/public-sans-latin-400-normal.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Public Sans"; src:url("vendor/fonts/public-sans-latin-600-normal.woff2") format("woff2"); font-weight:600; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Public Sans"; src:url("vendor/fonts/public-sans-latin-700-normal.woff2") format("woff2"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Libre Caslon Text"; src:url("vendor/fonts/libre-caslon-text-latin-400-normal.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Libre Caslon Text"; src:url("vendor/fonts/libre-caslon-text-latin-700-normal.woff2") format("woff2"); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Libre Caslon Text"; src:url("vendor/fonts/libre-caslon-text-latin-400-italic.woff2") format("woff2"); font-weight:400; font-style:italic; font-display:swap; }
+
   :root{
-    --bg:#ffffff;
-    --bg-alt:#f4f6f8;
-    --surface:#ffffff;
-    --ink:#0b2545;            /* brand navy family, on white ~15:1 */
-    --ink-soft:#36495a;       /* on white: 8.6:1  (was muted #6b7a87 ~ 4.0:1 — fixed) */
-    --ink-faint:#56697a;      /* on white: 5.9:1  */
-    --line:#c9d2db;           /* non-text 3:1+ on white */
-    --line-strong:#8a98a7;
-    --navy:#012c63;           /* logo navy (car / check / wordmark), on white ~13.6:1 */
-    --brand:#016bdf;          /* logo blue (pedestrian), on white ~5.0:1 (AA) */
-    --brand-ink:#ffffff;
-    --brand-hover:#0154b0;
+    --bg:#f7f2e7;            /* cream paper */
+    --bg-alt:#efe7d6;
+    --surface:#fefcf6;        /* warm card white */
+    --ink:#1e2c3a;            /* brand navy family, on white ~15:1 */
+    --ink-soft:#41505e;       /* on white: 8.6:1  (was muted #6b7a87 ~ 4.0:1 — fixed) */
+    --ink-faint:#5b6a76;      /* on white: 5.9:1  */
+    --line:#ddd3c0;           /* non-text 3:1+ on white */
+    --line-strong:#857758;
+    --navy:#1f3a5f;           /* logo navy (car / check / wordmark), on white ~13.6:1 */
+    --brand:#1d4f91;          /* engraved federal blue, 7.3:1 on paper */
+    --brand-ink:#fefcf6;
+    --brand-hover:#163c6e;
     --brand-green:#5d9c37;    /* logo green (bike) — large elements / swatches */
-    --accent:#016bdf;         /* brand blue for accent links + input focus */
-    --warn-bg:#fff4e5;
+    --accent:#1d4f91;
+    --red:#a3271f;            /* signal red — kickers, rules, key numerals */
+    --warn-bg:#f7e8d2;
     --warn-ink:#7a3a00;       /* on warn-bg ~ 7:1 */
     --ok:#3f7a1f;             /* brand-green family, on white ~5.5:1 */
-    --ok-bg:#eaf3e1;
+    --ok-bg:#e9efdb;
     /* 3-tier red gradient — every tier reads as red (all corridors are on the high-injury network) */
     --risk-vhigh:#67000d;    /* Highest */
     --risk-high:#a50f15;     /* Higher */
@@ -50,32 +61,33 @@
     --band-yellow:#b8860b;
     --band-orange:#c25610;
     --band-red:#b3261e;
-    --focus:#016bdf;
-    --shadow:0 1px 2px rgba(14,26,36,.06), 0 4px 12px rgba(14,26,36,.06);
-    --radius:10px;
-    --radius-sm:6px;
+    --focus:#a3271f;
+    --shadow:0 1px 0 rgba(30,44,58,.04), 0 6px 18px rgba(30,44,58,.05);
+    --radius:6px;
+    --radius-sm:3px;
     --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
     --space-5:24px; --space-6:32px; --space-7:48px;
     --tap:44px; /* WCAG 2.2 target size */
-    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-display: "Libre Caslon Text", Georgia, "Times New Roman", serif;
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --bg:#0e1a24;
-      --bg-alt:#142532;
-      --surface:#172a39;
-      --ink:#f5f8fa;          /* 17:1 on bg */
-      --ink-soft:#cbd5df;     /* 11:1 on bg */
-      --ink-faint:#9aaab8;    /* 6.3:1 on bg */
-      --line:#33485a;
-      --line-strong:#6c8095;
-      --navy:#cfe0f5;         /* navy role inverts to a light tint on dark bg */
-      --brand:#6fb0ff;        /* logo-blue tint, ~8:1 on bg */
-      --brand-ink:#0e1a24;
-      --brand-hover:#a7d0ff;
+      --bg:#101b26;
+      --bg-alt:#16222e;
+      --surface:#182531;
+      --ink:#f2ead9;          /* 17:1 on bg */
+      --ink-soft:#cfc6b4;     /* 11:1 on bg */
+      --ink-faint:#a4a08f;    /* 6.3:1 on bg */
+      --line:#31414f;
+      --line-strong:#75838f;
+      --navy:#d8e4f4;         /* navy role inverts to a light tint on dark bg */
+      --brand:#8ab4ec;        /* logo-blue tint, ~8:1 on bg */
+      --brand-ink:#101b26;
+      --brand-hover:#b3d0f5;
       --brand-green:#7bc14a;
-      --accent:#6fb0ff;
+      --accent:#8ab4ec;
       --warn-bg:#3a2410;
       --warn-ink:#ffd9b3;
       --ok:#8fce6a;
@@ -91,24 +103,24 @@
       --band-yellow:#ffcf4d;
       --band-orange:#ffa24d;
       --band-red:#ff6b6b;
-      --focus:#6fb0ff;
+      --focus:#ff9d8f; --red:#ff9d8f;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35);
     }
   }
   [data-theme="light"]{ color-scheme: light; }
   [data-theme="dark"]{
     color-scheme: dark;
-    --bg:#0e1a24; --bg-alt:#142532; --surface:#172a39;
-    --ink:#f5f8fa; --ink-soft:#cbd5df; --ink-faint:#9aaab8;
-    --line:#33485a; --line-strong:#6c8095;
-    --navy:#cfe0f5;
-    --brand:#6fb0ff; --brand-ink:#0e1a24; --brand-hover:#a7d0ff; --brand-green:#7bc14a;
-    --accent:#6fb0ff; --warn-bg:#3a2410; --warn-ink:#ffd9b3;
+    --bg:#101b26; --bg-alt:#16222e; --surface:#182531;
+    --ink:#f2ead9; --ink-soft:#cfc6b4; --ink-faint:#a4a08f;
+    --line:#31414f; --line-strong:#75838f;
+    --navy:#d8e4f4;
+    --brand:#8ab4ec; --brand-ink:#101b26; --brand-hover:#b3d0f5; --brand-green:#7bc14a;
+    --accent:#8ab4ec; --warn-bg:#3a2410; --warn-ink:#ffd9b3;
     --ok:#8fce6a; --ok-bg:#143523;
     --risk-vhigh:#ff7a7a; --risk-high:#ff9d8a; --risk-med:#ffb8a3; --risk-low:#ffb8a3;
     --risk-vhigh-text:#ff7a7a; --risk-high-text:#ff9d8a; --risk-med-text:#ffb8a3; --risk-low-text:#ffb8a3;
     --band-yellow:#ffcf4d; --band-orange:#ffa24d; --band-red:#ff6b6b;
-    --focus:#6fb0ff;
+    --focus:#ff9d8f; --red:#ff9d8f;
   }
 
   /* ---------- base ---------- */
@@ -572,6 +584,30 @@
   .eg-note{ font-size: 13px; color: var(--ink-soft); margin: 8px 0 0; }
   .eg-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
 
+
+  /* ---------- civic-editorial identity ---------- */
+  section.panel h2, .hero h1.hero-h, .card h3, .card h2.card-h,
+  #pp-name, .packet-preview h3, .brand > span, .footer-logo strong{
+    font-family: var(--font-display);
+  }
+  section.panel h2{ font-size: 26px; }
+  .brand > span{ font-size: 17px; }
+  .brand small{ font-family: var(--font); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; }
+  .hero h1.hero-h em{ font-style: italic; font-weight: 400; }
+  .topbar{ border-top: 4px solid var(--red); }
+  .qbadge{
+    background: transparent; border: none; border-radius: 0;
+    padding: 0 0 2px; color: var(--red);
+    font-weight: 700; font-size: 12px; letter-spacing: .18em;
+  }
+  .qbadge::before{
+    content:""; display:inline-block; width: 26px; height: 2px;
+    background: var(--red); margin-right: 10px; vertical-align: 3px;
+  }
+  .sidenav a .num{ color: var(--red); font-weight: 700; }
+  .hero-stat .num, .feature-stat .num{ font-family: var(--font-display); }
+  .feature-stat .num{ color: var(--red); }
+
   /* ---------- helpers ---------- */
   .visually-hidden{
     position:absolute !important;
@@ -962,7 +998,7 @@
     </div>
     <div class="hero-map-wrap">
       <div id="hero-map" class="hero-map" aria-label="Crash injury heat map of Escambia County"></div>
-      <div class="hero-map-badge">Crash injury heat map · 2018–2024</div>
+      <div class="hero-map-badge">Crash injury heat map · crashes 2018–22 · fatals 2022–24</div>
     </div>
   </div>
 </section>
@@ -1202,7 +1238,7 @@
       <div class="email-gen" id="email-gen" hidden>
         <h3 id="eg-h">Email the officials responsible for this street</h3>
         <p class="muted" id="eg-intro">These are the officials whose districts this corridor runs through — not necessarily your own representatives. Review the recipients, then open a pre-filled email in your mail app.</p>
-        <p class="notice" id="eg-unverified" hidden><strong>Unverified contact addresses</strong>These addresses have not been confirmed against an official source. Double-check each recipient before you send.</p>
+        <p class="notice" id="eg-unverified" hidden><strong>Some addresses unverified</strong>Addresses marked "unverified" below have not been confirmed against an official source. Double-check those recipients before you send.</p>
         <div id="eg-recipients" role="group" aria-label="Choose recipients"></div>
         <p class="eg-note" id="eg-match-note" hidden></p>
         <div class="eg-actions">
@@ -1550,7 +1586,7 @@
       });
       const popupHtml = `
         <strong>${escapeHtml(c.name)}</strong><br>
-        <span style="color:#56697a">${escapeHtml(c.place)} · priority ${c.priority}/100 (${escapeHtml(BAND[c.band].label)})</span>
+        <span style="color:#5b6a76">${escapeHtml(c.place)} · priority ${c.priority}/100 (${escapeHtml(BAND[c.band].label)})</span>
         <div class="pop-stats">
           <b>${fmtInt(c.crash_count)}</b> crashes along ${c.length_mi.toFixed(1)} mi<br>
           <b>${fmtInt(c.fatal_count)}</b> fatal · <b>${fmtInt(c.serious_injury_count)}</b> serious injury
@@ -2235,7 +2271,10 @@
       txt.textContent = officialLabel(m) + ' ';
       const addr = document.createElement('span');
       addr.className = 'eg-addr';
-      addr.textContent = hasEmail ? '<' + m.email + '>' : '(no email on file)';
+      // Per-address verification status: county emails are confirmed against the
+      // official page; city emails are pattern-inferred until confirmed.
+      addr.textContent = !hasEmail ? '(no email on file)'
+        : '<' + m.email + '>' + (m.verified === false ? ' · unverified' : '');
       label.appendChild(cb);
       label.appendChild(txt);
       label.appendChild(addr);
@@ -2512,7 +2551,7 @@
       '</div>' +
       '<div class="hero-result-name">' + escapeHtml(c.name) + '</div>' +
       '<p class="hero-result-meta">' + escapeHtml(c.place) + ' · ' + distPhrase +
-        ' · ' + fmtInt(c.crash_count) + ' crashes, ' + fmtInt(c.fatal_count) + ' fatal (2018–2024)</p>' +
+        ' · ' + fmtInt(c.crash_count) + ' crashes (2018–2022), ' + fmtInt(c.fatal_count) + ' fatal (2022–2024)</p>' +
       cmLine +
       '<div class="hero-result-actions">' +
         '<button type="button" class="btn" id="hero-result-go">See full details &amp; build a packet</button>' +

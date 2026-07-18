@@ -21,6 +21,7 @@ The app answers three questions:
 ## Stack
 
 - Single static `index.html`
+- Self-hosted type under `vendor/fonts/` (SIL OFL 1.1, licenses included): [Public Sans](https://public-sans.digital.gov/) (the USWDS open typeface) for UI, [Libre Caslon Text](https://github.com/impallari/Libre-Caslon-Text) for display — no font CDN, consistent with the CSP's `font-src 'self'`
 - [Leaflet](https://leafletjs.com/) 1.9.4 for the maps (hero overview, priority map, and per-corridor detail map), self-hosted under `vendor/leaflet/` so there is no third-party CDN dependency
 - A real `data/escambia_corridors.geojson` with 18 corridors as MultiLineString geometries (OpenStreetMap centerlines), joined to FDOT public crash data (2018–2022, all severities) and NHTSA FARS fatals (2022–2024), plus a `data/escambia_crash_grid.geojson` aggregated heatmap (150 m cells, low cells suppressed)
 - No build step; deploys directly to Vercel as static files
@@ -220,6 +221,7 @@ and 2 are the real blockers; nothing below matters if the recipients are wrong.
 - **[CyclingMAX](https://cyclingmax.worldbank.org/)** (World Bank / ITDP / Progress Analytics) — the flat conservatism discount applied to this site's benefit-cost estimates is adapted from CyclingMAX's "Induced Benefit Factor."
 - The Fairfield Drive / Pensacola Boulevard featured case study draws on a draft (April 2026) baseline memo **Kimley-Horn** prepared for the **[Emerald Coast Regional Council](https://www.ecrc.org/)** (ECRC, formerly the West Florida Regional Planning Council) under its USDOT SS4A grant, and on ECRC's regional high-injury-network StoryMap. Crash figures there use **[Signal Four Analytics](https://signal4analytics.com/)**, the crash-report database maintained by FDOT and the University of Florida.
 - Road centerlines: OpenStreetMap contributors. Crash data: FDOT, NHTSA FARS, Signal Four Analytics. Demographics: US Census Bureau ACS. Countermeasures: FHWA Proven Safety Countermeasures and CMF Clearinghouse.
+- Type: [Public Sans](https://public-sans.digital.gov/) (Public Sans Project Authors / USWDS) and [Libre Caslon Text](https://github.com/impallari/Libre-Caslon-Text) (Libre Caslon Text Project Authors), both under the SIL Open Font License 1.1 — license texts in `vendor/fonts/`.
 
 ## License
 

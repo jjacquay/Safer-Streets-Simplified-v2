@@ -52,7 +52,7 @@ def fetch_overpass(query, max_retries=3):
             req = urllib.request.Request(
                 OVERPASS,
                 data=data,
-                headers={"User-Agent": "SaferStreetsEscambia/1.0 (research)"},
+                headers={"User-Agent": "StreetSmartEscambia/1.0 (research)"},
             )
             with urllib.request.urlopen(req, timeout=90) as r:
                 return json.loads(r.read().decode("utf-8"))

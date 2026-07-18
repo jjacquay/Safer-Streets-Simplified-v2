@@ -265,7 +265,7 @@ def features_from_payload(payload):
 
 
 def fetch_url(url, timeout=60):
-    req = urllib.request.Request(url, headers={"User-Agent": "safer-streets-districts/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "street-smart-districts/1.0"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         raw = r.read().decode("utf-8", "replace")
     try:

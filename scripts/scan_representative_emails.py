@@ -98,7 +98,7 @@ def diff_source(reps, body_key, page_emails):
 
 def fetch(url, timeout=30):
     req = urllib.request.Request(
-        url, headers={"User-Agent": "SaferStreets-rep-email-scan/1.0 (+github actions; non-destructive)"}
+        url, headers={"User-Agent": "street-smart-rep-email-scan/1.0 (+github actions; non-destructive)"}
     )
     with urllib.request.urlopen(req, timeout=timeout) as r:
         charset = r.headers.get_content_charset() or "utf-8"

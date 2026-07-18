@@ -1,6 +1,14 @@
-# SaferStreets Simplified (Escambia MVP)
+# Street Smart (Escambia MVP)
 
-**Live site (V2):** https://safer-streets-simplified-v2.vercel.app _(a new deployment, separate from Safer Streets V1)_
+_Formerly **SaferStreets Simplified**. Renamed to avoid confusion with its own
+V1 and with Toole Design's separate [Safer Streets Priority
+Finder](https://github.com/tooledesign/Safer-Streets-Priority-Finder) (see
+Acknowledgements — different codebase, different purpose). Note: "Street Smart"
+is also the name of unrelated regional pedestrian-safety *education campaigns*
+(e.g., MWCOG's bestreetsmart.net); the "Escambia" qualifier matters when citing
+this project._
+
+**Live site:** https://street-smart.vercel.app
 
 A plain-language street safety app for Escambia County, Florida. Built for city council members, nonprofits, journalists, teachers, and residents — not just traffic engineers.
 
@@ -31,13 +39,10 @@ The repo is **Vercel-ready** — `vercel.json` carries the full static config
 (`cleanUrls`, security headers + CSP, and the GeoJSON content-type for
 `/data/*`), so there is no build step and no repo changes are needed to deploy.
 
-**Deploy V2 as its own new Vercel project** (the `safer-streets-simplified`
-domain belongs to Safer Streets **V1**). In the Vercel dashboard: **Add New →
-Project → import this repo**, and:
+**This app deploys as its own Vercel project, separate from V1** (the
+`safer-streets-simplified` domain belongs to SaferStreets Simplified **V1**;
+this project is `street-smart` → **https://street-smart.vercel.app**). Settings:
 
-- **Project Name:** `safer-streets-simplified-v2` — gives the domain
-  **https://safer-streets-simplified-v2.vercel.app**. A different name changes
-  the domain; update the URL here if so.
 - **Framework preset:** Other · **Build command:** (none) · **Root directory:** `.`
 
 Vercel's Git Integration then deploys every push to `main` to production and

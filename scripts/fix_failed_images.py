@@ -16,7 +16,7 @@ TREATMENTS = ROOT / 'data' / 'treatments.json'
 ASSETS = ROOT / 'assets' / 'treatments'
 ASSETS.mkdir(parents=True, exist_ok=True)
 
-UA = 'Mozilla/5.0 (compatible; SaferStreetsBot/1.0)'
+UA = 'Mozilla/5.0 (compatible; StreetSmartBot/1.0)'
 
 # Slugs to retry, with manual preferred image patterns from inspection
 FAILED = [

@@ -8,7 +8,7 @@ is also the name of unrelated regional pedestrian-safety *education campaigns*
 (e.g., MWCOG's bestreetsmart.net); the "Escambia" qualifier matters when citing
 this project._
 
-**Live site:** https://street-smart.vercel.app
+**Live site:** https://street-smarts.vercel.app
 
 A plain-language street safety app for Escambia County, Florida. Built for city council members, nonprofits, journalists, teachers, and residents — not just traffic engineers.
 
@@ -42,7 +42,7 @@ The repo is **Vercel-ready** — `vercel.json` carries the full static config
 
 **This app deploys as its own Vercel project, separate from V1** (the
 `safer-streets-simplified` domain belongs to SaferStreets Simplified **V1**;
-this project is `street-smart` → **https://street-smart.vercel.app**). Settings:
+this project is `street-smarts` → **https://street-smarts.vercel.app**). Settings:
 
 - **Framework preset:** Other · **Build command:** (none) · **Root directory:** `.`
 

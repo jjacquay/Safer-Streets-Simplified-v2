@@ -691,7 +691,7 @@
   }
   .hero h1.hero-h em{
     font-style: normal;
-    background: linear-gradient(180deg, transparent 60%, rgba(220,38,38,0.25) 60%);
+    background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--red) 26%, transparent) 62%);
     padding: 0 2px;
   }
   .hero-sub{
@@ -768,6 +768,7 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-weight: 600;
+    overflow-wrap: anywhere;   /* long single words (e.g. COUNTERMEASURES) wrap, not clip, at 320px */
   }
   .hero-map-wrap{
     position: relative;

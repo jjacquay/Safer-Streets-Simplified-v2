@@ -1223,6 +1223,19 @@
           "people_of_color_share": 0.6299,
           "median_household_income": 45784,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 2.0,
+            "end_mi": 2.5,
+            "crash_count": 72,
+            "ksi_count": 5,
+            "share_of_corridor_crashes_pct": 20
+          },
+          "corridor_length_mi": 4.49,
+          "corridor_crash_count": 363,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -2820,6 +2833,19 @@
           "people_of_color_share": 0.4328,
           "median_household_income": 58037,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 6.0,
+            "end_mi": 6.35,
+            "crash_count": 64,
+            "ksi_count": 8,
+            "share_of_corridor_crashes_pct": 15
+          },
+          "corridor_length_mi": 6.35,
+          "corridor_crash_count": 433,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -6557,6 +6583,19 @@
           "people_of_color_share": 0.3662,
           "median_household_income": 70533,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 4.5,
+            "end_mi": 5.0,
+            "crash_count": 64,
+            "ksi_count": 5,
+            "share_of_corridor_crashes_pct": 8
+          },
+          "corridor_length_mi": 15.42,
+          "corridor_crash_count": 769,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -9629,6 +9668,19 @@
           "people_of_color_share": 0.5126,
           "median_household_income": 51669,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 10.0,
+            "end_mi": 10.5,
+            "crash_count": 60,
+            "ksi_count": 4,
+            "share_of_corridor_crashes_pct": 12
+          },
+          "corridor_length_mi": 12.53,
+          "corridor_crash_count": 500,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -10703,6 +10755,19 @@
           "people_of_color_share": 0.5458,
           "median_household_income": 59306,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 1.5,
+            "end_mi": 2.0,
+            "crash_count": 18,
+            "ksi_count": 1,
+            "share_of_corridor_crashes_pct": 19
+          },
+          "corridor_length_mi": 2.78,
+          "corridor_crash_count": 96,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -10992,6 +11057,19 @@
           "people_of_color_share": 0.0602,
           "median_household_income": 99698,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 1.0,
+            "end_mi": 1.28,
+            "crash_count": 26,
+            "ksi_count": 0,
+            "share_of_corridor_crashes_pct": 65
+          },
+          "corridor_length_mi": 1.28,
+          "corridor_crash_count": 40,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -15637,6 +15715,19 @@
           "people_of_color_share": 0.4301,
           "median_household_income": 70483,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 10.5,
+            "end_mi": 11.0,
+            "crash_count": 21,
+            "ksi_count": 8,
+            "share_of_corridor_crashes_pct": 2
+          },
+          "corridor_length_mi": 23.38,
+          "corridor_crash_count": 938,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -18625,6 +18716,19 @@
           "people_of_color_share": 0.5814,
           "median_household_income": 41133,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 8.0,
+            "end_mi": 8.5,
+            "crash_count": 152,
+            "ksi_count": 9,
+            "share_of_corridor_crashes_pct": 16
+          },
+          "corridor_length_mi": 10.58,
+          "corridor_crash_count": 941,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -19694,6 +19798,19 @@
           "people_of_color_share": 0.1866,
           "median_household_income": 93251,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 2.5,
+            "end_mi": 3.0,
+            "crash_count": 12,
+            "ksi_count": 2,
+            "share_of_corridor_crashes_pct": 23
+          },
+          "corridor_length_mi": 4.02,
+          "corridor_crash_count": 52,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -20611,6 +20728,19 @@
           "people_of_color_share": 0.3199,
           "median_household_income": 75192,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 0.0,
+            "end_mi": 0.5,
+            "crash_count": 45,
+            "ksi_count": 1,
+            "share_of_corridor_crashes_pct": 79
+          },
+          "corridor_length_mi": 1.95,
+          "corridor_crash_count": 57,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -22632,6 +22762,19 @@
           "people_of_color_share": 0.5307,
           "median_household_income": 37522,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 0.5,
+            "end_mi": 1.0,
+            "crash_count": 104,
+            "ksi_count": 10,
+            "share_of_corridor_crashes_pct": 27
+          },
+          "corridor_length_mi": 5.19,
+          "corridor_crash_count": 380,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -23822,6 +23965,19 @@
           "people_of_color_share": 0.4621,
           "median_household_income": 68288,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 3.5,
+            "end_mi": 3.94,
+            "crash_count": 86,
+            "ksi_count": 3,
+            "share_of_corridor_crashes_pct": 27
+          },
+          "corridor_length_mi": 3.94,
+          "corridor_crash_count": 313,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -24826,6 +24982,19 @@
           "people_of_color_share": 0.2444,
           "median_household_income": 91197,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 1.5,
+            "end_mi": 1.83,
+            "crash_count": 58,
+            "ksi_count": 0,
+            "share_of_corridor_crashes_pct": 87
+          },
+          "corridor_length_mi": 1.83,
+          "corridor_crash_count": 67,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -26205,6 +26374,19 @@
           "people_of_color_share": 0.3534,
           "median_household_income": 72793,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 2.5,
+            "end_mi": 3.0,
+            "crash_count": 19,
+            "ksi_count": 2,
+            "share_of_corridor_crashes_pct": 13
+          },
+          "corridor_length_mi": 4.27,
+          "corridor_crash_count": 150,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -26536,6 +26718,19 @@
           "people_of_color_share": 0.3355,
           "median_household_income": 60839,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 1.0,
+            "end_mi": 1.5,
+            "crash_count": 31,
+            "ksi_count": 3,
+            "share_of_corridor_crashes_pct": 78
+          },
+          "corridor_length_mi": 1.62,
+          "corridor_crash_count": 40,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -28630,6 +28825,19 @@
           "people_of_color_share": 0.4017,
           "median_household_income": 70730,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 2.5,
+            "end_mi": 3.0,
+            "crash_count": 77,
+            "ksi_count": 6,
+            "share_of_corridor_crashes_pct": 23
+          },
+          "corridor_length_mi": 6.9,
+          "corridor_crash_count": 342,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     },
@@ -30669,6 +30877,19 @@
           "people_of_color_share": 0.3986,
           "median_household_income": 61839,
           "method": "length-weighted tract average (ACS 5-year); income is population-weighted mean of tract medians"
+        },
+        "hotspot": {
+          "window_length_mi": 0.5,
+          "worst_window": {
+            "start_mi": 3.5,
+            "end_mi": 4.0,
+            "crash_count": 67,
+            "ksi_count": 4,
+            "share_of_corridor_crashes_pct": 20
+          },
+          "corridor_length_mi": 10.92,
+          "corridor_crash_count": 339,
+          "method": "Corridor divided into fixed, non-overlapping 0.5-mile windows; crashes assigned by nearest-point projection onto the centerline. Simplified analog of the sliding-window hotspot method in Toole Design's Safer Streets Priority Finder (which slides overlapping windows across an entire network to discover corridors from scratch; here windows are fixed and applied only within this already-selected corridor)."
         }
       }
     }

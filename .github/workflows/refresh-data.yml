@@ -2,7 +2,11 @@ name: Refresh crash + corridor data
 
 # Refreshes the committed data from public, keyless sources on a GitHub-hosted
 # runner (which — unlike the Claude Code sandbox — has open outbound internet),
-# then opens a pull request.
+# then commits the result straight to `main` so Vercel auto-deploys it. Runs on
+# a monthly schedule; the data underneath (FDOT 2018–2022, FARS annual) changes
+# slowly, so monthly keeps "latest public data" true without needless churn.
+# Commits only when the data actually changed, and only after the sanity gate
+# passes — so a bad fetch can't reach production.
 #
 # SAFE, NON-DESTRUCTIVE by design — it never rebuilds the corridor file from
 # scratch (the committed enrichment scripts are out of sync with the curated v5
@@ -34,7 +38,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   refresh:
@@ -109,24 +112,20 @@ jobs:
           print(f"OK: {n} corridors; psc list intact; counts refreshed")
           PY
 
-      - name: Open pull request with refreshed data
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: data-refresh/${{ github.run_id }}
-          title: "Data refresh: corridor counts + countermeasures + heatmap + equity"
-          commit-message: "Refresh corridor crash counts, countermeasures, heatmap, and equity"
-          body: |
-            Automated, non-destructive data refresh:
-            - Corridor crash counts / score / risk / crash_factors recomputed from
-              fresh FDOT (2018–2022) + FARS (2022–2024) via the 30 m buffer join
-              (numeric fields only — curated psc/text/equity preserved).
-            - Costed countermeasures recomputed from the new crash factors.
-            - Crash heatmap grid rebuilt.
-            - ACS `equity` context refreshed (if CENSUS_API_KEY is configured).
-
-            Non-fatal 2023+ crashes remain absent (manual Signal Four export).
-            Review is optional — the run fails if `psc` stops being a list.
-          add-paths: |
-            data/escambia_corridors.geojson
-            data/escambia_crash_grid.geojson
-            data/acs_escambia_tracts.json
+      # Publish straight to main so Vercel deploys the refresh automatically.
+      # Only the sanity-checked derived data files are committed, and only when
+      # they actually changed — a no-op run touches nothing. The default
+      # GITHUB_TOKEN (contents: write) authorizes the push; main is unprotected.
+      - name: Commit refreshed data to main (Vercel auto-deploys)
+        run: |
+          set -eu
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/escambia_corridors.geojson data/escambia_crash_grid.geojson data/acs_escambia_tracts.json
+          if git diff --cached --quiet; then
+            echo "No data changes this run — nothing to commit or deploy."
+          else
+            git commit -m "Auto data refresh: corridor counts, countermeasures, heatmap, equity"
+            git push origin HEAD:main
+            echo "Refreshed data pushed to main; Vercel will deploy."
+          fi

@@ -1,12 +1,12 @@
-# Street Smart (Escambia MVP)
+# Street Smarts (Escambia MVP)
 
 _Formerly **SaferStreets Simplified**. Renamed to avoid confusion with its own
 V1 and with Toole Design's separate [Safer Streets Priority
 Finder](https://github.com/tooledesign/Safer-Streets-Priority-Finder) (see
-Acknowledgements — different codebase, different purpose). Note: "Street Smart"
-is also the name of unrelated regional pedestrian-safety *education campaigns*
-(e.g., MWCOG's bestreetsmart.net); the "Escambia" qualifier matters when citing
-this project._
+Acknowledgements — different codebase, different purpose). Note: the similarly
+named "Street Smart" (singular) is an unrelated set of regional pedestrian-safety
+*education campaigns* (e.g., MWCOG's bestreetsmart.net) — this project is **Street
+Smarts**, and the "Escambia" qualifier matters when citing it._
 
 **Live site:** https://street-smarts.vercel.app
 
